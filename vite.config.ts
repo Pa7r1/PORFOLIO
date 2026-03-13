@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   // Para GitHub Pages: cambiá "portfolio" por el nombre de tu repo
   // Si usás un dominio custom o repo con tu username (tu-usuario.github.io), poné base: "/"
-  base: "https://pa7r1.github.io/",
+  base: "/PORFOLIO/",
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
