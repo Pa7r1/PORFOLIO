@@ -86,7 +86,7 @@ export default function About() {
               <div className="stat-label">proyectos</div>
             </div>
             <div>
-              <div className="stat-num">2</div>
+              <div className="stat-num">3</div>
               <div className="stat-label">clientes reales</div>
             </div>
           </div>
