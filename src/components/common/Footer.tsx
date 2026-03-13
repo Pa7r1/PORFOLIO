@@ -7,7 +7,7 @@ export default function Footer() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Patricio Carpio
+        Pa7r1
       </a>{" "}
       · React + TypeScript + Vite
     </div>
