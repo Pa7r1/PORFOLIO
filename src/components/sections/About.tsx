@@ -56,13 +56,11 @@ export default function About() {
           </p>
           <p>
             Desplegué aplicaciones en <strong>VPS propios</strong> con dominio
-            personalizado, SSL y Docker Compose — no solo en localhost. Optimicé
-            queries MySQL de <strong>5 segundos a 200ms</strong> mediante
-            índices y aggregations en un proyecto real.
+            personalizado, SSL y Docker Compose
           </p>
           <p>
             Manejo el frontend con React cuando el proyecto lo requiere.
-            Actualmente terminando mi{" "}
+            Graduado en{" "}
             <strong>Tecnicatura en Programación en UTN La Rioja</strong>.
           </p>
 

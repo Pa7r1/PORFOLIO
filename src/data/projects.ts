@@ -5,7 +5,7 @@ export const projects: Project[] = [
     id: "1",
     title: "VJ-Barber — Sistema de Gestión",
     description:
-      "Sistema web/móvil completo para gestión de barbería: agendamiento de turnos, caja, reportes, gestión de empleados y múltiples sucursales. Desplegado en VPS con dominio, SSL y Docker Compose.",
+      "Sistema web/móvil completo para gestión de barbería: agendamiento de turnos, caja, reportes,roles, gestión de empleados y múltiples sucursales. Desplegado en VPS con dominio, SSL y Docker Compose.",
     image:
       "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=350&fit=crop",
     technologies: ["FastAPI", "MySQL", "React", "Docker", "Nginx", "VPS"],
