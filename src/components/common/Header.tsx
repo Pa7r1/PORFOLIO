@@ -1,15 +1,10 @@
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
+import { NAV } from "@/i18n/nav";
+import { personalInfo } from "@/data/personalInfo";
 
-const NAV = [
-  { id: "about",      label: "Sobre mí" },
-  { id: "experience", label: "Experiencia" },
-  { id: "projects",   label: "Proyectos" },
-  { id: "skills",     label: "Skills" },
-  { id: "contact",    label: "Contacto" },
-];
-
-// Mobile header (top bar + bottom nav) — shown only on small screens via CSS
 export default function Header({ activeSection }: { activeSection: string }) {
+  const { t } = useLocale();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -18,13 +13,19 @@ export default function Header({ activeSection }: { activeSection: string }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const navIcon = (id: string) =>
+    id === "about" ? "👤" :
+    id === "experience" ? "💼" :
+    id === "projects" ? "🔧" :
+    id === "skills" ? "⚡" : "✉️";
+
   return (
     <>
       {/* Top bar — mobile only */}
       <div className={`mobile-header${scrolled ? " scrolled" : ""}`}>
-        <span>Patricio Carpio</span>
+        <span>{personalInfo.name.split(" ").slice(0, 2).join(" ")}</span>
         <span style={{ fontFamily: "var(--mono)", fontSize: "0.65rem", color: "var(--accent)", letterSpacing: "0.1em" }}>
-          BACKEND DEV
+          {t("header.role")}
         </span>
       </div>
 
@@ -36,10 +37,8 @@ export default function Header({ activeSection }: { activeSection: string }) {
             href={`#${item.id}`}
             className={activeSection === item.id ? "active" : ""}
           >
-            <span style={{ fontSize: "1rem" }}>
-              {item.id === "about" ? "👤" : item.id === "experience" ? "💼" : item.id === "projects" ? "🔧" : item.id === "skills" ? "⚡" : "✉️"}
-            </span>
-            {item.label}
+            <span style={{ fontSize: "1rem" }}>{navIcon(item.id)}</span>
+            {t(item.key)}
           </a>
         ))}
       </nav>

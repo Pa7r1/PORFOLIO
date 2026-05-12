@@ -1,3 +1,4 @@
+import { useLocale } from "@/i18n/LocaleContext";
 import { personalInfo } from "@/data/personalInfo";
 
 const MailIcon = () => (
@@ -24,15 +25,13 @@ const MapIcon = () => (
 );
 
 export default function Contact() {
+  const { t } = useLocale();
   return (
     <section id="contact">
-      <div className="section-label">Contacto</div>
+      <div className="section-label">{t("nav.contact")}</div>
 
       <div className="fade-in">
-        <p className="contact-text">
-          Estoy disponible para trabajo freelance, proyectos de tiempo completo o
-          colaboraciones. Si tenés algo en mente, escribime directamente.
-        </p>
+        <p className="contact-text">{t("contact.text")}</p>
 
         <div className="contact-links">
           <a href={`mailto:${personalInfo.email}`} className="contact-link">
@@ -49,7 +48,7 @@ export default function Contact() {
           </a>
           <span className="contact-link" style={{ cursor: "default" }}>
             <MapIcon />
-            Pituil, La Rioja, Argentina · Disponible remoto
+            {t("contact.location")}
           </span>
         </div>
       </div>

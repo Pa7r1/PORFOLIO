@@ -15,19 +15,27 @@ export default function ParticlesBackground() {
     };
     setSize();
 
-    // Fewer, subtler particles — emerald green to match theme
+    // Read accent color from CSS variables (theme-aware)
+    let accentHex = "#10b981";
+    const readAccent = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue("--accent").trim();
+      if (raw) accentHex = raw;
+    };
+    readAccent();
+
     const particles: { x: number; y: number; vx: number; vy: number; alpha: number }[] = [];
-    for (let i = 0; i < 38; i++) {
+    for (let i = 0; i < 24; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
-        alpha: Math.random() * 0.4 + 0.1,
+        alpha: Math.random() * 0.35 + 0.08,
       });
     }
 
-    let raf: number;
+    let raf = 0;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach((p) => {
@@ -37,7 +45,7 @@ export default function ParticlesBackground() {
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16,185,129,${p.alpha})`;
+        ctx.fillStyle = accentHex + Math.round(p.alpha * 255).toString(16).padStart(2, "0");
         ctx.fill();
       });
       for (let i = 0; i < particles.length; i++) {
@@ -46,10 +54,11 @@ export default function ParticlesBackground() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 110) {
+            const alpha = Math.round((1 - dist / 110) * 0.12 * 255).toString(16).padStart(2, "0");
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(16,185,129,${(1 - dist / 110) * 0.12})`;
+            ctx.strokeStyle = accentHex + alpha;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -57,12 +66,28 @@ export default function ParticlesBackground() {
       }
       raf = requestAnimationFrame(animate);
     };
+
     animate();
+
+    // Watch for prefers-reduced-motion
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mediaQuery.matches) {
+      cancelAnimationFrame(raf);
+      canvas.style.display = "none";
+    }
+
+    // Update accent on theme change
+    const observer = new MutationObserver(readAccent);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
 
     window.addEventListener("resize", setSize);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", setSize);
+      observer.disconnect();
     };
   }, []);
 

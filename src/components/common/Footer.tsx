@@ -1,7 +1,10 @@
+import { useLocale } from "@/i18n/LocaleContext";
+
 export default function Footer() {
+  const { t } = useLocale();
   return (
     <div className="footer-credit">
-      Diseñado y construido por{" "}
+      {t("footer.credit")}{" "}
       <a
         href="https://github.com/Pa7r1"
         target="_blank"

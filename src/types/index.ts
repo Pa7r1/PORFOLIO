@@ -1,19 +1,30 @@
+export type Bilingual = { es: string; en: string };
+export type ProjectStatus = "production" | "wip" | "mvp" | "archived";
+
+export interface ProjectDetail {
+  year: number;
+  status: ProjectStatus;
+  problem: Bilingual;
+  architecture: Bilingual;
+  stackRationale: Bilingual;
+  challenges: Bilingual[];
+  learnings: Bilingual;
+  screenshots?: string[];
+  videoUrl?: string;
+}
+
 export interface Project {
   id: string;
+  slug: string;
   title: string;
-  description: string;
+  tagline: Bilingual;
+  description: Bilingual;
   image: string;
   technologies: string[];
   githubUrl?: string;
   liveUrl?: string;
-}
-
-export interface Skill {
-  name: string;
-  icon: string;
-  category: string;
-  color: string;
-  level?: number;
+  hasDetail: boolean;
+  detail?: ProjectDetail;
 }
 
 export interface Tool {
@@ -23,9 +34,9 @@ export interface Tool {
 
 export interface Experience {
   period: string;
-  title: string;
+  title: Bilingual;
   company: string;
-  description?: string;
+  description?: Bilingual;
   tags?: string[];
   type: "education" | "work";
 }
@@ -33,7 +44,7 @@ export interface Experience {
 export interface PersonalInfo {
   name: string;
   title: string;
-  description: string;
+  description: Bilingual;
   githubProjects: number;
   yearsExperience: number;
   profileImage: string;

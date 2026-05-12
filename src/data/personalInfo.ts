@@ -2,11 +2,14 @@ import type { PersonalInfo } from "@/types";
 
 export const personalInfo: PersonalInfo = {
   name: "Patricio Valentín Carpio",
-  title: "Backend Developer",
-  description: `Me especializo en construir APIs robustas, automatizar procesos y diseñar sistemas que escalan. Tengo experiencia real en producción: desde el diseño de base de datos hasta el despliegue en VPS con Docker, Nginx y SSL. Me inclino al backend, pero puedo llevar un proyecto completo de punta a punta.`,
-  githubProjects: 7,
+  title: "Fullstack Developer",
+  description: {
+    es: "Me especializo en construir APIs robustas, automatizar procesos y diseñar sistemas que escalan. Fullstack con foco en backend y DevOps, con experiencia real en producción de punta a punta.",
+    en: "I specialize in building robust APIs, automating processes, and designing systems that scale. Fullstack focused on backend and DevOps, with real end-to-end production experience.",
+  },
+  githubProjects: 9,
   yearsExperience: 3,
-  profileImage: "/foto-curriculum.jpeg",
+  profileImage: "foto-curriculum.jpeg",
   email: "valentincarpio32@gmail.com",
   linkedin: "https://www.linkedin.com/in/patricio-carpio-6a602327b/",
 };

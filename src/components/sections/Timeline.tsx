@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
+import { pick } from "@/i18n/pick";
 import { experiences } from "@/data/experiences";
 
 export default function Timeline() {
+  const { t, locale } = useLocale();
   const [activeTab, setActiveTab] = useState<"work" | "education">("work");
   const filtered = experiences.filter((e) => e.type === activeTab);
 
   return (
     <section id="experience">
-      <div className="section-label">Experiencia</div>
+      <div className="section-label">{t("nav.experience")}</div>
 
       {/* Tabs */}
       <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.8rem" }}>
@@ -30,7 +33,7 @@ export default function Timeline() {
               color: activeTab === tab ? "var(--accent)" : "var(--text-dim)",
             }}
           >
-            {tab === "work" ? "Trabajo" : "Educación"}
+            {tab === "work" ? t("timeline.tab.work") : t("timeline.tab.education")}
           </button>
         ))}
       </div>
@@ -40,12 +43,16 @@ export default function Timeline() {
           <div key={i} className="exp-card">
             <div className="exp-period">{exp.period}</div>
             <div>
-              <div className="exp-title">{exp.title}</div>
+              <div className="exp-title">{pick(exp.title, locale)}</div>
               <div className="exp-company">{exp.company}</div>
-              {exp.description && <div className="exp-desc">{exp.description}</div>}
+              {exp.description && (
+                <div className="exp-desc">{pick(exp.description, locale)}</div>
+              )}
               {exp.tags && exp.tags.length > 0 && (
                 <div className="tag-row">
-                  {exp.tags.map((t) => <span key={t} className="tag">{t}</span>)}
+                  {exp.tags.map((tag) => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
                 </div>
               )}
             </div>
