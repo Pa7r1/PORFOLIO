@@ -8,9 +8,9 @@ export const en: Record<DictionaryKey, string> = {
   "nav.skills":     "Skills",
   "nav.contact":    "Contact",
 
-  // Sidebar
-  "available":   "Available",
-  "header.role": "FULLSTACK DEV",
+  // Hero / mobile header
+  "header.role":    "FULLSTACK DEV",
+  "skip.toContent": "Skip to content",
 
   // About section paragraphs
   "about.p1": "Fullstack developer focused on backend and DevOps. I design normalized databases, build scalable RESTful APIs, and automate processes that solve real problems.",

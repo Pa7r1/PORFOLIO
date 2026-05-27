@@ -6,9 +6,9 @@ export const es = {
   "nav.skills":     "Skills",
   "nav.contact":    "Contacto",
 
-  // Sidebar
-  "available":   "Disponible",
-  "header.role": "FULLSTACK DEV",
+  // Hero / mobile header
+  "header.role":    "FULLSTACK DEV",
+  "skip.toContent": "Saltar al contenido",
 
   // About section paragraphs
   "about.p1": "Fullstack developer con foco en backend y DevOps. Diseño bases de datos normalizadas, construyo APIs RESTful escalables y automatizo procesos que resuelven problemas reales.",

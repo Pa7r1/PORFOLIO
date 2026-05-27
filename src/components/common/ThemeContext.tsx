@@ -9,9 +9,9 @@ function detectTheme(): Theme {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === "dark" || saved === "light") return saved;
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    return "light";
   } catch {
-    return "dark";
+    return "light";
   }
 }
 

@@ -92,73 +92,66 @@ export default function App() {
 
   return (
     <>
+      {/* Skip-to-content (a11y) */}
+      <a href="#main" className="skip-link">{t("skip.toContent")}</a>
+
       {/* Ambient particles */}
       <ParticlesBackground />
 
       {/* Cursor glow */}
-      <div ref={cursorRef} className="cursor-glow" />
+      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
 
       {/* Mobile header & bottom nav */}
       <Header activeSection={activeSection} />
 
-      {/* ── MAIN LAYOUT ── */}
-      <div className="layout">
+      {/* Desktop top nav sticky */}
+      <nav className="top-nav" aria-label="Primary">
+        <a href="#main" className="top-nav-brand">
+          {personalInfo.name.split(" ").slice(0, 2).join(" ")}
+        </a>
+        <div className="top-nav-links">
+          {NAV.map(({ id, key }) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={activeSection === id ? "active" : ""}
+            >
+              {t(key)}
+            </a>
+          ))}
+        </div>
+        <div className="top-nav-actions">
+          <a href="https://github.com/Pa7r1" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <GithubIcon />
+          </a>
+          <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <LinkedinIcon />
+          </a>
+          <a href={`mailto:${personalInfo.email}`} aria-label="Email">
+            <MailIcon />
+          </a>
+          <ThemeToggle />
+          <LangSwitch />
+        </div>
+      </nav>
 
-        {/* ── SIDEBAR ── */}
-        <aside className="sidebar">
-          <div>
-            {/* Available indicator */}
-            <div className="available-badge">
-              <span className="available-dot" />
-              {t("available")}
-            </div>
-
-            {/* Name & role */}
-            <h1>{personalInfo.name.split(" ").slice(0, 2).join("\n")}</h1>
-            <div className="role">{personalInfo.title}</div>
-            <p className="bio">{pick(personalInfo.description, locale)}</p>
-
-            {/* Desktop nav */}
-            <nav className="sidebar-nav">
-              {NAV.map(({ id, key }) => (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  className={activeSection === id ? "active" : ""}
-                >
-                  <span className="nav-line" />
-                  {t(key)}
-                </a>
-              ))}
-            </nav>
+      <main id="main" className="page">
+        {/* Hero */}
+        <section className="hero">
+          <div className="hero-inner fade-in">
+            <h1 className="hero-name">{personalInfo.name}</h1>
+            <p className="hero-role">{personalInfo.title}</p>
+            <p className="hero-bio">{pick(personalInfo.description, locale)}</p>
           </div>
+        </section>
 
-          {/* Social links + lang switch */}
-          <div className="sidebar-socials">
-            <a href="https://github.com/Pa7r1" target="_blank" rel="noopener noreferrer" title="GitHub">
-              <GithubIcon />
-            </a>
-            <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
-              <LinkedinIcon />
-            </a>
-            <a href={`mailto:${personalInfo.email}`} title="Email">
-              <MailIcon />
-            </a>
-            <ThemeToggle />
-            <LangSwitch />
-          </div>
-        </aside>
-
-        {/* ── MAIN PANEL ── */}
-        <main className="main-panel">
-          <About />
-          <Timeline />
-          <Projects />
-          <Skills />
-          <Contact />
-          <Footer />
-        </main>
-      </div>
+        <About />
+        <Timeline />
+        <Projects />
+        <Skills />
+        <Contact />
+        <Footer />
+      </main>
     </>
   );
 }

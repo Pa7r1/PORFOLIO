@@ -28,7 +28,7 @@ export default function Contact() {
   const { t } = useLocale();
   return (
     <section id="contact">
-      <div className="section-label">{t("nav.contact")}</div>
+      <h2 className="section-label">{t("nav.contact")}</h2>
 
       <div className="fade-in">
         <p className="contact-text">{t("contact.text")}</p>

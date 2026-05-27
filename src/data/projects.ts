@@ -431,7 +431,7 @@ export const projects: Project[] = [
     },
   },
 
-  // ── 10. SISTEMA-ZAPATILLAS (card only) ────────────────────────────────────
+  // ── 10. SISTEMA-ZAPATILLAS ────────────────────────────────────────────────
   {
     id: "10",
     slug: "sistema-zapatillas",
@@ -441,16 +441,46 @@ export const projects: Project[] = [
       en: "E-commerce with WhatsApp integration and XLSX bulk loading",
     },
     description: {
-      es: "Plataforma de gestión de zapatillas: catálogo con carga masiva desde XLSX, web scraping para imágenes, integración WhatsApp para pedidos, roles JWT y control de stock.",
-      en: "Sneaker management platform: catalog with XLSX bulk loading, web scraping for images, WhatsApp order integration, JWT roles, and stock control.",
+      es: "Plataforma de gestión de zapatillas: catálogo con carga masiva desde XLSX, integración WhatsApp para pedidos, roles JWT y control de stock.",
+      en: "Sneaker management platform: catalog with XLSX bulk loading, WhatsApp order integration, JWT roles, and stock control.",
     },
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=350&fit=crop",
-    technologies: ["Node.js", "TypeScript", "MySQL", "React", "Express", "JWT"],
+    technologies: ["Node.js", "TypeScript", "MySQL", "React", "Express", "TypeORM", "JWT", "Zustand", "React Query"],
     githubUrl: "https://github.com/Pa7r1/SISTEMA-ZAPATILLAS",
-    hasDetail: false,
+    hasDetail: true,
+    detail: {
+      year: 2025,
+      status: "wip",
+      problem: {
+        es: "Un negocio de calzado necesitaba pasar de catálogo en Excel + pedidos por mensajes sueltos a una plataforma de gestión real: catálogo con stock, alta masiva de productos desde XLSX, y un canal de pedidos que no obligara al cliente a registrarse — todo apoyado en WhatsApp, el canal que el negocio ya usaba.",
+        en: "A footwear business needed to move from an Excel catalog + scattered message orders to a real management platform: catalog with stock, bulk product upload from XLSX, and an order channel that wouldn't force customers to register — all leveraging WhatsApp, the channel the business already used.",
+      },
+      architecture: {
+        es: "Backend Node.js + Express + TypeORM sobre MySQL. Entidades fuertemente tipadas en TypeScript con relaciones modelo / variante / talle / stock. Endpoint de carga XLSX que valida cada fila contra Zod y aplica diff sobre la base. Frontend React + Vite con React Query para cache y mutaciones, Zustand para estado de UI, react-hook-form + Zod para forms. JWT para roles (admin / vendedor).",
+        en: "Node.js + Express + TypeORM backend on MySQL. Strongly typed TypeScript entities with model / variant / size / stock relations. XLSX upload endpoint validates each row against Zod and applies a diff against the DB. React + Vite frontend with React Query for cache and mutations, Zustand for UI state, react-hook-form + Zod for forms. JWT for roles (admin / seller).",
+      },
+      stackRationale: {
+        es: "TypeORM en lugar de Prisma porque el modelo evolucionó con muchas relaciones y la API decorator-based mantuvo el código cerca del esquema. Zod tanto en backend (validación de entrada XLSX y body de API) como en frontend (forms) — un único contrato compartido vía tipos. Zustand sobre Redux: el estado de UI es chico, no justifica el boilerplate. Integración WhatsApp vía deep-link (wa.me) sin SDK para mantener cero costo operativo.",
+        en: "TypeORM over Prisma because the model evolved with many relationships and the decorator-based API kept code close to schema. Zod both in backend (XLSX row validation and API bodies) and frontend (forms) — one shared contract via types. Zustand over Redux: UI state is small, doesn't justify the boilerplate. WhatsApp integration via deep-link (wa.me) without an SDK to keep zero operational cost.",
+      },
+      challenges: [
+        {
+          es: "Carga masiva XLSX con miles de filas: cada fila puede ser create, update, ignore o error. El endpoint procesa en transacción, devuelve resumen con errores por fila sin abortar todo el lote.",
+          en: "Bulk XLSX upload with thousands of rows: each row can be create, update, ignore, or error. The endpoint processes in a transaction, returns a per-row error summary without aborting the whole batch.",
+        },
+        {
+          es: "Modelar variantes (color × talle × stock) sin explotar el esquema en miles de filas. Solución: entidad ProductoVariante con FK al producto, índice compuesto (producto_id, color, talle).",
+          en: "Model variants (color × size × stock) without exploding the schema into thousands of rows. Solution: ProductoVariante entity with FK to product, composite index (product_id, color, size).",
+        },
+      ],
+      learnings: {
+        es: "Una integración WhatsApp por deep-link cubre el 90% de los casos sin necesitar Business API: el deal-breaker no es la tecnología sino el costo. Y para imports XLSX, el patrón 'reporte por fila + transacción' es lo que diferencia una herramienta usable de un script frágil.",
+        en: "A deep-link WhatsApp integration covers 90% of use cases without needing the Business API: the deal-breaker isn't tech, it's cost. And for XLSX imports, the 'per-row report + transaction' pattern is what separates a usable tool from a brittle script.",
+      },
+    },
   },
 
-  // ── 11. YTM-DOWNLOAD (card only) ─────────────────────────────────────────
+  // ── 11. YTM-DOWNLOAD ─────────────────────────────────────────────────────
   {
     id: "11",
     slug: "ytm-download",
@@ -460,12 +490,42 @@ export const projects: Project[] = [
       en: "Local YouTube downloader with parallel queue and mp3/mp4 conversion",
     },
     description: {
-      es: "App de escritorio local para descargar videos y playlists de YouTube. Cola paralela de descargas, conversión automática mp3/mp4, progreso en tiempo real y limpieza de temporales.",
-      en: "Local desktop app for downloading YouTube videos and playlists. Parallel download queue, automatic mp3/mp4 conversion, real-time progress, and temp file cleanup.",
+      es: "App local para descargar videos y playlists de YouTube. Cola paralela de descargas, conversión mp3/mp4 con FFmpeg, progreso en tiempo real y limpieza de temporales.",
+      en: "Local app for downloading YouTube videos and playlists. Parallel download queue, mp3/mp4 conversion with FFmpeg, real-time progress, and temp file cleanup.",
     },
     image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
-    technologies: ["Node.js", "Express", "React", "yt-dlp", "FastAPI"],
+    technologies: ["Node.js", "Express", "React", "yt-dlp", "FFmpeg"],
     githubUrl: "https://github.com/Pa7r1/YTM-DOWNLOAD",
-    hasDetail: false,
+    hasDetail: true,
+    detail: {
+      year: 2024,
+      status: "mvp",
+      problem: {
+        es: "Necesitaba una herramienta personal para bajar audios y videos de YouTube en bulk (playlists enteras), con conversión a mp3/mp4 en un solo paso. Las alternativas online tienen límites, ads y privacidad cuestionable; las CLI son potentes pero no amigables para uso recurrente.",
+        en: "I needed a personal tool to bulk-download audio and video from YouTube (entire playlists), with mp3/mp4 conversion in one step. Online alternatives have limits, ads, and questionable privacy; CLIs are powerful but unfriendly for recurring use.",
+      },
+      architecture: {
+        es: "Backend Node.js + Express envuelve yt-dlp (descarga) y FFmpeg (conversión) vía child_process. Cola con concurrency configurable: N descargas simultáneas, el resto en pending. Cada job emite eventos de progreso al frontend via polling. Frontend React minimalista — input de URL/playlist, lista de jobs activos, tabla de completados. Cleanup automático de temporales tras emit final.",
+        en: "Node.js + Express backend wraps yt-dlp (download) and FFmpeg (conversion) via child_process. Queue with configurable concurrency: N parallel downloads, rest in pending. Each job emits progress events to the frontend via polling. Minimalist React frontend — URL/playlist input, active jobs list, completed table. Auto-cleanup of temp files after final emit.",
+      },
+      stackRationale: {
+        es: "yt-dlp en vez de youtube-dl porque está activamente mantenido y aguanta cambios del API de YouTube. Express sobre algo más pesado porque el server es local — no necesita scale, sí necesita ser rápido de instalar. Polling sobre WebSockets porque la complejidad extra no se justifica para un uso single-user.",
+        en: "yt-dlp over youtube-dl because it's actively maintained and survives YouTube API changes. Express over something heavier because the server is local — it doesn't need scale, it needs fast install. Polling over WebSockets because the extra complexity isn't justified for single-user use.",
+      },
+      challenges: [
+        {
+          es: "Parsear el stdout de yt-dlp (que reporta progreso como '[download] 45.2% of 12.3MiB at 1.5MiB/s') en eventos estructurados sin perder lines durante chunks lentos.",
+          en: "Parse yt-dlp's stdout (which reports progress as '[download] 45.2% of 12.3MiB at 1.5MiB/s') into structured events without losing lines during slow chunks.",
+        },
+        {
+          es: "Manejar playlists grandes sin bloquear: cada video es un job independiente con su propio estado, pero la cola los agrupa por playlist para mostrar progreso conjunto.",
+          en: "Handle large playlists without blocking: each video is an independent job with its own state, but the queue groups them by playlist to show combined progress.",
+        },
+      ],
+      learnings: {
+        es: "Para herramientas locales, evitar abstracciones pesadas: child_process + parseo de stdout + polling es 'feo' pero confiable y rápido de iterar. Y wrappear binarios CLI bien mantenidos (yt-dlp, FFmpeg) es más sostenible que escribir el equivalente desde cero.",
+        en: "For local tools, avoid heavy abstractions: child_process + stdout parsing + polling is 'ugly' but reliable and fast to iterate. And wrapping well-maintained CLI binaries (yt-dlp, FFmpeg) is more sustainable than writing the equivalent from scratch.",
+      },
+    },
   },
 ];

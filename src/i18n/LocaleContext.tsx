@@ -11,9 +11,9 @@ function detectLocale(): Locale {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved === "es" || saved === "en") return saved;
-    return navigator.language.startsWith("es") ? "es" : "en";
+    return "en";
   } catch {
-    return "es";
+    return "en";
   }
 }
 

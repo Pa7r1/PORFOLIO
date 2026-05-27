@@ -16,7 +16,7 @@ export default function About() {
 
   return (
     <section id="about">
-      <div className="section-label">{t("nav.about")}</div>
+      <h2 className="section-label">{t("nav.about")}</h2>
 
       <div className="about-grid fade-in">
         {/* Photo */}

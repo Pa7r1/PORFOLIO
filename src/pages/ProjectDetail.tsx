@@ -88,7 +88,7 @@ export default function ProjectDetail() {
   return (
     <>
       <ParticlesBackground />
-      <div ref={cursorRef} className="cursor-glow" />
+      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
 
       <div className="detail-wrapper">
         {/* Top navigation bar */}
@@ -134,22 +134,22 @@ export default function ProjectDetail() {
         {/* Case study content */}
         <div className="detail-content">
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.section.problem")}</div>
+            <h2 className="section-label">{t("project.section.problem")}</h2>
             <p className="detail-body">{pick(d.problem, locale)}</p>
           </section>
 
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.section.architecture")}</div>
+            <h2 className="section-label">{t("project.section.architecture")}</h2>
             <p className="detail-body">{pick(d.architecture, locale)}</p>
           </section>
 
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.section.stack")}</div>
+            <h2 className="section-label">{t("project.section.stack")}</h2>
             <p className="detail-body">{pick(d.stackRationale, locale)}</p>
           </section>
 
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.section.challenges")}</div>
+            <h2 className="section-label">{t("project.section.challenges")}</h2>
             <ul className="detail-challenges">
               {d.challenges.map((c, i) => (
                 <li key={i} className="detail-challenge-item">
@@ -161,7 +161,7 @@ export default function ProjectDetail() {
           </section>
 
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.section.learnings")}</div>
+            <h2 className="section-label">{t("project.section.learnings")}</h2>
             <p className="detail-body">{pick(d.learnings, locale)}</p>
           </section>
 
@@ -169,7 +169,7 @@ export default function ProjectDetail() {
             const embedUrl = toYoutubeEmbed(d.videoUrl);
             return embedUrl ? (
               <section className="detail-section fade-in">
-                <div className="section-label">{t("project.video")}</div>
+                <h2 className="section-label">{t("project.video")}</h2>
                 <div className="detail-video-wrap">
                   <iframe
                     src={embedUrl}
@@ -185,7 +185,7 @@ export default function ProjectDetail() {
           })()}
 
           <section className="detail-section fade-in">
-            <div className="section-label">{t("project.screenshots")}</div>
+            <h2 className="section-label">{t("project.screenshots")}</h2>
             {d.screenshots && d.screenshots.length > 0 ? (
               <div className="detail-screenshots">
                 {d.screenshots.map((src, i) => (
