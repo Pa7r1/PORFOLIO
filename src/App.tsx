@@ -74,7 +74,23 @@ export default function App() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-    return () => observer.disconnect();
+
+    // Force-activate the last section when scrolled near the bottom —
+    // the observer's narrow band can miss short trailing sections.
+    const lastId = NAV[NAV.length - 1]?.id;
+    const onScroll = () => {
+      if (!lastId) return;
+      const nearBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 80;
+      if (nearBottom) setActiveSection(lastId);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   // Fade-in on scroll

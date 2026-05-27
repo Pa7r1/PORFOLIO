@@ -48,6 +48,24 @@
     }
     </script>
 
+    <!-- Theme + locale boot — runs before paint to avoid FOUC -->
+    <script>
+      (function() {
+        try {
+          var t = localStorage.getItem("theme");
+          if (t !== "dark" && t !== "light") t = "light";
+          document.documentElement.dataset.theme = t;
+
+          var l = localStorage.getItem("locale");
+          if (l !== "es" && l !== "en") l = "en";
+          document.documentElement.lang = l;
+        } catch (e) {
+          document.documentElement.dataset.theme = "light";
+          document.documentElement.lang = "en";
+        }
+      })();
+    </script>
+
     <!-- spa-github-pages recovery: restore original path from ?/ query param -->
     <script>
       (function(l) {

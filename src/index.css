@@ -657,10 +657,15 @@ section { margin-bottom: 6.5rem; scroll-margin-top: 6rem; }
   transition: color var(--transition), background var(--transition);
 }
 .mobile-nav a span { line-height: 1; }
-.mobile-nav a.active,
-.mobile-nav a:hover {
+.mobile-nav a.active {
   color: var(--accent);
   background: var(--accent-glow);
+}
+@media (hover: hover) {
+  .mobile-nav a:hover {
+    color: var(--accent);
+    background: var(--accent-glow);
+  }
 }
 
 /* ─── RESPONSIVE ─────────────────────────────────────────── */
