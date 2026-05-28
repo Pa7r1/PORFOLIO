@@ -77,10 +77,36 @@ a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 
 /* ─── SCROLLBAR ──────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+/* Reserve the gutter so content doesn't shift when the bar shows. */
+html { scrollbar-gutter: stable; }
+
+/* Firefox — uses the native UA scrollbar at native width, just recolored */
+html {
+  scrollbar-width: auto;
+  scrollbar-color: var(--text-dim) transparent;
+}
+
+/* Chrome / Safari / Edge — 12px wide so it's grabbable without a wheel.
+   The thumb uses a 3px transparent border + background-clip to look like a
+   slim pill (visually ~6px) while keeping the full 12px click target. */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background-color: var(--text-dim);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+  transition: background-color 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover  { background-color: var(--text-muted); }
+::-webkit-scrollbar-thumb:active { background-color: var(--accent); }
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* Touch devices already have native overlay scrollbars — hide ours. */
+@media (pointer: coarse) {
+  html { scrollbar-width: none; scrollbar-gutter: auto; }
+  ::-webkit-scrollbar { display: none; }
+}
 
 /* ─── CURSOR GLOW ────────────────────────────────────────── */
 .cursor-glow {
