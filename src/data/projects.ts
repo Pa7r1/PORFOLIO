@@ -14,8 +14,18 @@ export const projects: Project[] = [
       es: "Plataforma de gestión integral para complejos de canchas: reservas, caja, despensa, inventario y reportes. PWA offline-first con sincronización en tiempo real via WebSockets.",
       en: "Full management platform for sports complexes: bookings, cash register, canteen, inventory, and reports. Offline-first PWA with real-time sync via WebSockets.",
     },
-    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=350&fit=crop",
-    technologies: ["React", "Hono", "Drizzle ORM", "PostgreSQL", "RLS", "Turborepo", "PWA", "WebSockets"],
+    image:
+      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600&h=350&fit=crop",
+    technologies: [
+      "React",
+      "Hono",
+      "Drizzle ORM",
+      "PostgreSQL",
+      "RLS",
+      "Turborepo",
+      "PWA",
+      "WebSockets",
+    ],
     githubUrl: "https://github.com/Pa7r1/Sistema-Canchas",
     hasDetail: true,
     detail: {
@@ -64,11 +74,19 @@ export const projects: Project[] = [
       en: "Multi-branch retail SaaS with QR scanning and subscription plans",
     },
     description: {
-      es: "Sistema de gestión para tiendas retail: productos con código QR, ventas, categorías, roles/permisos y planes de suscripción (Básico/Pro/Premium) con lógica diferencial por plan.",
+      es: "Sistema de gestión para Emprendedores/Tiendas: escaneo de codigo de barras y qr, generacion de codigo qr para productos sin codigo de barras, ventas, categorías, roles/permisos y planes de suscripción (Básico/Pro/Premium) con lógica diferencial por plan. Aplicacion web, facil uso en mobil.",
       en: "Retail store management system: QR-coded products, sales, categories, roles/permissions, and subscription plans (Basic/Pro/Premium) with per-plan differential logic.",
     },
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=350&fit=crop",
-    technologies: ["Next.js 16", "Prisma 7", "PostgreSQL", "NextAuth v5", "Tailwind v4", "Docker"],
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=350&fit=crop",
+    technologies: [
+      "Next.js 16",
+      "Prisma 7",
+      "PostgreSQL",
+      "NextAuth v5",
+      "Tailwind v4",
+      "Docker",
+    ],
     githubUrl: "https://github.com/Pa7r1/QRetail",
     hasDetail: true,
     detail: {
@@ -116,8 +134,17 @@ export const projects: Project[] = [
       es: "Sistema completo para gestión de barbería: agendamiento, caja, reportes, roles, sucursales y mapas de ubicación. Desplegado en VPS con Nginx, SSL y Docker Compose.",
       en: "Complete barber shop management system: scheduling, cash register, reports, roles, branches, and location maps. Deployed on VPS with Nginx, SSL, and Docker Compose.",
     },
-    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=350&fit=crop",
-    technologies: ["FastAPI", "MySQL", "React", "Zustand", "Docker", "Nginx", "VPS"],
+    image:
+      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=350&fit=crop",
+    technologies: [
+      "FastAPI",
+      "MySQL",
+      "React",
+      "Zustand",
+      "Docker",
+      "Nginx",
+      "VPS",
+    ],
     githubUrl: "https://github.com/Pa7r1/Barber-a",
     hasDetail: true,
     detail: {
@@ -162,11 +189,18 @@ export const projects: Project[] = [
       en: "Native Android anime streaming app — modular Kotlin",
     },
     description: {
-      es: "Aplicación Android de streaming de anime con catálogo, búsqueda de series/episodios, reproductor integrado y sistema de seguimiento de progreso. v1.0 completada con las 3 fases.",
-      en: "Android anime streaming app with catalog, series/episode search, integrated player, and watch progress tracking. v1.0 completed across all 3 phases.",
+      es: "Aplicación Android de streaming de anime con catálogo, búsqueda de series/episodios, reproductor integrado y sistema de seguimiento de progreso.",
+      en: "Android anime streaming app with catalog, series/episode search, integrated player, and watch progress tracking.",
     },
-    image: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&h=350&fit=crop",
-    technologies: ["Kotlin", "Android", "Gradle modular", "Jetpack Compose", "CI/CD"],
+    image:
+      "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&h=350&fit=crop",
+    technologies: [
+      "Kotlin",
+      "Android",
+      "Gradle modular",
+      "Jetpack Compose",
+      "CI/CD",
+    ],
     githubUrl: "https://github.com/Pa7r1/AniStream-TV",
     hasDetail: true,
     detail: {
@@ -214,8 +248,16 @@ export const projects: Project[] = [
       es: "Content Factory Engine: pipeline automatizado que convierte un prompt en un short-video publicable. Orquestación via n8n, generación de texto con Gemini, voz con Edge TTS, imágenes con Imagen y montaje con FFmpeg.",
       en: "Content Factory Engine: automated pipeline that converts a prompt into a publishable short video. Orchestration via n8n, text generation with Gemini, voice with Edge TTS, images with Imagen, and assembly with FFmpeg.",
     },
-    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
-    technologies: ["FastAPI", "Python", "Gemini API", "Edge TTS", "FFmpeg", "n8n"],
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
+    technologies: [
+      "FastAPI",
+      "Python",
+      "Gemini API",
+      "Edge TTS",
+      "FFmpeg",
+      "n8n",
+    ],
     githubUrl: "https://github.com/Pa7r1/Granja-de-Videos",
     hasDetail: true,
     detail: {
@@ -254,7 +296,7 @@ export const projects: Project[] = [
   {
     id: "6",
     slug: "motobitacora",
-    title: "Motobitácora",
+    title: "EnduroLog",
     tagline: {
       es: "PWA offline-first para pilotos de enduro — sin conexión, sin excusas",
       en: "Offline-first PWA for enduro riders — no connection, no excuses",
@@ -263,10 +305,18 @@ export const projects: Project[] = [
       es: "App web progresiva instalable para registro de mantenimiento de motos de enduro: suspensiones, checklists pre-carrera, sesiones y configuraciones. Funciona sin internet.",
       en: "Installable progressive web app for enduro bike maintenance tracking: suspension settings, pre-race checklists, sessions, and configurations. Works without internet.",
     },
-    image: "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=350&fit=crop",
-    technologies: ["React 18", "Vite", "Service Worker", "localStorage", "PWA", "CSS"],
-    githubUrl: "https://github.com/Pa7r1/Motobitacora",
-    liveUrl: "https://motobitacora.vercel.app",
+    image:
+      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=350&fit=crop",
+    technologies: [
+      "React 18",
+      "Vite",
+      "Service Worker",
+      "localStorage",
+      "PWA",
+      "CSS",
+    ],
+    githubUrl: "https://github.com/Pa7r1/EnduroLog",
+    liveUrl: "https://enduro-log.vercel.app/",
     hasDetail: true,
     detail: {
       year: 2025,
@@ -302,15 +352,22 @@ export const projects: Project[] = [
     slug: "on-wheels",
     title: "ON-WHEELS",
     tagline: {
-      es: "Landing para servicio de pit-asistencia en la carrera TransVelasco 2025",
-      en: "Landing page for pit-assistance service at TransVelasco 2025 race",
+      es: "Landing para servicio de pit-asistencia en la carrera TransVelasco 2026",
+      en: "Landing page for pit-assistance service at TransVelasco 2026 race",
     },
     description: {
-      es: "Landing page para cliente real: servicio de asistencia mecánica en pista para pilotos de la carrera de enduro TransVelasco 2025, Chilecito, La Rioja. Integración con WhatsApp para contacto.",
-      en: "Landing page for a real client: on-track mechanical assistance service for riders of the TransVelasco 2025 enduro race in Chilecito, La Rioja. WhatsApp integration for contact.",
+      es: "Landing page: servicio de asistencia mecánica en pista para pilotos de la carrera de enduro TransVelasco 2026, Chilecito, La Rioja. Integración con WhatsApp para contacto.",
+      en: "Landing page: on-track mechanical assistance service for riders of the TransVelasco 2026 enduro race in Chilecito, La Rioja. WhatsApp integration for contact.",
     },
-    image: "https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&h=350&fit=crop",
-    technologies: ["HTML5", "CSS3", "JavaScript", "IntersectionObserver", "WhatsApp API"],
+    image:
+      "https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&h=350&fit=crop",
+    technologies: [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "IntersectionObserver",
+      "WhatsApp API",
+    ],
     githubUrl: "https://github.com/Pa7r1/ON-WHEELS",
     hasDetail: true,
     detail: {
@@ -354,8 +411,17 @@ export const projects: Project[] = [
       es: "Aplicación web con SvelteKit + Supabase para seguimiento de metas profesionales, networking y hábitos de crecimiento. Testing e2e con Playwright. En desarrollo activo.",
       en: "Web application with SvelteKit + Supabase for professional goal tracking, networking, and growth habits. E2e testing with Playwright. Actively in development.",
     },
-    image: "https://images.unsplash.com/photo-1461988625982-7e46a099bf4f?w=600&h=350&fit=crop",
-    technologies: ["SvelteKit", "Svelte 5", "Supabase", "UnoCSS", "Playwright", "Vitest", "TypeScript"],
+    image:
+      "https://images.unsplash.com/photo-1461988625982-7e46a099bf4f?w=600&h=350&fit=crop",
+    technologies: [
+      "SvelteKit",
+      "Svelte 5",
+      "Supabase",
+      "UnoCSS",
+      "Playwright",
+      "Vitest",
+      "TypeScript",
+    ],
     githubUrl: "https://github.com/Pa7r1/Upward",
     hasDetail: true,
     detail: {
@@ -396,11 +462,18 @@ export const projects: Project[] = [
       en: "Desktop task manager with SQLite — installable on Windows, Mac, and Linux",
     },
     description: {
-      es: "Aplicación de escritorio multiplataforma para gestión de tareas con persistencia local en SQLite. Build system con electron-builder generando instaladores para los tres sistemas operativos principales.",
-      en: "Cross-platform desktop task management app with local SQLite persistence. Build system with electron-builder generating installers for all three major operating systems.",
+      es: "Aplicación de escritorio para la gestión de tareas diarias que funciona completamente sin internet. Guarda toda la información de forma segura en la computadora y cuenta con instaladores listos para Windows, Mac y Linux.",
+      en: "Desktop task management app designed to work completely offline. It securely saves all data locally on your computer and includes ready-to-run installers for Windows, Mac, and Linux.",
     },
-    image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=350&fit=crop",
-    technologies: ["Electron", "SQLite", "React", "electron-builder", "Node.js"],
+    image:
+      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=350&fit=crop",
+    technologies: [
+      "Electron",
+      "SQLite",
+      "React",
+      "electron-builder",
+      "Node.js",
+    ],
     githubUrl: "https://github.com/Pa7r1/Taskflow",
     hasDetail: true,
     detail: {
@@ -444,8 +517,19 @@ export const projects: Project[] = [
       es: "Plataforma de gestión de zapatillas: catálogo con carga masiva desde XLSX, integración WhatsApp para pedidos, roles JWT y control de stock.",
       en: "Sneaker management platform: catalog with XLSX bulk loading, WhatsApp order integration, JWT roles, and stock control.",
     },
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=350&fit=crop",
-    technologies: ["Node.js", "TypeScript", "MySQL", "React", "Express", "TypeORM", "JWT", "Zustand", "React Query"],
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&h=350&fit=crop",
+    technologies: [
+      "Node.js",
+      "TypeScript",
+      "MySQL",
+      "React",
+      "Express",
+      "TypeORM",
+      "JWT",
+      "Zustand",
+      "React Query",
+    ],
     githubUrl: "https://github.com/Pa7r1/SISTEMA-ZAPATILLAS",
     hasDetail: true,
     detail: {
@@ -493,7 +577,8 @@ export const projects: Project[] = [
       es: "App local para descargar videos y playlists de YouTube. Cola paralela de descargas, conversión mp3/mp4 con FFmpeg, progreso en tiempo real y limpieza de temporales.",
       en: "Local app for downloading YouTube videos and playlists. Parallel download queue, mp3/mp4 conversion with FFmpeg, real-time progress, and temp file cleanup.",
     },
-    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
     technologies: ["Node.js", "Express", "React", "yt-dlp", "FFmpeg"],
     githubUrl: "https://github.com/Pa7r1/YTM-DOWNLOAD",
     hasDetail: true,

@@ -2,10 +2,10 @@ import type { PersonalInfo } from "@/types";
 
 export const personalInfo: PersonalInfo = {
   name: "Patricio Valentín Carpio",
-  title: "Fullstack Developer",
+  title: "Full Stack Developer | Backend & DevOps",
   description: {
-    es: "Me especializo en construir APIs robustas, automatizar procesos y diseñar sistemas que escalan. Fullstack con foco en backend y DevOps, con experiencia real en producción de punta a punta.",
-    en: "I specialize in building robust APIs, automating processes, and designing systems that scale. Fullstack focused on backend and DevOps, with real end-to-end production experience.",
+    es: "Construyo software que resuelve problemas reales de negocio. Me especializo en diseñar la arquitectura lógica de una aplicación, automatizar su infraestructura y asegurar que el producto final sea sólido, rápido y escalable.",
+    en: "I build software that solves real business problems. I specialize in designing an application's logical architecture, automating its infrastructure, and ensuring the final product is robust, fast, and scalable.",
   },
   githubProjects: 9,
   yearsExperience: 3,

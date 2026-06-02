@@ -33,7 +33,7 @@ export interface Tool {
 }
 
 export interface Experience {
-  period: string;
+  period: Bilingual;
   title: Bilingual;
   company: string;
   description?: Bilingual;

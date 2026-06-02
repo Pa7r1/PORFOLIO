@@ -29,7 +29,7 @@ export default function Timeline() {
       <div className="fade-in">
         {filtered.map((exp, i) => (
           <div key={i} className="exp-card">
-            <div className="exp-period">{exp.period}</div>
+            <div className="exp-period">{pick(exp.period, locale)}</div>
             <div>
               <div className="exp-title">{pick(exp.title, locale)}</div>
               <div className="exp-company">{exp.company}</div>

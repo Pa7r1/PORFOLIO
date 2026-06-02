@@ -8,7 +8,7 @@ export const skillGroups: { labelKey: DictionaryKey; items: string[] }[] = [
   },
   {
     labelKey: "skills.group.databases",
-    items: ["MySQL", "PostgreSQL", "Stored Procedures", "Views", "Triggers", "Índices", "Aggregations"],
+    items: ["MySQL", "PostgreSQL", "Stored Procedures", "Views", "Triggers", "Indexes", "Aggregations"],
   },
   {
     labelKey: "skills.group.devops",
