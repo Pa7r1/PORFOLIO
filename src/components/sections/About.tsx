@@ -21,7 +21,7 @@ const DownloadIcon = () => (
 
 export default function About() {
   const { t } = useLocale();
-  const cvUrl = asset("Cv.pdf");
+  const cvUrl = asset("Cv1.pdf");
 
   return (
     <section id="about">
