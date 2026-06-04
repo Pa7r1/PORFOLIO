@@ -11,5 +11,5 @@ export const personalInfo: PersonalInfo = {
   yearsExperience: 3,
   profileImage: "foto-curriculum.jpeg",
   email: "valentincarpio32@gmail.com",
-  linkedin: "https://www.linkedin.com/in/patricio-carpio-6a602327b/",
+  linkedin: "https://www.linkedin.com/in/patricio-valentin-carpio-6a602327b/",
 };
