@@ -37,6 +37,9 @@ export const es = {
   "contact.text":
     "Estoy disponible para trabajo freelance, proyectos de tiempo completo o colaboraciones. Si tenés algo en mente, escribime directamente.",
   "contact.location": "Pituil, La Rioja, Argentina · Disponible solo en remoto",
+  "contact.whatsappMessage":
+    "¡Hola Patricio! Vi tu portafolio y me gustaría hablar sobre un proyecto.",
+  "contact.whatsappAria": "Contactar por WhatsApp",
 
   // Footer
   "footer.credit": "Diseñado y construido por",

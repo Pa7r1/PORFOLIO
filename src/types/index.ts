@@ -50,4 +50,5 @@ export interface PersonalInfo {
   profileImage: string;
   email: string;
   linkedin: string;
+  whatsapp: string;
 }

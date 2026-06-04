@@ -999,3 +999,44 @@ section { margin-bottom: 6.5rem; scroll-margin-top: 6rem; }
   .detail-title { font-size: var(--text-2xl); }
   .detail-screenshots { grid-template-columns: 1fr; }
 }
+
+/* ─── FLOATING WHATSAPP ───────────────────────────────────────── */
+.whatsapp-fab {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+@media (hover: hover) {
+  .whatsapp-fab:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 26px rgba(37, 211, 102, 0.6);
+  }
+}
+.whatsapp-fab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .whatsapp-fab { transition: none; }
+  .whatsapp-fab:hover { transform: none; }
+}
+/* Lift above the mobile bottom nav */
+@media (max-width: 800px) {
+  .whatsapp-fab {
+    right: 1rem;
+    bottom: calc(80px + env(safe-area-inset-bottom) + 0.75rem);
+    width: 52px;
+    height: 52px;
+  }
+}

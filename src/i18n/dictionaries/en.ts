@@ -39,6 +39,9 @@ export const en: Record<DictionaryKey, string> = {
   "contact.text":
     "Available for freelance work, full-time projects, or collaborations. If you have something in mind, reach out directly.",
   "contact.location": "Pituil, La Rioja, Argentina · remote only",
+  "contact.whatsappMessage":
+    "Hi Patricio! I saw your portfolio and I'd like to talk about a project.",
+  "contact.whatsappAria": "Contact via WhatsApp",
 
   // Footer
   "footer.credit": "Designed and built by",

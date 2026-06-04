@@ -12,6 +12,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import LangSwitch from "@/components/common/LangSwitch";
 import ThemeToggle from "@/components/common/ThemeToggle";
+import FloatingWhatsApp from "@/components/common/FloatingWhatsApp";
 
 // Sections
 import About from "@/components/sections/About";
@@ -168,6 +169,9 @@ export default function App() {
         <Contact />
         <Footer />
       </main>
+
+      {/* Floating WhatsApp contact */}
+      <FloatingWhatsApp />
     </>
   );
 }
