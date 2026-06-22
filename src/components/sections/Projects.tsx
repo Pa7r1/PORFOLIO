@@ -28,7 +28,15 @@ export default function Projects() {
         {projects.map((p) => {
           const cardContent = (
             <>
-              <img src={p.image} alt={p.title} className="project-img" loading="lazy" decoding="async" />
+              <img
+                src={p.image}
+                alt={p.title}
+                className="project-img"
+                width={130}
+                height={82}
+                loading="lazy"
+                decoding="async"
+              />
               <div>
                 <div className="project-title">
                   {p.title}

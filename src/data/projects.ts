@@ -1,4 +1,5 @@
 import type { Project } from "@/types";
+import { asset } from "@/utils/asset";
 
 export const projects: Project[] = [
   // ── 1. SISTEMA-CANCHAS (prioritario) ─────────────────────────────────────
@@ -77,8 +78,7 @@ export const projects: Project[] = [
       es: "Sistema de gestión para Emprendedores/Tiendas: escaneo de codigo de barras y qr, generacion de codigo qr para productos sin codigo de barras, ventas, categorías, roles/permisos y planes de suscripción (Básico/Pro/Premium) con lógica diferencial por plan. Aplicacion web, facil uso en mobil.",
       en: "Retail store management system: QR-coded products, sales, categories, roles/permissions, and subscription plans (Basic/Pro/Premium) with per-plan differential logic.",
     },
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=350&fit=crop",
+    image: asset("captures/qretail/card.webp"),
     technologies: [
       "Next.js 16",
       "Prisma 7",
@@ -118,6 +118,23 @@ export const projects: Project[] = [
         es: "Centralizar la lógica de autorización en un único lugar (no distribuirla en middleware, components y server actions) hace que los cambios de modelo de negocio sean cambios de una línea.",
         en: "Centralizing authorization logic in a single place (not distributing it across middleware, components, and server actions) makes business model changes into one-line edits.",
       },
+      screenshots: [
+        {
+          src: asset("captures/qretail/escanear.webp"),
+          orientation: "mobile",
+          caption: { es: "Escaneo de QR y código de barras", en: "QR and barcode scanning" },
+        },
+        {
+          src: asset("captures/qretail/venta.webp"),
+          orientation: "mobile",
+          caption: { es: "Venta rápida con favoritos y categorías", en: "Quick sale with favorites and categories" },
+        },
+        {
+          src: asset("captures/qretail/productos-qr.webp"),
+          orientation: "mobile",
+          caption: { es: "Generación de QR para productos sin código", en: "QR generation for code-less products" },
+        },
+      ],
     },
   },
 
@@ -134,8 +151,7 @@ export const projects: Project[] = [
       es: "Sistema completo para gestión de barbería: agendamiento, caja, reportes, roles, sucursales y mapas de ubicación. Desplegado en VPS con Nginx, SSL y Docker Compose.",
       en: "Complete barber shop management system: scheduling, cash register, reports, roles, branches, and location maps. Deployed on VPS with Nginx, SSL, and Docker Compose.",
     },
-    image:
-      "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&h=350&fit=crop",
+    image: asset("captures/barberia/card.webp"),
     technologies: [
       "FastAPI",
       "MySQL",
@@ -176,6 +192,23 @@ export const projects: Project[] = [
         es: "Poner la lógica de negocio crítica en stored procedures hace que cambios de reglas comerciales no requieran deploy del backend — sólo una migración. En un negocio de cliente real, eso es invaluable.",
         en: "Putting critical business logic in stored procedures means business rule changes don't require a backend deploy — just a migration. In a real client business, that's invaluable.",
       },
+      screenshots: [
+        {
+          src: asset("captures/barberia/turnos.webp"),
+          orientation: "desktop",
+          caption: { es: "Gestión de turnos por estado", en: "Booking management by status" },
+        },
+        {
+          src: asset("captures/barberia/pagos.webp"),
+          orientation: "desktop",
+          caption: { es: "Registro de pagos y comisiones", en: "Payments and commissions tracking" },
+        },
+        {
+          src: asset("captures/barberia/servicios.webp"),
+          orientation: "desktop",
+          caption: { es: "Catálogo de servicios y precios", en: "Services & pricing catalog" },
+        },
+      ],
     },
   },
 
@@ -248,8 +281,7 @@ export const projects: Project[] = [
       es: "Content Factory Engine: pipeline automatizado que convierte un prompt en un short-video publicable. Orquestación via n8n, generación de texto con Gemini, voz con Edge TTS, imágenes con Imagen y montaje con FFmpeg.",
       en: "Content Factory Engine: automated pipeline that converts a prompt into a publishable short video. Orchestration via n8n, text generation with Gemini, voice with Edge TTS, images with Imagen, and assembly with FFmpeg.",
     },
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
+    image: asset("captures/granja-de-videos/card.webp"),
     technologies: [
       "FastAPI",
       "Python",
@@ -289,6 +321,18 @@ export const projects: Project[] = [
         es: "Los pipelines de IA son tan robustos como su paso más frágil. El error handling y el estado de cada etapa necesitan ser explícitos desde el principio — no se pueden agregar después sin refactorizar todo el flujo.",
         en: "AI pipelines are as robust as their most fragile step. Error handling and stage state need to be explicit from the start — they can't be added later without refactoring the entire flow.",
       },
+      screenshots: [
+        {
+          src: asset("captures/granja-de-videos/inicio-desktop.webp"),
+          orientation: "desktop",
+          caption: { es: "Generador de video con IA — prompt a short", en: "AI video generator — prompt to short" },
+        },
+        {
+          src: asset("captures/granja-de-videos/inicio-mobile.webp"),
+          orientation: "mobile",
+          caption: { es: "Vista mobile del generador", en: "Mobile view of the generator" },
+        },
+      ],
     },
   },
 
@@ -305,8 +349,7 @@ export const projects: Project[] = [
       es: "App web progresiva instalable para registro de mantenimiento de motos de enduro: suspensiones, checklists pre-carrera, sesiones y configuraciones. Funciona sin internet.",
       en: "Installable progressive web app for enduro bike maintenance tracking: suspension settings, pre-race checklists, sessions, and configurations. Works without internet.",
     },
-    image:
-      "https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600&h=350&fit=crop",
+    image: asset("captures/motobitacora/card.webp"),
     technologies: [
       "React 18",
       "Vite",
@@ -343,6 +386,23 @@ export const projects: Project[] = [
         es: "No todo proyecto necesita backend. Para datos personales, un localStorage bien estructurado con versionado es una arquitectura completa. El Service Worker es la diferencia entre una web app y un producto mobile real.",
         en: "Not every project needs a backend. For personal data, well-structured localStorage with versioning is a complete architecture. The Service Worker is the difference between a web app and a real mobile product.",
       },
+      screenshots: [
+        {
+          src: asset("captures/motobitacora/mantenimiento.webp"),
+          orientation: "mobile",
+          caption: { es: "Mantenimiento y alertas por horas de uso", en: "Maintenance & hour-based alerts" },
+        },
+        {
+          src: asset("captures/motobitacora/suspension.webp"),
+          orientation: "mobile",
+          caption: { es: "Setups de suspensión por terreno", en: "Suspension setups per terrain" },
+        },
+        {
+          src: asset("captures/motobitacora/checklists.webp"),
+          orientation: "mobile",
+          caption: { es: "Checklists pre-carrera", en: "Pre-race checklists" },
+        },
+      ],
     },
   },
 
@@ -359,8 +419,7 @@ export const projects: Project[] = [
       es: "Landing page: servicio de asistencia mecánica en pista para pilotos de la carrera de enduro TransVelasco 2026, Chilecito, La Rioja. Integración con WhatsApp para contacto.",
       en: "Landing page: on-track mechanical assistance service for riders of the TransVelasco 2026 enduro race in Chilecito, La Rioja. WhatsApp integration for contact.",
     },
-    image:
-      "https://images.unsplash.com/photo-1558981359-219d6364c9c8?w=600&h=350&fit=crop",
+    image: asset("captures/on-wheels/card.webp"),
     technologies: [
       "HTML5",
       "CSS3",
@@ -368,7 +427,7 @@ export const projects: Project[] = [
       "IntersectionObserver",
       "WhatsApp API",
     ],
-    githubUrl: "https://github.com/Pa7r1/ON-WHEELS",
+    githubUrl: "https://github.com/Pa7r1/ON_WHEELS",
     hasDetail: true,
     detail: {
       year: 2025,
@@ -395,6 +454,23 @@ export const projects: Project[] = [
         es: "La decisión de stack debe estar guiada por las restricciones del proyecto, no por las preferencias personales. Vanilla JS con buen CSS supera a un framework mal configurado bajo presión de tiempo.",
         en: "Stack decisions should be guided by project constraints, not personal preferences. Vanilla JS with good CSS beats a poorly configured framework under time pressure.",
       },
+      screenshots: [
+        {
+          src: asset("captures/on-wheels/servicios.webp"),
+          orientation: "desktop",
+          caption: { es: "Servicios de asistencia incluidos", en: "Included assistance services" },
+        },
+        {
+          src: asset("captures/on-wheels/cronograma.webp"),
+          orientation: "desktop",
+          caption: { es: "Cronograma del evento", en: "Event schedule" },
+        },
+        {
+          src: asset("captures/on-wheels/precios.webp"),
+          orientation: "desktop",
+          caption: { es: "Valores y condiciones", en: "Pricing and terms" },
+        },
+      ],
     },
   },
 
@@ -411,8 +487,7 @@ export const projects: Project[] = [
       es: "Aplicación web con SvelteKit + Supabase para seguimiento de metas profesionales, networking y hábitos de crecimiento. Testing e2e con Playwright. En desarrollo activo.",
       en: "Web application with SvelteKit + Supabase for professional goal tracking, networking, and growth habits. E2e testing with Playwright. Actively in development.",
     },
-    image:
-      "https://images.unsplash.com/photo-1461988625982-7e46a099bf4f?w=600&h=350&fit=crop",
+    image: asset("captures/upward/card.webp"),
     technologies: [
       "SvelteKit",
       "Svelte 5",
@@ -449,6 +524,23 @@ export const projects: Project[] = [
         es: "Tener e2e tests desde el primer feature previene regresiones invisibles. Playwright es más robusto que Cypress para SvelteKit porque no tiene los problemas de CORS que Cypress tiene con las rutas de servidor.",
         en: "Having e2e tests from the first feature prevents invisible regressions. Playwright is more robust than Cypress for SvelteKit because it doesn't have the CORS issues Cypress has with server routes.",
       },
+      screenshots: [
+        {
+          src: asset("captures/upward/onboarding.webp"),
+          orientation: "mobile",
+          caption: { es: "Onboarding basado en identidad", en: "Identity-based onboarding" },
+        },
+        {
+          src: asset("captures/upward/today.webp"),
+          orientation: "mobile",
+          caption: { es: "Hábitos del día con coach IA", en: "Daily habits with AI coach" },
+        },
+        {
+          src: asset("captures/upward/progress.webp"),
+          orientation: "mobile",
+          caption: { es: "Métricas de progreso real", en: "Real progress metrics" },
+        },
+      ],
     },
   },
 

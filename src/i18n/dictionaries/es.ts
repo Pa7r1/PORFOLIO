@@ -62,6 +62,9 @@ export const es = {
   "project.noScreenshots": "Screenshots en proceso",
   "project.notFound": "Proyecto no encontrado",
   "project.next": "Siguiente proyecto",
+  "project.closeLightbox": "Cerrar",
+  "project.prevImage": "Imagen anterior",
+  "project.nextImage": "Imagen siguiente",
 
   // 404
   "notFound.title": "404",

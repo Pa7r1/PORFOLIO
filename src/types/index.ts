@@ -1,6 +1,12 @@
 export type Bilingual = { es: string; en: string };
 export type ProjectStatus = "production" | "wip" | "mvp" | "archived";
 
+export interface Screenshot {
+  src: string;
+  orientation: "desktop" | "mobile";
+  caption?: Bilingual;
+}
+
 export interface ProjectDetail {
   year: number;
   status: ProjectStatus;
@@ -9,7 +15,7 @@ export interface ProjectDetail {
   stackRationale: Bilingual;
   challenges: Bilingual[];
   learnings: Bilingual;
-  screenshots?: string[];
+  screenshots?: Screenshot[];
   videoUrl?: string;
 }
 
