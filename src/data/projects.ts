@@ -28,6 +28,7 @@ export const projects: Project[] = [
       "WebSockets",
     ],
     githubUrl: "https://github.com/Pa7r1/Sistema-Canchas",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
@@ -88,6 +89,7 @@ export const projects: Project[] = [
       "Docker",
     ],
     githubUrl: "https://github.com/Pa7r1/QRetail",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
@@ -162,6 +164,8 @@ export const projects: Project[] = [
       "VPS",
     ],
     githubUrl: "https://github.com/Pa7r1/Barber-a",
+    liveUrl: "https://vj-barber.com",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2026,
@@ -291,6 +295,7 @@ export const projects: Project[] = [
       "n8n",
     ],
     githubUrl: "https://github.com/Pa7r1/Granja-de-Videos",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
@@ -360,6 +365,7 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/Pa7r1/EnduroLog",
     liveUrl: "https://enduro-log.vercel.app/",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
@@ -428,6 +434,7 @@ export const projects: Project[] = [
       "WhatsApp API",
     ],
     githubUrl: "https://github.com/Pa7r1/ON_WHEELS",
+    liveUrl: "https://pa7r1.github.io/ON_WHEELS/",
     hasDetail: true,
     detail: {
       year: 2025,
@@ -498,6 +505,7 @@ export const projects: Project[] = [
       "TypeScript",
     ],
     githubUrl: "https://github.com/Pa7r1/Upward",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
@@ -557,8 +565,7 @@ export const projects: Project[] = [
       es: "Aplicación de escritorio para la gestión de tareas diarias que funciona completamente sin internet. Guarda toda la información de forma segura en la computadora y cuenta con instaladores listos para Windows, Mac y Linux.",
       en: "Desktop task management app designed to work completely offline. It securely saves all data locally on your computer and includes ready-to-run installers for Windows, Mac, and Linux.",
     },
-    image:
-      "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=600&h=350&fit=crop",
+    image: asset("captures/taskflow/card.webp"),
     technologies: [
       "Electron",
       "SQLite",
@@ -593,6 +600,31 @@ export const projects: Project[] = [
         es: "Electron tiene fama de pesado, pero la arquitectura correcta (procesos separados, IPC tipado, SQLite síncrono en main) produce una app que se siente nativa. El problema no es Electron sino usarlo como si fuera una SPA.",
         en: "Electron has a reputation for being heavy, but the right architecture (separate processes, typed IPC, synchronous SQLite in main) produces an app that feels native. The problem isn't Electron — it's using it like it's an SPA.",
       },
+      screenshots: [
+        {
+          src: asset("captures/taskflow/todas.webp"),
+          orientation: "desktop",
+          caption: { es: "Vista general con categorías y prioridades", en: "Overview with categories and priorities" },
+        },
+        {
+          src: asset("captures/taskflow/detalle.webp"),
+          orientation: "desktop",
+          caption: { es: "Panel de detalle: notas, prioridad y fechas", en: "Detail panel: notes, priority and dates" },
+        },
+        {
+          src: asset("captures/taskflow/completadas.webp"),
+          orientation: "desktop",
+          caption: { es: "Tareas completadas", en: "Completed tasks" },
+        },
+        {
+          src: asset("captures/taskflow/atajo.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Captura rápida global (Ctrl+Shift+Espacio) con parsing de texto",
+            en: "Global quick capture (Ctrl+Shift+Space) with text parsing",
+          },
+        },
+      ],
     },
   },
 
@@ -673,6 +705,7 @@ export const projects: Project[] = [
       "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
     technologies: ["Node.js", "Express", "React", "yt-dlp", "FFmpeg"],
     githubUrl: "https://github.com/Pa7r1/YTM-DOWNLOAD",
+    repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2024,

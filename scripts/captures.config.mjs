@@ -27,6 +27,16 @@ export const QUALITY = 80;
 
 export const SELECTION = [
   {
+    slug: "taskflow",
+    items: [
+      { from: "taskflow/todas.png", to: "card", kind: "card" },
+      { from: "taskflow/todas.png", to: "todas", kind: "desktop" },
+      { from: "taskflow/detalle.png", to: "detalle", kind: "desktop" },
+      { from: "taskflow/completadas.png", to: "completadas", kind: "desktop" },
+      { from: "taskflow/atajo.png", to: "atajo", kind: "desktop" },
+    ],
+  },
+  {
     slug: "qretail",
     items: [
       { from: "q-retail/administrador/productos--movil.png", to: "card", kind: "card" },

@@ -1166,18 +1166,58 @@ section { margin-bottom: 6.5rem; scroll-margin-top: 6rem; }
 }
 .not-found-back:hover { background: var(--accent-glow); border-color: var(--accent); }
 
-/* ─── PROJECT EXT LINKS ──────────────────────────────────────── */
-.project-ext-links {
+/* ─── PROJECT STATUS BADGES (card, read-only) ─────────────────── */
+.project-badges {
   display: flex;
-  gap: 0.6rem;
-  margin-top: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
 }
-.project-ext-link {
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
   color: var(--text-dim);
-  display: flex;
-  transition: color var(--transition);
+  background: var(--bg-2);
 }
-.project-ext-link:hover { color: var(--accent); }
+.badge--live {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-glow);
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.badge--code { color: var(--text-muted); }
+.badge--private,
+.badge--soon { color: var(--text-dim); }
+
+/* ─── MUTED BUTTON (disabled-looking, non-clickable) ──────────── */
+.btn-muted {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.2rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.06em;
+  cursor: default;
+  user-select: none;
+}
 
 /* ─── DETAIL RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 600px) {

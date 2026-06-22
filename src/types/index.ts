@@ -29,6 +29,7 @@ export interface Project {
   technologies: string[];
   githubUrl?: string;
   liveUrl?: string;
+  repoPrivate?: boolean;
   hasDetail: boolean;
   detail?: ProjectDetail;
 }

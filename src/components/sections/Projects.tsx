@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useLocale } from "@/i18n/LocaleContext";
 import { pick } from "@/i18n/pick";
 import { projects } from "@/data/projects";
+import { codeState } from "@/utils/projectLinks";
 
 const ArrowIcon = () => (
   <svg className="arrow-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -9,13 +10,17 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const GithubBadge = () => (
-  <span className="project-source-badge" aria-hidden="true">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-    </svg>
-    GitHub
-  </span>
+const GhMini = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+  </svg>
+);
+
+const LockMini = () => (
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
 );
 
 export default function Projects() {
@@ -26,6 +31,7 @@ export default function Projects() {
 
       <div className="fade-in">
         {projects.map((p) => {
+          const code = codeState(p);
           const cardContent = (
             <>
               <img
@@ -48,11 +54,22 @@ export default function Projects() {
                     <span key={tech} className="tag">{tech}</span>
                   ))}
                 </div>
-                {!p.hasDetail && p.githubUrl && (
-                  <div className="project-ext-links">
-                    <GithubBadge />
-                  </div>
-                )}
+                <div className="project-badges">
+                  {p.liveUrl ? (
+                    <span className="badge badge--live">
+                      <span className="badge-dot" aria-hidden="true" />
+                      {t("project.badge.live")}
+                    </span>
+                  ) : (
+                    <span className="badge badge--soon">{t("project.badge.soon")}</span>
+                  )}
+                  {code === "public" && (
+                    <span className="badge badge--code"><GhMini />{t("project.badge.code")}</span>
+                  )}
+                  {code === "private" && (
+                    <span className="badge badge--private"><LockMini />{t("project.badge.private")}</span>
+                  )}
+                </div>
               </div>
             </>
           );
