@@ -695,33 +695,40 @@ export const projects: Project[] = [
     slug: "ytm-download",
     title: "YTM Download",
     tagline: {
-      es: "Descargador local de YouTube con cola paralela y conversión mp3/mp4",
-      en: "Local YouTube downloader with parallel queue and mp3/mp4 conversion",
+      es: "Descargador local de YouTube con cola de descargas y conversión mp3/mp4",
+      en: "Local YouTube downloader with a download queue and mp3/mp4 conversion",
     },
     description: {
-      es: "App local para descargar videos y playlists de YouTube. Cola paralela de descargas, conversión mp3/mp4 con FFmpeg, progreso en tiempo real y limpieza de temporales.",
-      en: "Local app for downloading YouTube videos and playlists. Parallel download queue, mp3/mp4 conversion with FFmpeg, real-time progress, and temp file cleanup.",
+      es: "App local para descargar videos y playlists de YouTube. Cola de descargas, conversión mp3/mp4 con FFmpeg, progreso en tiempo real por SSE, extensión de Chrome y limpieza automática de temporales.",
+      en: "Local app for downloading YouTube videos and playlists. Download queue, mp3/mp4 conversion with FFmpeg, real-time progress via SSE, a Chrome extension, and automatic temp file cleanup.",
     },
-    image:
-      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=350&fit=crop",
-    technologies: ["Node.js", "Express", "React", "yt-dlp", "FFmpeg"],
+    image: asset("captures/ytm-download/card.webp"),
+    technologies: [
+      "Node.js",
+      "Express",
+      "JavaScript",
+      "yt-dlp",
+      "FFmpeg",
+      "SSE",
+      "Chrome Extension",
+    ],
     githubUrl: "https://github.com/Pa7r1/YTM-DOWNLOAD",
     repoPrivate: true,
     hasDetail: true,
     detail: {
-      year: 2024,
+      year: 2026,
       status: "mvp",
       problem: {
-        es: "Necesitaba una herramienta personal para bajar audios y videos de YouTube en bulk (playlists enteras), con conversión a mp3/mp4 en un solo paso. Las alternativas online tienen límites, ads y privacidad cuestionable; las CLI son potentes pero no amigables para uso recurrente.",
-        en: "I needed a personal tool to bulk-download audio and video from YouTube (entire playlists), with mp3/mp4 conversion in one step. Online alternatives have limits, ads, and questionable privacy; CLIs are powerful but unfriendly for recurring use.",
+        es: "Necesitaba una herramienta personal para bajar audios y videos de YouTube (incluidas playlists enteras), con conversión a mp3/mp4 en un solo paso. Las alternativas online tienen límites, ads y privacidad cuestionable; las CLI son potentes pero no amigables para uso recurrente.",
+        en: "I needed a personal tool to download audio and video from YouTube (including entire playlists), with mp3/mp4 conversion in one step. Online alternatives have limits, ads, and questionable privacy; CLIs are powerful but unfriendly for recurring use.",
       },
       architecture: {
-        es: "Backend Node.js + Express envuelve yt-dlp (descarga) y FFmpeg (conversión) vía child_process. Cola con concurrency configurable: N descargas simultáneas, el resto en pending. Cada job emite eventos de progreso al frontend via polling. Frontend React minimalista — input de URL/playlist, lista de jobs activos, tabla de completados. Cleanup automático de temporales tras emit final.",
-        en: "Node.js + Express backend wraps yt-dlp (download) and FFmpeg (conversion) via child_process. Queue with configurable concurrency: N parallel downloads, rest in pending. Each job emits progress events to the frontend via polling. Minimalist React frontend — URL/playlist input, active jobs list, completed table. Auto-cleanup of temp files after final emit.",
+        es: "Backend Node.js + Express que envuelve yt-dlp (descarga) y FFmpeg (conversión mp3 y merge de video) vía child_process, parseando el stdout para el progreso. Una cola FIFO procesa las descargas y empuja el avance al navegador por SSE (info → progress → ready). El archivo se sirve por una ruta aparte y se borra solo; además hay limpieza periódica de temporales. Frontend en JavaScript vanilla (preview, cola y modal de playlists) y una extensión de Chrome (Manifest V3) que descarga desde el popup y autoarranca el servidor mediante native messaging.",
+        en: "Node.js + Express backend that wraps yt-dlp (download) and FFmpeg (mp3 conversion and video merge) via child_process, parsing stdout for progress. A FIFO queue processes downloads and pushes progress to the browser over SSE (info → progress → ready). The file is served from a separate route and auto-deleted; temp files are also cleaned periodically. Vanilla JavaScript frontend (preview, queue, and playlist modal) plus a Chrome extension (Manifest V3) that downloads from the popup and auto-starts the server via native messaging.",
       },
       stackRationale: {
-        es: "yt-dlp en vez de youtube-dl porque está activamente mantenido y aguanta cambios del API de YouTube. Express sobre algo más pesado porque el server es local — no necesita scale, sí necesita ser rápido de instalar. Polling sobre WebSockets porque la complejidad extra no se justifica para un uso single-user.",
-        en: "yt-dlp over youtube-dl because it's actively maintained and survives YouTube API changes. Express over something heavier because the server is local — it doesn't need scale, it needs fast install. Polling over WebSockets because the extra complexity isn't justified for single-user use.",
+        es: "yt-dlp en vez de youtube-dl porque está activamente mantenido y aguanta los cambios del player de YouTube (incluso resuelve los retos de JS usando el propio Node). Express sobre algo más pesado porque el server es local — no necesita escalar, sí ser rápido de instalar. SSE sobre WebSockets porque el flujo de progreso es unidireccional (servidor → cliente) y no justifica la complejidad extra.",
+        en: "yt-dlp over youtube-dl because it's actively maintained and survives YouTube player changes (it even solves JS challenges using Node itself). Express over something heavier because the server is local — it doesn't need to scale, it needs fast install. SSE over WebSockets because the progress flow is one-way (server → client) and doesn't justify the extra complexity.",
       },
       challenges: [
         {
@@ -734,9 +741,35 @@ export const projects: Project[] = [
         },
       ],
       learnings: {
-        es: "Para herramientas locales, evitar abstracciones pesadas: child_process + parseo de stdout + polling es 'feo' pero confiable y rápido de iterar. Y wrappear binarios CLI bien mantenidos (yt-dlp, FFmpeg) es más sostenible que escribir el equivalente desde cero.",
-        en: "For local tools, avoid heavy abstractions: child_process + stdout parsing + polling is 'ugly' but reliable and fast to iterate. And wrapping well-maintained CLI binaries (yt-dlp, FFmpeg) is more sustainable than writing the equivalent from scratch.",
+        es: "Para herramientas locales, evitar abstracciones pesadas: child_process + parseo de stdout + SSE es 'feo' pero confiable y rápido de iterar. Y wrappear binarios CLI bien mantenidos (yt-dlp, FFmpeg) es más sostenible que escribir el equivalente desde cero.",
+        en: "For local tools, avoid heavy abstractions: child_process + stdout parsing + SSE is 'ugly' but reliable and fast to iterate. And wrapping well-maintained CLI binaries (yt-dlp, FFmpeg) is more sustainable than writing the equivalent from scratch.",
       },
+      screenshots: [
+        {
+          src: asset("captures/ytm-download/inicio.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Pantalla principal: pegás la URL y elegís audio o video",
+            en: "Main screen: paste the URL and choose audio or video",
+          },
+        },
+        {
+          src: asset("captures/ytm-download/descarga.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Descarga en curso con progreso en tiempo real y cola",
+            en: "Download in progress with real-time progress and queue",
+          },
+        },
+        {
+          src: asset("captures/ytm-download/extension.webp"),
+          orientation: "mobile",
+          caption: {
+            es: "Extensión de Chrome: descarga mp3/mp4 desde el popup",
+            en: "Chrome extension: download mp3/mp4 from the popup",
+          },
+        },
+      ],
     },
   },
 ];
