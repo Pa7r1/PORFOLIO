@@ -712,8 +712,7 @@ export const projects: Project[] = [
       "SSE",
       "Chrome Extension",
     ],
-    githubUrl: "https://github.com/Pa7r1/YTM-DOWNLOAD",
-    repoPrivate: true,
+    githubUrl: "https://github.com/Pa7r1/mp3downloader",
     hasDetail: true,
     detail: {
       year: 2026,
@@ -763,7 +762,7 @@ export const projects: Project[] = [
         },
         {
           src: asset("captures/ytm-download/extension.webp"),
-          orientation: "mobile",
+          orientation: "desktop",
           caption: {
             es: "Extensión de Chrome: descarga mp3/mp4 desde el popup",
             en: "Chrome extension: download mp3/mp4 from the popup",
