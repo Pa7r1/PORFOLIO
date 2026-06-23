@@ -89,6 +89,7 @@ export const projects: Project[] = [
       "Docker",
     ],
     githubUrl: "https://github.com/Pa7r1/QRetail",
+    liveUrl: "https://q-retail.vercel.app/",
     repoPrivate: true,
     hasDetail: true,
     detail: {
