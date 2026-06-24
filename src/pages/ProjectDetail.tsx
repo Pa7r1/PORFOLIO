@@ -177,6 +177,14 @@ export default function ProjectDetail() {
           </div>
         </header>
 
+        {/* Plain-language summary (client-facing layer) */}
+        {d.summary && (
+          <section className="detail-summary fade-in">
+            <h2 className="section-label">{t("project.section.summary")}</h2>
+            <p className="detail-summary-text">{pick(d.summary, locale)}</p>
+          </section>
+        )}
+
         {/* Case study content */}
         <div className="detail-content">
           <section className="detail-section fade-in">
@@ -193,6 +201,35 @@ export default function ProjectDetail() {
             <h2 className="section-label">{t("project.section.stack")}</h2>
             <p className="detail-body">{pick(d.stackRationale, locale)}</p>
           </section>
+
+          {d.results && d.results.length > 0 && (
+            <section className="detail-section fade-in">
+              <h2 className="section-label">{t("project.section.results")}</h2>
+              <ul className="detail-results">
+                {d.results.map((r, i) => (
+                  <li key={i} className="detail-result-item">
+                    <span className="detail-result-check" aria-hidden="true">✓</span>
+                    <span>{pick(r, locale)}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {d.testimonial && (
+            <section className="detail-section fade-in">
+              <h2 className="section-label">{t("project.testimonial")}</h2>
+              <blockquote className="detail-testimonial">
+                <p className="detail-testimonial-quote">“{pick(d.testimonial.quote, locale)}”</p>
+                <footer className="detail-testimonial-author">
+                  {d.testimonial.author}
+                  {d.testimonial.role && (
+                    <span className="detail-testimonial-role"> · {pick(d.testimonial.role, locale)}</span>
+                  )}
+                </footer>
+              </blockquote>
+            </section>
+          )}
 
           <section className="detail-section fade-in">
             <h2 className="section-label">{t("project.section.challenges")}</h2>

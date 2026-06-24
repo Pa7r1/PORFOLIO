@@ -3,7 +3,6 @@ import "./App.css";
 
 // i18n
 import { useLocale } from "@/i18n/LocaleContext";
-import { pick } from "@/i18n/pick";
 import { NAV } from "@/i18n/nav";
 
 // Common
@@ -45,7 +44,7 @@ const MailIcon = () => (
 
 // ── APP ────────────────────────────────────────────────────
 export default function App() {
-  const { t, locale } = useLocale();
+  const { t } = useLocale();
   const [activeSection, setActiveSection] = useState("about");
   const cursorRef = useRef<HTMLDivElement>(null);
 
@@ -157,8 +156,12 @@ export default function App() {
         <section className="hero">
           <div className="hero-inner fade-in">
             <h1 className="hero-name">{personalInfo.name}</h1>
-            <p className="hero-role">{personalInfo.title}</p>
-            <p className="hero-bio">{pick(personalInfo.description, locale)}</p>
+            <p className="hero-role">{t("hero.subline")}</p>
+            <p className="hero-headline">{t("hero.headline")}</p>
+            <div className="hero-actions">
+              <a href="#contact" className="btn-primary">{t("hero.ctaPrimary")}</a>
+              <a href="#projects" className="btn-ghost">{t("hero.ctaSecondary")}</a>
+            </div>
           </div>
         </section>
 

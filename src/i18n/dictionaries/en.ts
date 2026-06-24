@@ -11,14 +11,20 @@ export const en: Record<DictionaryKey, string> = {
   // Hero / mobile header
   "header.role": "FULLSTACK DEV",
   "skip.toContent": "Skip to content",
+  "hero.headline":
+    "I transform your business operations into custom-made, efficient, and ready-to-use software.",
+  "hero.subline":
+    "Full Stack Developer · 3+ years · real client projects in production",
+  "hero.ctaPrimary": "Let's talk about your project",
+  "hero.ctaSecondary": "View projects",
 
   // About section paragraphs
   "about.p1":
-    "Full Stack Developer graduated from UTN (National Technological University) La Rioja. My focus is on autonomy and delivering production-ready products, combining a solid backend architecture with functional, user-centered interfaces.",
+    "I'm a Full Stack Developer, trained at UTN La Rioja. I build software that solves concrete business problems and actually works — not just in a demo.",
   "about.p2":
-    "I have the capability to manage the entire application lifecycle from end to end. I handle everything from data modeling and backend development to frontend development and optimized deployment on our own servers.",
+    "I manage the entire software lifecycle: from understanding your business needs to delivering a ready-to-use web application. By centralizing all development with me, you eliminate intermediaries, save time, and ensure a consistent result.",
   "about.p3":
-    "Whether joining a high-quality engineering team or delivering custom independent projects, I move smoothly across all software layers to transform ideas into reliable, scalable solutions.",
+    "I've helped businesses move beyond paper and Excel spreadsheets, transforming their daily operations into organized and automated digital platforms. I'm available to lead independent projects or join established development teams.",
   "about.downloadCV": "Download CV",
   "about.stat.experience": "yrs exp.",
   "about.stat.projects": "projects",
@@ -37,7 +43,10 @@ export const en: Record<DictionaryKey, string> = {
 
   // Contact
   "contact.text":
-    "Available for freelance work, full-time projects, or collaborations. If you have something in mind, reach out directly.",
+    "Got a project or an idea in mind? Whether it's a custom solution for your business or joining your team, tell me what you need and I'll get back to you the same day.",
+  "contact.cta": "Message me on WhatsApp",
+  "contact.ctaMicro":
+    "Same-day reply · first consultation, no strings attached",
   "contact.location": "Pituil, La Rioja, Argentina · remote only",
   "contact.whatsappMessage":
     "Hi Patricio! I saw your portfolio and I'd like to talk about a project.",
@@ -53,6 +62,7 @@ export const en: Record<DictionaryKey, string> = {
   "project.liveSoon": "Live demo soon",
   "project.codePrivate": "Private code",
   "project.badge.live": "Live",
+  "project.badge.working": "Functional",
   "project.badge.soon": "Soon",
   "project.badge.private": "Private",
   "project.badge.code": "GitHub",
@@ -60,11 +70,14 @@ export const en: Record<DictionaryKey, string> = {
   "project.status.wip": "In development",
   "project.status.mvp": "MVP",
   "project.status.archived": "Archived",
+  "project.section.summary": "In short",
   "project.section.problem": "The Problem",
   "project.section.architecture": "Architecture",
   "project.section.stack": "Why this Stack",
   "project.section.challenges": "Technical Challenges",
+  "project.section.results": "Results",
   "project.section.learnings": "Key Learnings",
+  "project.testimonial": "What the client says",
   "project.video": "Video demo",
   "project.screenshots": "Screenshots",
   "project.noScreenshots": "Screenshots in progress",

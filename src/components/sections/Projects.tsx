@@ -32,6 +32,7 @@ export default function Projects() {
       <div className="fade-in">
         {projects.map((p) => {
           const code = codeState(p);
+          const avail = p.availability ?? (p.liveUrl ? "live" : "soon");
           const cardContent = (
             <>
               <img
@@ -55,12 +56,19 @@ export default function Projects() {
                   ))}
                 </div>
                 <div className="project-badges">
-                  {p.liveUrl ? (
+                  {avail === "live" && (
                     <span className="badge badge--live">
                       <span className="badge-dot" aria-hidden="true" />
                       {t("project.badge.live")}
                     </span>
-                  ) : (
+                  )}
+                  {avail === "working" && (
+                    <span className="badge badge--working">
+                      <span className="badge-dot" aria-hidden="true" />
+                      {t("project.badge.working")}
+                    </span>
+                  )}
+                  {avail === "soon" && (
                     <span className="badge badge--soon">{t("project.badge.soon")}</span>
                   )}
                   {code === "public" && (

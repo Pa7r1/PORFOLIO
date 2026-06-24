@@ -33,6 +33,18 @@ export default function Contact() {
       <div className="fade-in">
         <p className="contact-text">{t("contact.text")}</p>
 
+        <div className="contact-cta-wrap">
+          <a
+            href={`https://wa.me/${personalInfo.whatsapp}?text=${encodeURIComponent(t("contact.whatsappMessage"))}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
+          >
+            {t("contact.cta")}
+          </a>
+          <span className="contact-cta-micro">{t("contact.ctaMicro")}</span>
+        </div>
+
         <div className="contact-links">
           <a href={`mailto:${personalInfo.email}`} className="contact-link">
             <MailIcon />
