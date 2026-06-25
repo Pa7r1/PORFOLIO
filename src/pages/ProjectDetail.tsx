@@ -119,6 +119,9 @@ export default function ProjectDetail() {
   const next = detailProjects.length > 1
     ? detailProjects[(currentIndex + 1) % detailProjects.length]
     : null;
+  const prev = detailProjects.length > 1
+    ? detailProjects[(currentIndex - 1 + detailProjects.length) % detailProjects.length]
+    : null;
 
   return (
     <>
@@ -327,14 +330,22 @@ export default function ProjectDetail() {
           </section>
         </div>
 
-        {/* Next project */}
-        {next && (
-          <div className="detail-next fade-in">
-            <Link to={`/projects/${next.slug}`} className="detail-next-link">
-              <span className="detail-next-label">{t("project.next")} →</span>
-              <span className="detail-next-title">{next.title}</span>
-            </Link>
-          </div>
+        {/* Prev / next project */}
+        {detailProjects.length > 1 && (
+          <nav className="detail-next fade-in" aria-label={t("project.next")}>
+            {prev && (
+              <Link to={`/projects/${prev.slug}`} className="detail-next-link detail-next-link--prev">
+                <span className="detail-next-label">← {t("project.prev")}</span>
+                <span className="detail-next-title">{prev.title}</span>
+              </Link>
+            )}
+            {next && (
+              <Link to={`/projects/${next.slug}`} className="detail-next-link detail-next-link--next">
+                <span className="detail-next-label">{t("project.next")} →</span>
+                <span className="detail-next-title">{next.title}</span>
+              </Link>
+            )}
+          </nav>
         )}
       </div>
 

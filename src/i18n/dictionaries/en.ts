@@ -83,6 +83,7 @@ export const en: Record<DictionaryKey, string> = {
   "project.noScreenshots": "Screenshots in progress",
   "project.notFound": "Project not found",
   "project.next": "Next project",
+  "project.prev": "Proyecto anterior",
   "project.closeLightbox": "Close",
   "project.prevImage": "Previous image",
   "project.nextImage": "Next image",

@@ -83,6 +83,7 @@ export const es = {
   "project.closeLightbox": "Cerrar",
   "project.prevImage": "Imagen anterior",
   "project.nextImage": "Imagen siguiente",
+  "project.prev": "Proyecto anterior",
 
   // 404
   "notFound.title": "404",
