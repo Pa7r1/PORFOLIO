@@ -2,15 +2,17 @@ import type { PersonalInfo } from "@/types";
 
 export const personalInfo: PersonalInfo = {
   name: "Patricio Valentín Carpio",
-  title: "Full Stack Developer | Backend & DevOps",
+  title: "Full Stack Developer — TypeScript · React · Node.js · PostgreSQL",
   description: {
-    es: "Ayudo a negocios y emprendedores a digitalizar su operación con software a medida que de verdad funciona en producción. Te acompaño de punta a punta: desde entender el problema hasta dejarlo andando, rápido y sin vueltas.",
-    en: "I help businesses and entrepreneurs digitize how they operate with custom software that actually works in production. I take it end to end: from understanding the problem to getting it up and running — fast and hassle-free.",
+    es: "Llevo aplicaciones web del modelado de datos hasta producción: sistemas en producción con usuarios reales, y dieciséis meses de desarrollo en equipo sobre un repositorio compartido con pasarela de pagos. Busco sumarme a un equipo donde aportar autonomía en el ciclo completo y crecer con revisión de código.",
+    en: "I take web applications from data modeling all the way to production: systems in production with real users, plus sixteen months of team development on a shared repository with a live payment gateway. I'm looking to join a team where I can bring end-to-end autonomy and grow through code review.",
   },
-  githubProjects: 9,
   yearsExperience: 3,
+  productionSystems: 4,
+  teamMonths: 16,
   profileImage: "foto-curriculum.jpeg",
   email: "valentincarpio32@gmail.com",
   linkedin: "https://www.linkedin.com/in/patricio-valentin-carpio-6a602327b/",
-  whatsapp: "5493825570747",
+  // El número del CV. Makem usa otro a propósito: no unificarlos.
+  whatsapp: "5493825670045",
 };

@@ -85,8 +85,42 @@ export const SELECTION = [
     items: [
       { from: "upward/comun/onboarding-intro-1--movil.png", to: "card", kind: "card" },
       { from: "upward/comun/onboarding-intro-1--movil.png", to: "onboarding", kind: "mobile" },
-      { from: "upward/comun/today--movil.png", to: "today", kind: "mobile" },
+      // "today" retirada: la pantalla muestra el badge del coach IA, que es
+      // funcionalidad a medio construir y no debe aparecer en el portafolio.
       { from: "upward/comun/progress--movil.png", to: "progress", kind: "mobile" },
+    ],
+  },
+  {
+    slug: "makem",
+    items: [
+      { from: "makkem/publico/turismo--escritorio.png", to: "card", kind: "card" },
+      { from: "makkem/publico/turismo--escritorio.png", to: "turismo", kind: "desktop" },
+      { from: "makkem/publico/constructora--escritorio.png", to: "constructora", kind: "desktop" },
+      { from: "makkem/publico/abogados--escritorio.png", to: "abogados", kind: "desktop" },
+    ],
+  },
+  {
+    slug: "aula-virtual",
+    items: [
+      { from: "aula-virtual/publico/login--escritorio.png", to: "card", kind: "card" },
+      { from: "aula-virtual/publico/login--movil.png", to: "login-mobile", kind: "mobile" },
+    ],
+  },
+  {
+    slug: "circuitos-argentinos",
+    items: [
+      { from: "circuitos-argentinos/publico/ficha--escritorio.png", to: "card", kind: "card" },
+      { from: "circuitos-argentinos/publico/ficha--escritorio.png", to: "ficha", kind: "desktop" },
+      { from: "circuitos-argentinos/publico/mapa--escritorio.png", to: "mapa", kind: "desktop" },
+      { from: "circuitos-argentinos/publico/ficha--movil.png", to: "ficha-mobile", kind: "mobile" },
+    ],
+  },
+  {
+    slug: "modex-ecommerce",
+    items: [
+      { from: "modex/publico/inicio--escritorio.png", to: "card", kind: "card" },
+      { from: "modex/publico/inicio--escritorio.png", to: "inicio", kind: "desktop" },
+      { from: "modex/publico/inicio--movil.png", to: "inicio-mobile", kind: "mobile" },
     ],
   },
 ];

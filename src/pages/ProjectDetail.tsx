@@ -4,7 +4,6 @@ import { useLocale } from "@/i18n/LocaleContext";
 import { pick } from "@/i18n/pick";
 import { projects } from "@/data/projects";
 import Lightbox from "@/components/common/Lightbox";
-import ParticlesBackground from "@/components/common/ParticlesBackground";
 import ThemeToggle from "@/components/common/ThemeToggle";
 import LangSwitch from "@/components/common/LangSwitch";
 import { useDocumentMeta } from "@/utils/useDocumentMeta";
@@ -35,7 +34,6 @@ const LockIcon = () => (
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { t, locale } = useLocale();
-  const cursorRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [canScroll, setCanScroll] = useState(false);
@@ -66,18 +64,6 @@ export default function ProjectDetail() {
     el.scrollBy({ left: dir * step, behavior: reduce ? "auto" : "smooth" });
   };
 
-  // Cursor glow follow
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = e.clientX + "px";
-        cursorRef.current.style.top  = e.clientY + "px";
-      }
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
   // Fade-in on scroll
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -101,7 +87,6 @@ export default function ProjectDetail() {
   if (!project || !project.detail) {
     return (
       <>
-        <ParticlesBackground />
         <div className="detail-not-found">
           <p>{t("project.notFound")}</p>
           <Link to="/" className="not-found-back">{t("project.back")}</Link>
@@ -125,9 +110,6 @@ export default function ProjectDetail() {
 
   return (
     <>
-      <ParticlesBackground />
-      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
-
       <div className="detail-wrapper">
         {/* Top navigation bar */}
         <div className="detail-topbar">

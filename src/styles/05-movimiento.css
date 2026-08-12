@@ -1,0 +1,335 @@
+/* ═══════════════════════════════════════════════════════════════
+   MOVIMIENTO
+   Foco visible, reduced-motion, titular de sección, y TODO el sistema de
+   movimiento: .entra, revelado del titular, .fade-in, .cascada y scroll ligado
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── FOCUS VISIBLE (a11y) ──────────────────────────────── */
+:focus {
+  outline: none;
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+/* ─── REDUCED MOTION ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* Los hijos de una cascada arrancan en opacity 0 igual que el bloque:
+     sin esta línea quedarían invisibles para quien pidió no ver
+     movimiento, que es exactamente al revés de lo que se busca. */
+  .fade-in,
+  .fade-in.cascada > * {
+    opacity: 1;
+    transform: none;
+  }
+  /* El titular es el caso más grave del mismo fallo: las palabras arrancan
+     desplazadas fuera de su máscara, y el bloque de arriba solo acorta la
+     duración —no el `animation-delay`—, así que el titular se quedaría en
+     blanco casi medio segundo. Se anula la animación entera. */
+  .mascara-i {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ─── SECTION LABEL (h2) ─────────────────────────────────────
+   Titular en la display, con la línea de la retícula al lado. */
+.section-label {
+  font-family: var(--font-display);
+  /* Un escalón por encima de --fs-xl, que es lo que usan el título de una
+     tarjeta de proyecto y el de una fila de experiencia. Con los tres al
+     mismo tamaño no había forma de saber qué encabeza qué: "Proyectos"
+     pesaba igual que "Modex — E-commerce". */
+  font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.4rem);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  word-spacing: 0.09em;
+  color: var(--text);
+  display: flex;
+  align-items: baseline;
+  gap: 1.1rem;
+  margin: 0 0 2.25rem;
+}
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  transform: translateY(-0.35em);
+}
+section {
+  margin-bottom: var(--section);
+  scroll-margin-top: 6rem;
+}
+/* Dos medidas de separación, no una. Con todas las secciones a la misma
+   distancia (104px de punta a punta) la página no dice dónde empieza un
+   capítulo nuevo: se lee como una lista larga. La separación mayor va
+   ANTES de las dos secciones que importan —Proyectos y Contacto—, o sea
+   colgada de la que las precede. */
+#experience,
+#skills {
+  margin-bottom: var(--section-mayor);
+}
+
+/* Bajada de sección: una línea de instrucción bajo el h2. */
+.section-hint {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin: -1.5rem 0 1.5rem;
+}
+
+/* ─── PROJECT SOURCE BADGE (read-only) ───────────────────── */
+.project-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+  letter-spacing: 0.06em;
+}
+
+/* ─── MOVIMIENTO ──────────────────────────────────────────────
+   Un solo lenguaje, el mismo de Makem: 26px de recorrido vertical,
+   0,7s y cubic-bezier(0.2, 0.7, 0.2, 1) —arranque decidido, frenada
+   larga—. Dos disparadores distintos, misma curva:
+
+   .entra / .entra-2 / .entra-3 / .entra-4 → por tiempo, al cargar.
+     Sirve para el hero, que ya está en pantalla y no puede esperar a
+     un observador. El escalonado sigue el orden de lectura.
+   .fade-in → al entrar en viewport. La clase `visible` la ponen los
+     IntersectionObserver de App.tsx y ProjectDetail.tsx. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.entra {
+  animation: hero-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+/* Los retardos entran DESPUÉS del titular, que ahora tarda ~1s en revelarse
+   entero (ver .mascara). Antes iban a 0,1/0,2/0,3s, que era correcto cuando
+   el titular subía de una pieza; con el revelado por líneas, la firma se
+   adelantaba al titular y la secuencia se leía al revés. */
+.entra-2 {
+  animation-delay: 0.44s;
+}
+.entra-3 {
+  animation-delay: 0.56s;
+}
+.entra-4 {
+  animation-delay: 0.68s;
+}
+
+/* ─── TITULAR: REVELADO LÍNEA POR LÍNEA ────────────────────────
+   Cada palabra es una caja con `overflow: hidden` y su contenido sube
+   desde abajo: es una cortina, no un fundido. Se anima SOLO `transform`,
+   así que el coste es de compositor y no hay repintado.
+
+   El marcado es por palabra pero el tiempo es por línea: React mide qué
+   máscaras comparten `offsetTop` y les escribe `--linea` (ver
+   TitularRevelado en App.tsx). 90ms entre líneas — por debajo se lee como
+   un bloque, por encima se hace esperar. */
+.mascara {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* Aire abajo para que la máscara no recorte el subrayado del énfasis,
+     que se dibuja por debajo de la línea de base. Se compensa con margen
+     negativo para no alterar el interlineado. */
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+.mascara-i {
+  display: inline-block;
+  /* El espacio que cada palabra se lleva dentro tiene que sobrevivir al
+     colapso de espacios en blanco, o el titular sale sin separaciones. */
+  white-space: pre;
+  animation: revelar-linea 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--linea, 0) * 0.09s);
+}
+@keyframes revelar-linea {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(var(--recorrido, 26px));
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── CASCADA ──────────────────────────────────────────────────
+   Un bloque entero subiendo de una pieza se lee como una diapositiva:
+   el ojo no tiene por dónde entrar. `.cascada` le quita el movimiento
+   al contenedor y se lo reparte a sus hijos directos, que entran en el
+   orden en que se leen. Misma curva y misma duración que el resto del
+   sistema; lo único que cambia es que ahora hay una secuencia.
+
+   El recorrido es más corto que el de un bloque (18px contra 26px): son
+   piezas pequeñas y a 26px cada una el conjunto se agita. */
+.fade-in.cascada {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.fade-in.cascada > * {
+  opacity: 0;
+  transform: translateY(var(--recorrido, 18px));
+  transition:
+    opacity 0.66s ease,
+    transform 0.66s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.fade-in.cascada.visible > * {
+  opacity: 1;
+  transform: none;
+}
+/* 70ms entre piezas: por debajo se lee como una sola cosa, por encima
+   como una lista cargando. Se corta en la novena para que una sección
+   larga no termine de entrar medio segundo tarde. */
+.fade-in.cascada.visible > *:nth-child(1) { transition-delay: 0s; }
+.fade-in.cascada.visible > *:nth-child(2) { transition-delay: 0.07s; }
+.fade-in.cascada.visible > *:nth-child(3) { transition-delay: 0.14s; }
+.fade-in.cascada.visible > *:nth-child(4) { transition-delay: 0.21s; }
+.fade-in.cascada.visible > *:nth-child(5) { transition-delay: 0.28s; }
+.fade-in.cascada.visible > *:nth-child(6) { transition-delay: 0.35s; }
+.fade-in.cascada.visible > *:nth-child(7) { transition-delay: 0.42s; }
+.fade-in.cascada.visible > *:nth-child(8) { transition-delay: 0.49s; }
+.fade-in.cascada.visible > *:nth-child(n + 9) { transition-delay: 0.56s; }
+
+/* ─── REVELADO LIGADO AL SCROLL ────────────────────────────────
+   Mejora progresiva sobre todo lo de arriba. Con `animation-timeline:
+   view()` el avance del revelado lo marca cuánto entró el elemento en
+   pantalla, no un umbral que se cruza: el movimiento sigue la rueda. Corre
+   fuera del hilo principal y no cuesta ni una línea de JavaScript.
+
+   Va dentro de @supports a propósito. NO es Baseline: Firefox lo mantiene
+   tras el flag `layout.css.scroll-driven-animations.enabled`. Donde no hay
+   soporte queda exactamente lo de arriba —el IntersectionObserver de
+   App.tsx con su transición—, que por eso no se toca ni se borra.
+
+   El `transition: none` es lo que impide que las dos capas peleen por las
+   mismas propiedades donde sí hay soporte.
+
+   Y va envuelto en `no-preference` porque este bloque aparece DESPUÉS del de
+   `prefers-reduced-motion` y con la misma especificidad: sin la envoltura le
+   ganaría en cascada y dejaría el contenido en `opacity: 0` justo a quien
+   pidió no ver movimiento. Encerrado así, esa gente no entra nunca acá. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+  .fade-in {
+    opacity: 0;
+    transform: translateY(var(--recorrido, 26px));
+    transition: none;
+    animation: revelar-scroll linear both;
+    animation-timeline: view();
+    /* El rango va entero dentro de `entry`, no hasta `cover`. Con `cover` el
+       revelado depende de cuánto MÁS se pueda seguir bajando, y lo último de
+       la página no siempre tiene recorrido de sobra: se quedaba a media
+       opacidad para siempre. Atado a `entry` termina siempre que el elemento
+       acabe de entrar en pantalla, esté donde esté. */
+    animation-range: entry 5% entry 75%;
+  }
+  /* La cascada reparte el rango entre sus hijos en vez del retardo: cada
+     uno completa su revelado un poco más tarde que el anterior, con el
+     mismo efecto de secuencia pero atado al scroll. */
+  .fade-in.cascada {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .fade-in.cascada > * {
+    transition: none;
+    animation: revelar-scroll linear both;
+    animation-timeline: view();
+  }
+  .fade-in.cascada > *:nth-child(1) { animation-range: entry 0% entry 50%; }
+  .fade-in.cascada > *:nth-child(2) { animation-range: entry 6% entry 56%; }
+  .fade-in.cascada > *:nth-child(3) { animation-range: entry 12% entry 62%; }
+  .fade-in.cascada > *:nth-child(4) { animation-range: entry 18% entry 68%; }
+  .fade-in.cascada > *:nth-child(5) { animation-range: entry 24% entry 74%; }
+  .fade-in.cascada > *:nth-child(6) { animation-range: entry 30% entry 80%; }
+  .fade-in.cascada > *:nth-child(7) { animation-range: entry 36% entry 86%; }
+  .fade-in.cascada > *:nth-child(n + 8) { animation-range: entry 42% entry 92%; }
+  }
+}
+@keyframes revelar-scroll {
+  from {
+    opacity: 0;
+    transform: translateY(var(--recorrido, 26px));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* El titular de sección entra primero y desde más cerca: es el ancla de
+   la que cuelga todo lo demás, no una pieza más de la secuencia. */
+.section-label.fade-in {
+  --recorrido: 12px;
+}
+
+/* ─── SOLO PARA LECTORES DE PANTALLA ─────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Los desplazamientos al hover son afordancia, no decoración: con
+   reduced-motion se quedan solo el color y el borde. */
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover,
+  .shot-frame:hover {
+    transform: none;
+  }
+  .project-row:hover {
+    padding-left: 0.6rem;
+  }
+}

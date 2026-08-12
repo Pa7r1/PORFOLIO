@@ -1,0 +1,533 @@
+/* ═══════════════════════════════════════════════════════════════
+   PROYECTOS
+   Sección de proyectos: carrusel y tarjeta
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── PROYECTOS ───────────────────────────────────────────────
+   Los diez proyectos en una tira que se desliza, uno por vez.
+
+   Esto reemplaza a la rejilla de dos columnas y tres grupos. El motivo
+   del cambio no es estético: con diez tarjetas simultáneas el acento
+   por proyecto (--a) era ruido —diez colores peleando— y ninguna
+   tarjeta podía permitirse más de dos líneas de descripción. Con una
+   sola a la vista el color identifica en vez de competir, y la tarjeta
+   puede contar algo.
+
+   No hay filtros: se quitaron a propósito. Con diez proyectos, dos filas
+   de pastillas encima del carrusel pedían una decisión antes de haber
+   mostrado nada. El tipo de trabajo sigue estando, pero como chip de cada
+   tarjeta, que es donde se lee sin cambiar de contexto.
+
+   El acento entra por tarjeta como --a (un hex en projects.ts); los
+   tonos se derivan con color-mix() y la tinta legible con --a-ink. */
+
+/* ── CARRUSEL: TIRA DESLIZANTE ─────────────────────────────────
+   Fue un "coverflow" 3D (giro, escala y dos capas de profundidad) hasta que
+   se comprobó que el paso no se leía como movimiento: la vecina quedaba tan
+   chica y tan tapada que el recorrido era invisible y el cambio parecía
+   instantáneo. Ahora las tarjetas van en fila, todas del mismo tamaño, y se
+   ve pasar el proyecto de un borde al otro.
+
+   Sale del ancho de la columna (62rem) a sangre completa: las vecinas
+   necesitan sitio para asomar y, de paso, romper la columna una vez rinde.
+   `overflow-x: clip` (no `hidden`) recorta lo que sobresale sin crear un
+   contenedor de scroll ni romper el `sticky` de la barra superior. */
+.pcar {
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: 1.5rem;
+  overflow-x: clip;
+}
+/* Los bordes del corredor. La tira es más ancha que la pantalla, así que en
+   algún punto hay que cortarla; esto la desvanece en lugar de cortarla a filo,
+   que se leía como un fallo de render.
+
+   Es UNA lámina fija que no se mueve ni se anima, y las tarjetas pasan por
+   debajo. Se probó lo contrario —un ::after por celda con la opacidad atada a
+   --adc— y se midió: una capa que se compone encima de algo que se está
+   transformando no se puede cachear, y el carrusel caía a 43fps. Así vale cero.
+
+   Las paradas van en calc() desde el centro y no en porcentajes porque el
+   corredor mide lo mismo (en rem) a cualquier ancho de ventana: con
+   porcentajes cuadraba a 1440px y se comía la tarjeta a 1024.
+
+   OJO con estos números: la ventana clara tiene que dejar sitio para ver
+   LLEGAR a la vecina. Estuvo en ±21rem —justo el ancho de la tarjeta— y de
+   los 446px de la vecina solo se veían 21. El paso duraba 0,62s y aun así
+   parecía instantáneo, porque ocurría entero detrás de la lámina. */
+.pcar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--bg) 0,
+    color-mix(in srgb, var(--bg) 55%, transparent) calc(50% - 36rem),
+    transparent calc(50% - 28rem),
+    transparent calc(50% + 28rem),
+    color-mix(in srgb, var(--bg) 55%, transparent) calc(50% + 36rem),
+    var(--bg) 100%
+  );
+}
+/* En pantallas angostas la tarjeta ocupa casi todo el ancho y no asoma
+   nada a los costados: el velo solo puede estorbar. */
+@media (max-width: 719px) {
+  .pcar::after {
+    display: none;
+  }
+}
+.pcar-frame {
+  position: relative;
+  /* La captura del producto es el mejor argumento de cada tarjeta y a
+     31rem ocupaba un tercio del ancho en un portátil. A 41rem la central
+     manda de verdad y las laterales siguen asomando lo justo. */
+  max-width: min(41rem, 88vw);
+  margin-inline: auto;
+}
+/* Sombra bajo la tarjeta centrada. Va FIJA en el escenario, no en cada
+   celda: las tarjetas pasan por encima de ella. Una sombra por celda con la
+   opacidad atada a --adc se probó y se midió en este mismo carrusel —una
+   capa que se compone encima de algo que se está transformando no se puede
+   cachear— y costaba 43fps. Así cuesta cero y el efecto que se busca, que la
+   central se despegue del papel, es el mismo. */
+.pcar-frame::before {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -1.25rem;
+  height: 3.5rem;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    var(--sombra-escenario) 0%,
+    transparent 72%
+  );
+}
+
+/* Capa base (sin la mejora): una tira con scroll-snap, una tarjeta por
+   vez, deslizable. Es lo que queda si la capa 3D no llega a aplicarse. */
+.pcar-stage {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.pcar-stage::-webkit-scrollbar {
+  display: none;
+}
+.pcar-cell {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+/* Capa mejorada: todas las celdas en la MISMA celda de rejilla, cada una
+   desplazada por su distancia al centro (--d, la escribe React).
+
+   Que compartan celda de rejilla es lo que hace que la tira sea infinita sin
+   clonar tarjetas ni teletransportar nada: `--d` es la distancia CIRCULAR, así
+   que la que se va por un lado reaparece por el otro estando fuera de pantalla.
+   Una tira de verdad, con las diez en fila, obligaría a elegir entre perder el
+   bucle o ver el salto de vuelta al principio.
+
+   Ya no hay `perspective`: sin `rotateY` no hay nada en 3D que proyectar.
+   El alto lo mide el componente de la tarjeta más alta y lo escribe inline:
+   nunca un clamp() adivinado que recorta o sobra. */
+.pcar--enhanced .pcar-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  place-items: start center;
+  overflow: visible;
+  /* La altura NO se anima. Antes se transicionaba a la de la tarjeta
+     centrada, y animar `height` rehace el layout de las diez celdas
+     apiladas en cada fotograma del recorrido. Ahora el componente mide la
+     más alta una sola vez y fija el escenario: sin salto al pasar y sin
+     un solo relayout durante el cruce. */
+}
+.pcar--enhanced .pcar-cell {
+  grid-area: 1 / 1;
+  flex-basis: auto;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  --ad: max(var(--d), -1 * var(--d));
+  /* Dos escalones de atenuación y no más: a partir de la segunda vecina la
+     tarjeta ya está fuera del corredor y da igual cuánto se la atenúe. */
+  --adc: min(var(--ad), 2);
+  /* TIRA, no coverflow. Las tarjetas van una al lado de la otra —el ancho de
+     una más un hueco— y se desplazan todas juntas: se ve pasar el proyecto de
+     un borde al otro. Antes iban a 82% con giro y escala, y la vecina acababa
+     tan chica, tan tenue y tan tapada por el velo que del recorrido solo se
+     veía un 5%: el paso se leía como un cambio instantáneo aunque durase
+     0,62s. Aquí no hay nada que "aparezca", hay algo que llega. */
+  transform: translateX(calc(var(--d) * (100% + 1.5rem)));
+  /* Nada de desenfoque, y no por falta de ganas: un `blur()` sobre las celdas
+     dejaba el carrusel en ~22fps, y dejarlo estático fuera de la transición
+     tampoco servía (43ms por fotograma con la CPU frenada, 36ms sin frenarla)
+     porque el filtro se reaplica en cada fotograma mientras el elemento se
+     transforma, cambie el radio o no. Lo que hunde el borde de la tira es el
+     velo fijo de .pcar::after, que no se mueve y por eso no cuesta nada.
+
+     La opacidad baja poco: las vecinas tienen que verse llegar. Es la
+     diferencia entre una tira y un pase de diapositivas. */
+  opacity: calc(1 - var(--adc) * 0.25);
+  z-index: calc(10 - var(--adc));
+  /* 0,72s con una frenada muy larga: el recorrido es más ancho que antes —una
+     tarjeta entera en vez de un 82%— y a 0,62s se leía apurado. */
+  transition:
+    transform 0.72s cubic-bezier(0.16, 0.84, 0.24, 1),
+    opacity 0.72s cubic-bezier(0.16, 0.84, 0.24, 1),
+    z-index 0s 0.3s;
+}
+.pcar--enhanced .pcar-cell[data-d="0"] {
+  cursor: default;
+}
+/* Refuerzo del atributo `inert` que pone React, para navegadores que no
+   lo soporten: clickear una tarjeta lateral la centra, no navega. */
+.pcar--enhanced .pcar-cell:not([data-d="0"]) a {
+  pointer-events: none;
+}
+
+/* Flechas. Dos juegos con dos ubicaciones que ningún CSS logra
+   reposicionando el mismo nodo: en ancho van flotando lejos de la
+   tarjeta, en angosto bajan a la fila de los puntos. */
+.pcar-arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+.pcar-arrow:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  transform: scale(1.06);
+}
+.pcar-arrow--wide {
+  position: absolute;
+  top: 38%;
+  z-index: 20;
+}
+.pcar-arrow--wide:hover {
+  transform: scale(1.06);
+}
+.pcar-arrow--prev {
+  left: -4.25rem;
+}
+.pcar-arrow--next {
+  right: -4.25rem;
+}
+@media (min-width: 900px) {
+  .pcar-arrow--wide {
+    display: flex;
+  }
+}
+@media (max-width: 899px) {
+  .pcar-arrow--narrow {
+    display: flex;
+  }
+}
+
+.pcar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.pcar-dots {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+/* El destino táctil vive en el <button> (44×44); el círculo visual es un
+   <span> aparte, para no depender de cómo pinta cada navegador un botón
+   de 8px. */
+.pcar-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 44px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+.pcar-dot-mark {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition:
+    background var(--transition),
+    transform var(--transition);
+}
+.pcar-dot:hover .pcar-dot-mark {
+  background: var(--text-dim);
+}
+.pcar-dot[aria-current="true"] .pcar-dot-mark {
+  background: var(--accent);
+  transform: scale(1.45);
+}
+
+/* Móvil: no hay sitio para que asomen los costados, así que tampoco se
+   gasta el giro 3D en el breakpoint donde más importa el rendimiento. */
+@media (max-width: 719px) {
+  .pcar--enhanced .pcar-cell {
+    --adc: min(var(--ad), 1);
+    transform: translateX(calc(var(--d) * 100%)) scale(calc(1 - var(--adc) * 0.22));
+    opacity: calc(1 - var(--adc));
+  }
+}
+
+/* Con reduced-motion no hay ni desplazamiento ni desenfoque animado:
+   solo el cambio de opacidad, y la tarjeta aparece en su sitio. */
+@media (prefers-reduced-motion: reduce) {
+  .pcar--enhanced .pcar-cell {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.2s linear;
+  }
+  .pcar--enhanced .pcar-cell[data-d="0"] {
+    opacity: 1;
+  }
+}
+
+/* Tarjeta */
+/* OJO: el respaldo de --a va acá, en la celda, y NO en .project-card.
+   Projects.tsx escribe el hex del proyecto como estilo en línea sobre la
+   celda; una declaración `--a` en la tarjeta lo pisaría —lo hacía— y las
+   diez tarjetas salían del mismo acento. */
+.pcar-cell {
+  --a: var(--accent);
+}
+.project-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+/* Filo de color: identifica el proyecto de un vistazo sin teñir la
+   tarjeta entera ni pelear con la captura. */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--a);
+  z-index: 2;
+}
+/* El foco de teclado recibe el mismo tratamiento que el hover: la
+   flecha de "esto lleva a algún lado" no puede depender del ratón. */
+.project-card:hover,
+.project-card:focus-visible {
+  border-color: color-mix(in oklab, var(--a) 45%, var(--border));
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-3px);
+}
+.project-card:hover .project-title,
+.project-card:focus-visible .project-title {
+  color: color-mix(in oklab, var(--a) var(--a-ink), var(--a-ink-with));
+}
+.project-card:hover .arrow-icon,
+.project-card:focus-visible .arrow-icon {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.project-shot {
+  position: relative;
+  /* 16:10. Con la rejilla de diez tarjetas había que apretarla a 2:1
+     porque cada píxel de alto se multiplicaba por cinco filas; con una
+     sola tarjeta a la vista la captura puede respirar y verse. */
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklab, var(--a) 10%, var(--surface-sunk));
+}
+/* SIN parálasis dentro de la tarjeta, y no por no haberlo intentado.
+   La idea era que la captura viajara a menos velocidad que su tarjeta para
+   dar profundidad. Se implementó con `--d` heredado (cero JavaScript) y se
+   midió: **de 16,6 a 70-98ms por fotograma**, o sea de 60fps a 12.
+
+   El motivo: darle un `transform` propio a la imagen la promueve a capa
+   compositada, y una capa de imagen con `filter` encima se vuelve a
+   rasterizar en cada fotograma mientras su tarjeta se escala. Se probó
+   además limitando el efecto a las tres tarjetas visibles —61-73ms— así que
+   no era el número de capas sino la combinación. Retirado.
+
+   El `filter` de abajo es gratis MIENTRAS la imagen no se transforme: forma
+   parte de la capa de la tarjeta y se rasteriza una vez. Si algún día se le
+   añade un `transform`, vuelve a costar. */
+.project-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: saturate(0.88) brightness(0.98);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.35s ease;
+}
+.project-card:hover .project-img {
+  transform: scale(1.025);
+  filter: none;
+}
+
+/* Variante sin captura. MundoRider es el único de los diez que no
+   tiene una y no se va a forzar: en vez de un hueco gris, un marco
+   tipográfico con la retícula del acento. Es una decisión, no una
+   ausencia — y sirve para cualquier proyecto futuro sin imagen.
+   Ya no lleva el rótulo "captura en proceso": eso es una nota de
+   gestión interna delante de quien viene a evaluar. El estado lo dice
+   la insignia "En desarrollo" del pie de la tarjeta. */
+.project-shot--type {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 1.25rem;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--a) 16%, transparent) 0 1px,
+      transparent 1px 2.25rem
+    ),
+    color-mix(in oklab, var(--a) 9%, var(--surface-sunk));
+}
+.project-shot-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.2rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: color-mix(in oklab, var(--a) var(--a-ink), var(--a-ink-with));
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.1rem 1.25rem 1.25rem;
+}
+/* Fila de metadatos: tipo de trabajo a la izquierda, año a la derecha.
+   El chip de tipo vuelve a la tarjeta ahora que no hay encabezados de
+   grupo que lo digan. */
+.project-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+.project-kind {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--a) var(--a-ink), var(--a-ink-with));
+  border: 1px solid color-mix(in oklab, var(--a) 32%, var(--border));
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+.project-year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: 400;
+  color: var(--text-dim);
+}
+.project-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  word-spacing: 0.09em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color var(--transition);
+}
+.arrow-icon {
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity var(--transition),
+    transform var(--transition);
+  flex-shrink: 0;
+}
+.project-tagline {
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: 1.45;
+  margin-top: 0.5rem;
+}
+/* Tres líneas, no dos: ya no hay una tarjeta al lado con la que haya que
+   poder comparar de un vistazo, así que puede contar un poco más. El
+   texto completo sigue viviendo en el caso de estudio. */
+.project-desc {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-top: 0.6rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.85rem;
+  list-style: none;
+  padding: 0;
+}
+.project-stack li {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-dim);
+  background: var(--surface-sunk);
+  padding: 0.18rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+.project-foot {
+  margin-top: auto;
+  padding-top: 0.95rem;
+}
+.project-foot .project-badges {
+  margin-top: 0;
+}

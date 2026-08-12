@@ -1,0 +1,709 @@
+/* ═══════════════════════════════════════════════════════════════
+   DETALLE
+   Página de detalle de proyecto, lightbox, 404 e insignias de estado
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── PROJECT DETAIL ─────────────────────────────────────────── */
+.detail-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem 8rem;
+  position: relative;
+  z-index: 1;
+}
+.detail-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3.5rem;
+}
+.detail-back {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  transition: color var(--transition);
+}
+.detail-back:hover {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+.detail-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.detail-hero {
+  margin-bottom: 3.5rem;
+}
+.detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+}
+.detail-year {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+.detail-status {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+}
+/* "En producción" es el único estado que se invierte: fondo tinta plena,
+   texto en el color del papel. Es el mismo recurso que usaba el verde
+   —destacar una sola cosa— resuelto sin cromatismo. */
+.detail-status--production {
+  background: var(--signal);
+  color: var(--on-accent);
+  border: 1px solid var(--signal);
+}
+.detail-status--wip {
+  background: var(--accent-wash);
+  color: var(--accent);
+  border: 1px solid var(--accent-line);
+}
+.detail-status--mvp,
+.detail-status--archived {
+  background: var(--surface-sunk);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+.detail-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 560;
+  color: var(--text);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  word-spacing: 0.09em;
+}
+.detail-tagline {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.65;
+  max-width: 600px;
+}
+.detail-tags {
+  margin-bottom: 1.5rem;
+}
+.detail-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.detail-content {
+  border-top: 1px solid var(--border);
+  padding-top: 3rem;
+}
+.detail-section {
+  margin-bottom: 3rem;
+}
+.detail-body {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 660px;
+}
+.detail-challenges {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.detail-challenge-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.detail-challenge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 0.6em;
+  flex-shrink: 0;
+}
+
+/* Plain-language summary — client-facing layer above the case study */
+.detail-summary {
+  margin-bottom: 2.5rem;
+  padding: 1.4rem 1.6rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-wash);
+  border-radius: 0 8px 8px 0;
+}
+.detail-summary-text {
+  font-size: var(--fs-lg, var(--fs-base));
+  color: var(--text);
+  line-height: 1.75;
+  max-width: 680px;
+  margin-top: 0.7rem;
+}
+
+/* Results — outcome bullets */
+.detail-results {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.detail-result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: 1.7;
+}
+.detail-next {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.detail-next-link--next {
+  text-align: right;
+  margin-left: auto;
+}
+.detail-result-check {
+  color: var(--accent);
+  font-weight: 700;
+  margin-top: 0.05em;
+  flex-shrink: 0;
+}
+
+/* Client testimonial */
+.detail-testimonial {
+  margin: 0;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 680px;
+}
+.detail-testimonial-quote {
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: 1.75;
+  font-style: italic;
+}
+.detail-testimonial-author {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm, 0.85rem);
+  color: var(--text-muted);
+}
+.detail-testimonial-role {
+  color: var(--accent);
+}
+/* Carousel: wrapper holds the horizontal scroller + side arrows */
+.carousel {
+  position: relative;
+}
+.detail-screenshots {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.6rem;
+  align-items: flex-start;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scroll-padding: 2px;
+  padding-bottom: 0.7rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.detail-screenshots::-webkit-scrollbar {
+  height: 6px;
+}
+.detail-screenshots::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+.detail-screenshots::-webkit-scrollbar-track {
+  background: transparent;
+}
+.detail-screenshots:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.shot {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+}
+.shot--desktop {
+  width: min(440px, 80vw);
+}
+.shot--mobile {
+  width: 200px;
+}
+
+/* Side arrows — only visible when the track overflows */
+.carousel-arrow {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition:
+    border-color var(--transition),
+    color var(--transition),
+    background var(--transition);
+}
+.carousel--scrollable .carousel-arrow {
+  display: flex;
+}
+.carousel-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.carousel-arrow--prev {
+  left: -8px;
+}
+.carousel-arrow--next {
+  right: -8px;
+}
+
+.shot-frame {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: zoom-in;
+  position: relative;
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+.shot-frame:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+/* Desktop: browser chrome bar with traffic-light dots */
+.shot--desktop .shot-chrome {
+  display: block;
+  height: 26px;
+  background: var(--surface-sunk);
+  border-bottom: 1px solid var(--border);
+}
+.shot--desktop .shot-chrome::before {
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow:
+    14px 0 0 #febc2e,
+    28px 0 0 #28c840;
+}
+
+/* Mobile: phone frame with a top speaker bar */
+.shot--mobile .shot-frame {
+  border-radius: 22px;
+  padding: 10px 8px;
+  background: var(--surface-sunk);
+}
+.shot--mobile .shot-chrome {
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin: 0 auto 8px;
+  border-radius: 3px;
+  background: var(--border);
+}
+
+.shot-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.shot-img.is-loaded {
+  opacity: 1;
+}
+.shot--desktop .shot-img {
+  aspect-ratio: 16 / 10;
+}
+.shot--mobile .shot-img {
+  aspect-ratio: 9 / 19;
+  border-radius: 14px;
+}
+
+.shot-caption {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ─── LIGHTBOX ───────────────────────────────────────────── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1rem;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: lightbox-in 0.2s ease;
+}
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.lightbox-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-height: 100%;
+  align-items: center;
+}
+.lightbox-img {
+  display: block;
+  max-width: 100%;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  background: var(--surface);
+}
+.lightbox-figure--desktop .lightbox-img {
+  max-height: 78vh;
+  width: min(1100px, 92vw);
+}
+.lightbox-figure--mobile .lightbox-img {
+  max-height: 82vh;
+}
+.lightbox-caption {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+.lightbox-counter {
+  color: var(--text-dim);
+}
+.lightbox-close,
+.lightbox-nav {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
+}
+.lightbox-close:hover,
+.lightbox-nav:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lightbox-nav {
+  width: 44px;
+  height: 44px;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.lightbox-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+}
+/* 16:9 responsive iframe */
+.detail-video-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.detail-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.detail-screenshots-placeholder {
+  padding: 3rem;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+.detail-next {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+.detail-next-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.detail-next-link:hover .detail-next-title {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.detail-next-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.detail-next-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--text);
+  transition: color var(--transition);
+}
+.detail-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── NOT FOUND (404) ────────────────────────────────────────── */
+.not-found-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+}
+.not-found-code {
+  font-family: var(--font-mono);
+  font-size: 6rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.not-found-message {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+.not-found-back {
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1px solid var(--accent-line);
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--radius);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+  display: inline-block;
+}
+.not-found-back:hover {
+  background: var(--accent-wash);
+  border-color: var(--accent);
+}
+
+/* ─── PROJECT STATUS BADGES (card, read-only) ─────────────────── */
+.project-badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+}
+/* La inversión significa UNA sola cosa: está desplegado y accesible.
+   Todo lo demás es contorno, para que el ojo encuentre lo real primero:
+   el peso visual de un sólido entre pastillas huecas se ve incluso
+   antes de leerlas. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--text-dim);
+  background: transparent;
+}
+.badge--live {
+  color: var(--on-accent);
+  border-color: var(--signal);
+  background: var(--signal);
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* --text-dim, no --text-muted: es micro-texto sobre --surface-sunk, que
+   es el peor par de contraste de la página y para el que --text-dim está
+   calibrado (4,51:1 en claro, 4,76:1 en oscuro). */
+.badge--working {
+  color: var(--text-dim);
+  border-color: var(--border);
+  background: var(--surface-sunk);
+}
+/* "En desarrollo": tinta plena sobre el wash gris. Se distingue de la
+   insignia de producción por la inversión, no por el matiz. Un proyecto
+   sin terminar tiene que declararse antes de que lo descubra quien lo
+   está evaluando. */
+.badge--wip {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+.badge--code {
+  color: var(--text-muted);
+}
+.badge--private,
+.badge--soon {
+  color: var(--text-dim);
+}
+
+/* ─── MUTED BUTTON (disabled-looking, non-clickable) ──────────── */
+.btn-muted {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.06em;
+  cursor: default;
+  user-select: none;
+}
+
+/* ─── DETAIL RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .detail-wrapper {
+    padding: calc(60px + 1rem) 1.1rem calc(80px + env(safe-area-inset-bottom));
+  }
+  .detail-title {
+    font-size: var(--fs-2xl);
+  }
+  .detail-screenshots {
+    gap: 1.1rem;
+  }
+  .shot--desktop {
+    width: 86vw;
+  }
+  .shot--mobile {
+    width: 64vw;
+    max-width: 230px;
+  }
+  /* On touch screens swipe is the primary affordance — hide the arrows */
+  .carousel--scrollable .carousel-arrow {
+    display: none;
+  }
+  .lightbox-nav {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-screenshots {
+    scroll-behavior: auto;
+  }
+  .shot-img {
+    transition: none;
+  }
+}

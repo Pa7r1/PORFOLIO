@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./App.css";
 
 // i18n
@@ -6,12 +6,10 @@ import { useLocale } from "@/i18n/LocaleContext";
 import { NAV } from "@/i18n/nav";
 
 // Common
-import ParticlesBackground from "@/components/common/ParticlesBackground";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import LangSwitch from "@/components/common/LangSwitch";
 import ThemeToggle from "@/components/common/ThemeToggle";
-import FloatingWhatsApp from "@/components/common/FloatingWhatsApp";
 
 // Sections
 import About from "@/components/sections/About";
@@ -22,6 +20,7 @@ import Contact from "@/components/sections/Contact";
 
 // Data
 import { personalInfo } from "@/data/personalInfo";
+import { asset } from "@/utils/asset";
 
 // ── ICONS ──────────────────────────────────────────────────
 const GithubIcon = () => (
@@ -42,24 +41,74 @@ const MailIcon = () => (
   </svg>
 );
 
+// ── TITULAR REVELADO ───────────────────────────────────────
+/**
+ * El titular entra línea por línea, con las palabras subiendo detrás de una
+ * máscara.
+ *
+ * Las líneas NO existen en el marcado: las decide el ajuste de texto contra
+ * `max-width: 19ch` y cambian con el idioma y con el ancho de la ventana. Por
+ * eso el marcado es por PALABRA y el retardo se agrupa después, midiendo qué
+ * máscaras comparten `offsetTop`. Partir las líneas a mano en el diccionario
+ * habría fijado un corte que en móvil no es el que toca.
+ */
+function TitularRevelado({ texto }: { texto: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  /* Va en useLayoutEffect, no en useEffect: tiene que escribir los retardos
+     antes del primer pintado o el primer fotograma sale con todas las
+     palabras en la línea 0 y el escalonado se pierde. */
+  useLayoutEffect(() => {
+    const titular = ref.current;
+    if (!titular) return;
+    let linea = -1;
+    let anterior = Number.NaN;
+    titular.querySelectorAll<HTMLElement>(".mascara").forEach((mascara) => {
+      if (mascara.offsetTop !== anterior) {
+        linea += 1;
+        anterior = mascara.offsetTop;
+      }
+      mascara.style.setProperty("--linea", String(linea));
+    });
+  }, [texto]);
+
+  /* Los tramos impares son el énfasis: vienen marcados entre asteriscos en el
+     diccionario (ver la clave `hero.headline`). */
+  const tramos = texto.split(/\*(.+?)\*/);
+
+  return (
+    <h1 className="hero-lead" ref={ref}>
+      {tramos.map((tramo, i) =>
+        i % 2 ? (
+          <em key={i}>{enmascarar(tramo)}</em>
+        ) : (
+          <Fragment key={i}>{enmascarar(tramo)}</Fragment>
+        ),
+      )}
+    </h1>
+  );
+}
+
+/**
+ * Cada palabra se lleva su espacio siguiente DENTRO de la máscara. No es un
+ * capricho: el subrayado del énfasis no se dibuja a través de una caja
+ * `inline-block`, así que si el espacio quedara fuera el subrayado saldría
+ * cortado entre palabra y palabra.
+ */
+function enmascarar(tramo: string) {
+  return (
+    tramo.match(/\S+\s*/g)?.map((palabra, i) => (
+      <span className="mascara" key={i}>
+        <span className="mascara-i">{palabra}</span>
+      </span>
+    )) ?? null
+  );
+}
+
 // ── APP ────────────────────────────────────────────────────
 export default function App() {
   const { t } = useLocale();
   const [activeSection, setActiveSection] = useState("about");
-  const cursorRef = useRef<HTMLDivElement>(null);
-
-  // Cursor glow follow
-  useEffect(() => {
-    const move = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.left = e.clientX + "px";
-        cursorRef.current.style.top  = e.clientY + "px";
-      }
-    };
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
-  }, []);
-
   // Scroll-spy
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,12 +160,6 @@ export default function App() {
       {/* Skip-to-content (a11y) */}
       <a href="#main" className="skip-link">{t("skip.toContent")}</a>
 
-      {/* Ambient particles */}
-      <ParticlesBackground />
-
-      {/* Cursor glow */}
-      <div ref={cursorRef} className="cursor-glow" aria-hidden="true" />
-
       {/* Mobile header & bottom nav */}
       <Header activeSection={activeSection} />
 
@@ -153,15 +196,49 @@ export default function App() {
 
       <main id="main" className="page">
         {/* Hero */}
+        {/* Orden deliberado, de lo diferencial a lo genérico: primero la
+            frase que no puede escribir otro portafolio, después la firma
+            (nombre + rol + dónde) y al final la prueba (cifras), dentro de
+            la primera pantalla. Entrada escalonada (.entra / -2 / -3 / -4):
+            cada pieza aparece en el orden en que se lee. */}
         <section className="hero">
-          <div className="hero-inner fade-in">
-            <h1 className="hero-name">{personalInfo.name}</h1>
-            <p className="hero-role">{t("hero.subline")}</p>
-            <p className="hero-headline">{t("hero.headline")}</p>
-            <div className="hero-actions">
-              <a href="#contact" className="btn-primary">{t("hero.ctaPrimary")}</a>
+          <div className="hero-inner">
+            {/* El titular resalta un tramo con peso + subrayado, no con
+                color. El tramo viene marcado entre asteriscos en el
+                diccionario. Entra línea por línea: ver TitularRevelado. */}
+            <TitularRevelado texto={t("hero.headline")} />
+
+            <p className="hero-sign entra entra-2">
+              <span className="hero-name">{personalInfo.name}</span>
+              <span className="hero-eyebrow">{t("hero.eyebrow")}</span>
+            </p>
+
+            <div className="hero-actions entra entra-3">
+              <a
+                href={asset("Cv1.pdf")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
+              >
+                {t("hero.ctaPrimary")}
+              </a>
               <a href="#projects" className="btn-ghost">{t("hero.ctaSecondary")}</a>
             </div>
+
+            <dl className="hero-stats entra entra-4">
+              <div className="hero-stat">
+                <dt className="stat-num">{personalInfo.yearsExperience}+</dt>
+                <dd className="stat-label">{t("about.stat.experience")}</dd>
+              </div>
+              <div className="hero-stat">
+                <dt className="stat-num">{personalInfo.productionSystems}</dt>
+                <dd className="stat-label">{t("about.stat.production")}</dd>
+              </div>
+              <div className="hero-stat">
+                <dt className="stat-num">{personalInfo.teamMonths}</dt>
+                <dd className="stat-label">{t("about.stat.team")}</dd>
+              </div>
+            </dl>
           </div>
         </section>
 
@@ -172,9 +249,6 @@ export default function App() {
         <Contact />
         <Footer />
       </main>
-
-      {/* Floating WhatsApp contact */}
-      <FloatingWhatsApp />
     </>
   );
 }

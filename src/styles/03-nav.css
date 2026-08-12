@@ -1,0 +1,94 @@
+/* ═══════════════════════════════════════════════════════════════
+   NAV
+   Barra superior de escritorio
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── TOP NAV (desktop) ─────────────────────────────────── */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 2.5rem;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.top-nav-brand {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 560;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  word-spacing: 0.09em;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: color var(--transition);
+}
+/* La marca ya está en tinta plena: el hover no puede ser un cambio de
+   color, así que es un subrayado. */
+.top-nav-brand:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.top-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.top-nav-links a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.6rem 0.9rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius);
+  transition:
+    color var(--transition),
+    background var(--transition);
+}
+.top-nav-links a:hover,
+.top-nav-links a.active {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+.top-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.top-nav-actions a,
+.top-nav-actions button {
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius);
+  background: transparent;
+  transition:
+    color var(--transition),
+    background var(--transition);
+}
+.top-nav-actions a:hover,
+.top-nav-actions button:hover {
+  color: var(--accent);
+  background: var(--accent-wash);
+}

@@ -42,8 +42,24 @@ Después: `npm run lint` y `npm run build` para validar (los textos están en
 
 ## Estado actual
 
-- **En vivo**: `barberia` (vj-barber.com), `on-wheels` (GitHub Pages), `motobitacora` (Vercel).
-- **Repo público**: `anistream-tv`, `on-wheels`, `taskflow`, `sistema-zapatillas`.
-- **Repo privado**: `sistema-canchas`, `qretail`, `barberia`, `granja-de-videos`, `motobitacora`, `upward`, `ytm-download`.
+*(Actualizado 2026-08-06. Verificado con `curl` — los repos privados dan 404 sin sesión.)*
 
-Si un repo figura como privado pero en realidad la URL estaba mal, corregí `githubUrl` y quitá `repoPrivate`.
+- **En vivo** (los 7 verificados con HTTP 200 el 2026-08-07): `barberia` (vj-barber.com),
+  `aula-virtual` (vj-barber.online), `circuitos-argentinos`
+  (circuitos-argentinos.makkem.com), `makem` (turismo/constructora/abogados.makkem.com),
+  `on-wheels` (GitHub Pages), `qretail` y `motobitacora` (Vercel).
+- **Repo público**: `anistream-tv`, `on-wheels`, `taskflow`, `sistema-zapatillas`, `ytm-download`.
+- **Repo privado** (chip candado, nunca enlace): `barberia`, `aula-virtual`,
+  `circuitos-argentinos`, `modex-ecommerce`, `sistema-canchas`, `qretail`,
+  `granja-de-videos`, `motobitacora`, `upward`.
+- **Sin repo ni demo pública**: `makem` (solo `liveUrl`).
+
+`modex-ecommerce` es un repositorio de equipo ajeno (`Codester6000/page`), no de Pa7r1: por eso
+va sin `githubUrl` y con `repoPrivate: true`.
+
+Si un repo figura como privado pero en realidad la URL estaba mal, corregí `githubUrl` y quitá
+`repoPrivate`. Antes de dar por bueno un `githubUrl` nuevo, comprobalo:
+
+```bash
+curl -sL -o /dev/null -w "%{http_code}\n" https://github.com/Pa7r1/<repo>
+```

@@ -1,0 +1,333 @@
+/* ═══════════════════════════════════════════════════════════════
+   ABOUT-TRAYECTO
+   Sobre mí, trayecto cronológico (acordeón) y pastillas de etiqueta
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── ABOUT ──────────────────────────────────────────────── */
+.about-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+/* La foto se queda en "Sobre mí" y no sube al hero: los dos primeros
+   segundos los gana la frase, no una cara. Lo que cambia es que a 130px
+   flotaba con media columna vacía debajo, y que su fondo celeste de foto
+   carnet era el único color no controlado de toda la página —en tema
+   oscuro, lo segundo más brillante de la sección—. Ahora acompaña al
+   texto mientras se lee y entra en la escala de grises del sistema. */
+.about-photo-wrap {
+  position: relative;
+  width: 190px;
+}
+.about-photo {
+  position: sticky;
+  top: 96px;
+  z-index: 1;
+  display: block;
+  width: 190px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  filter: grayscale(1) contrast(1.03);
+  transition: filter 0.3s;
+}
+/* El color vuelve al pasar por encima: la foto sigue siendo de una
+   persona, solo que no compite con el resto en reposo. */
+.about-photo:hover {
+  filter: grayscale(0.15) contrast(1);
+}
+.about-photo-placeholder {
+  position: relative;
+  z-index: 1;
+  width: 190px;
+  height: 240px;
+  border-radius: 8px;
+  background: var(--surface-sunk);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  border: 1px solid var(--border);
+}
+/* 62ch de medida. Corriendo a lo ancho de la columna daba 87 caracteres
+   por línea: el ojo pierde el renglón al volver al margen izquierdo. */
+.about-text p {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  margin-bottom: 1.1rem;
+  line-height: 1.75;
+  /* 54ch, no 62: el `ch` de Switzer es angosto y 62ch daban 86 caracteres
+     por línea reales, muy por encima del rango en que el ojo encuentra el
+     principio del renglón siguiente sin buscarlo. */
+  max-width: 54ch;
+}
+/* El tercer párrafo es el doble de largo que los otros dos y venía como
+   ocho líneas seguidas del mismo peso. Se separa como nota al margen
+   —filete, un escalón menos de cuerpo— en vez de tocarle el texto. */
+.about-text .about-note {
+  font-size: var(--fs-sm);
+  border-left: 2px solid var(--accent-line);
+  padding-left: 1.15rem;
+  margin-top: 1.75rem;
+}
+/* Énfasis por peso, no por color: media docena de palabras en cobre
+   dentro de un párrafo se leen como enlaces rotos. */
+.about-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.about-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+/* Único botón sólido de la página: el CTA que queremos que se pulse. */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  min-height: 44px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+.btn-primary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+/* Las cifras se mudaron al hero (ver .hero-stats); estas dos clases
+   siguen vivas porque son las que las pintan allá. */
+.stat-num {
+  font-family: var(--font-display);
+  /* Baja de --fs-2xl: una cifra de apoyo no puede ser más grande que
+     cualquier titular de sección de la página. Sigue destacando por ser
+     display y por el contraste con su etiqueta en mono. */
+  font-size: var(--fs-xl);
+  font-weight: 560;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-top: 0.45rem;
+  max-width: 11rem;
+  line-height: 1.4;
+}
+
+/* ─── TRAYECTO (log cronológico) ──────────────────────────────
+   Las nueve filas están a la vista de una — periodo, puesto y dónde —
+   y la descripción larga se despliega con <details>. Nativo: teclado,
+   lectores de pantalla y Ctrl+F funcionan sin escribir nada. El periodo
+   va en columna propia con guía vertical: se lee como línea de tiempo
+   sin dibujar una. */
+.log {
+  border-top: 1px solid var(--border);
+}
+.log-row {
+  border-bottom: 1px solid var(--border);
+  /* Ancla del filete de ::before. */
+  position: relative;
+}
+/* El fondo sigue a `[open]` y no a `--abierta`: mientras una fila se está
+   plegando `open` sigue puesto, así que el fondo aguanta hasta que el
+   contenido termina de recogerse en vez de apagarse en el primer fotograma. */
+.log-row[open] {
+  background: var(--surface);
+}
+.log-row > summary {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 1.75rem;
+  padding: 0.9rem 0.75rem;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+  transition: background var(--transition);
+}
+.log-row > summary::-webkit-details-marker {
+  display: none;
+}
+.log-row > summary:hover {
+  background: var(--surface);
+}
+/* El título ya está en tinta plena: abrir o pasar por encima se marca
+   con subrayado, no cambiando de color. */
+.log-row > summary:hover .log-title,
+.log-row[open] > summary .log-title {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.log-when {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+  line-height: 1.6;
+  white-space: pre-line;
+  border-right: 1px solid var(--border);
+  padding-right: 1rem;
+  margin-right: -1rem;
+  align-self: stretch;
+}
+/* ── Tres niveles de fila ──────────────────────────────────────
+   Antes las nueve filas pesaban lo mismo: dieciséis meses en equipo se
+   leían igual que un encargo de un mes, y la universidad igual que
+   ambos. El peso ahora sigue a lo que el lector vino a evaluar.
+
+   1. Destacada  → filete en tinta, abierta de entrada, título grande.
+   2. Normal     → compacta, título al cuerpo del texto, se abre si interesa.
+   3. Formación  → un escalón más callada: es contexto, no evidencia. */
+/* El filete se DIBUJA al pasar por encima, no está puesto de antemano. Antes
+   vivía fijo en las destacadas y marcaba tres filas para siempre; ahora marca
+   la fila con la que estás interactuando, que es de lo que sirve una marca.
+   Se anima `scaleY` con origen arriba —el trazo crece hacia abajo, como si lo
+   trazaran— y eso es compositor puro: ni layout ni repintado.
+   `--destacada` pasa a significar solo "arranca abierta" y "título grande". */
+.log-row::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.log-row:hover::before,
+.log-row:focus-within::before,
+.log-row--abierta::before {
+  transform: scaleY(1);
+}
+.log-row--destacada .log-title {
+  font-size: var(--fs-lg);
+}
+.log-row--formacion .log-title {
+  font-family: var(--font-text);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.log-title {
+  display: block;
+  font-family: var(--font-display);
+  /* Al cuerpo del texto, no un escalón por encima: con --fs-lg las nueve
+     filas competían con el titular de la sección. Las destacadas lo
+     recuperan arriba. */
+  font-size: var(--fs-base);
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  word-spacing: 0.09em;
+  color: var(--text);
+  transition: color var(--transition);
+}
+.log-org {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.log-kind {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+.log-chevron {
+  color: var(--text-dim);
+  flex-shrink: 0;
+  align-self: center;
+  transition: transform var(--transition), color var(--transition);
+}
+.log-row[open] .log-chevron {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+/* ── Plegado animado ───────────────────────────────────────────
+   Una rejilla de una sola fila que va de 0fr a 1fr. Es la forma portátil de
+   animar hacia "alto automático": `interpolate-size: allow-keywords` haría
+   lo mismo con `height: auto` pero solo existe en Chromium, y el modo de
+   fallo —que el panel salte— es justo lo que se quiere evitar.
+
+   El hijo necesita `min-height: 0` o la rejilla se niega a encogerlo por
+   debajo de su contenido y no se pliega nada. */
+.log-body-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows 0.36s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.3s ease;
+  opacity: 0;
+}
+.log-row--abierta .log-body-wrap {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.log-body-wrap > * {
+  min-height: 0;
+  overflow: hidden;
+}
+/* El cuerpo se alinea bajo el puesto, no bajo el periodo: la columna
+   del periodo sigue leyéndose limpia de arriba abajo. */
+.log-body {
+  padding: 0 0.75rem 1.2rem calc(8.5rem + 1.75rem + 0.75rem);
+}
+.log-desc {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.7;
+  max-width: var(--measure);
+  margin-bottom: 0.85rem;
+}
+
+/* ─── TAG ────────────────────────────────────────────────── */
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  transition:
+    color var(--transition),
+    border-color var(--transition);
+}
