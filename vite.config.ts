@@ -1,11 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   // Para GitHub Pages: cambiá "portfolio" por el nombre de tu repo
   // Si usás un dominio custom o repo con tu username (tu-usuario.github.io), poné base: "/"
   base: "/PORFOLIO/",
@@ -21,7 +20,6 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          "react-vendor": ["react", "react-dom"],
           router: ["react-router-dom"],
         },
       },
