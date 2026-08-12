@@ -113,6 +113,14 @@ Cambiá el orden de los objetos dentro del array `detail.screenshots` del proyec
 
 ## Proyectos sin capturas
 
-`sistema-canchas`, `anistream-tv`, `taskflow`, `sistema-zapatillas` y `ytm-download` todavía
-usan una imagen de Unsplash en `image` y no tienen `screenshots`. Para sumarles capturas,
-seguí "Agregar una captura" creando la carpeta `public/captures/<slug>/`.
+*(Actualizado 2026-08-06. Comprobalo contra `projects.ts`, no contra esta lista.)*
+
+Tres proyectos todavía usan **una foto de banco de imágenes (Unsplash)** en `image` y no tienen
+`screenshots`: `anistream-tv`, `sistema-canchas` y `sistema-zapatillas`. Una foto de stock
+haciéndose pasar por captura del producto es peor que no tener imagen — hay que reemplazarlas
+por capturas reales o sacar el proyecto. Para sumarles capturas, seguí "Agregar una captura"
+creando la carpeta `public/captures/<slug>/`.
+
+`ytm-download` sí tiene capturas (4 `.webp`) pero **no tiene entrada en `captures.config.mjs`**:
+se hicieron con el modo imagen suelta, así que `npm run optimize:captures` no puede
+regenerarlas. Si las tocás, agregale primero sus items al config.
