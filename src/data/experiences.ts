@@ -3,12 +3,49 @@ import type { Experience } from "@/types";
 export const experiences: Experience[] = [
   {
     period: {
+      es: "Jul 2026\nPresente",
+      en: "Jul 2026\nPresent",
+    },
+    title: {
+      es: "Emprendimiento propio",
+      en: "Own venture",
+    },
+    company: "Makem",
+    description: {
+      es: "Armé Makem para vender sitios web a negocios locales: el sitio comercial, el sistema de diseño y tres piezas de demostración completas, todo en Astro con salida estática. Me obligó a trabajar cosas que un proyecto de código puro no te exige: escribir para alguien que no es técnico, defender decisiones de diseño y sostener sitios en línea después de publicarlos.",
+      en: "I built Makem to sell websites to local businesses: the commercial site, the design system and three complete demo pieces, all in Astro with static output. It forced me to work on things a pure code project doesn't demand: writing for a non-technical reader, defending design decisions, and keeping sites online after publishing them.",
+    },
+    tags: ["Astro", "TypeScript", "CSS", "Diseño", "SEO"],
+    type: "work",
+  },
+  {
+    period: {
+      es: "Jul 2026\nPresente",
+      en: "Jul 2026\nPresent",
+    },
+    title: {
+      es: "Full Stack Developer",
+      en: "Full Stack Developer",
+    },
+    company: "Circuitos Argentinos · Proyecto propio",
+    description: {
+      es: "Aplicación web instalable para encontrar circuitos de enduro y motocross en Argentina. Procesa los archivos GPX que deja el reloj o el celular y los convierte al formato que entiende el mapa, y resuelve las búsquedas por cercanía dentro de la base con PostGIS, en una sola consulta. Lo armé como monorepo con los tipos compartidos entre la API y la web, y con integración continua que corre lint, tipos y pruebas contra una base PostGIS real en cada cambio.",
+      en: "Installable web app for finding enduro and motocross circuits across Argentina. It processes the GPX files a watch or phone produces and converts them to the format the map understands, and resolves proximity searches inside the database with PostGIS, in a single query. I built it as a monorepo with types shared between API and web, and continuous integration that runs lint, types and tests against a real PostGIS database on every change.",
+    },
+    tags: ["TypeScript", "Fastify", "Drizzle ORM", "PostGIS", "React", "Leaflet", "Docker", "GitHub Actions"],
+    type: "work",
+    // Es la pieza con más profundidad técnica: PostGIS, monorepo con tipos
+    // compartidos e integración continua contra una base real.
+    featured: true,
+  },
+  {
+    period: {
       es: "May 2026\nPresente",
       en: "May 2026\nPresent",
     },
     title: {
-      es: "Fullstack Developer",
-      en: "Fullstack Developer",
+      es: "Full Stack Developer",
+      en: "Full Stack Developer",
     },
     company: "Aula virtual - Freelancer",
     description: {
@@ -50,8 +87,8 @@ export const experiences: Experience[] = [
       en: "Dec 2025\nPresent",
     },
     title: {
-      es: "Fullstack Developer",
-      en: "Fullstack Developer",
+      es: "Full Stack Developer",
+      en: "Full Stack Developer",
     },
     company: "VJ-Barber · Freelance",
     description: {
@@ -69,22 +106,45 @@ export const experiences: Experience[] = [
       "Linux",
     ],
     type: "work",
+    // Cliente real con el sistema en producción y varias sucursales
+    // operando encima: el caso más fácil de verificar.
+    featured: true,
   },
   {
     period: {
-      es: "Ago 2025\nDic 2025",
-      en: "Aug 2025\nDec 2025",
+      es: "Jul 2024\nNov 2025",
+      en: "Jul 2024\nNov 2025",
     },
     title: {
-      es: "Backend Developer",
-      en: "Backend Developer",
+      es: "Full Stack Developer · trabajo en equipo",
+      en: "Full Stack Developer · team project",
     },
     company: "Modex · La Rioja",
     description: {
-      es: "El cliente, dueño de un negocio de accesorios y componentes de hardware, cargaba a mano cada producto y todos sus datos en su sitio. Le construí una automatización que redujo ese trabajo en más del 90%: ahora arrastra un archivo, presiona un botón y los datos se cargan solos. Sumé un motor que asocia imágenes a los productos de forma automática y reordené la base de datos para hacerla más segura y rápida.",
-      en: "The client, who owns a hardware accessories and components business, used to load every product and all its data into their site by hand. I built an automation that cut that work by more than 90%: now they drag a file, press a button, and the data loads itself. I added an engine that matches images to products automatically and restructured the database to make it more secure and faster.",
+      es: "Dieciséis meses construyendo la tienda online de un negocio de hardware junto a otros siete desarrolladores, sobre un mismo repositorio. Mi parte fue la carga masiva del catálogo —el dueño pasó de escribir cada producto a mano a subir un archivo—, el motor que le asocia la imagen a cada producto, y llevar las consultas sueltas del servidor a procedimientos almacenados. También trabajé la integración de pagos con MercadoPago y la reportería exportable. Es donde aprendí a leer código ajeno antes de tocarlo y a resolver conflictos sin pisar el trabajo de otro.",
+      en: "Sixteen months building a hardware business's online store alongside seven other developers on a single shared repository. My part was bulk catalog loading — the owner went from typing every product by hand to uploading a file — the engine that matches an image to each product, and moving loose server queries into stored procedures. I also worked on the MercadoPago payment integration and exportable reporting. It's where I learned to read other people's code before touching it and to resolve conflicts without stepping on someone else's work.",
     },
-    tags: ["MySQL", "Node.js", "Express", "ExcelJS", "PapaParse"],
+    tags: ["Node.js", "Express", "MySQL", "React", "Redux Toolkit", "MercadoPago", "Git"],
+    type: "work",
+    // La única prueba de trabajo en equipo sobre un repositorio compartido, y
+    // la más larga: es lo primero que busca quien contrata.
+    featured: true,
+  },
+  {
+    period: {
+      es: "Mar 2024\nPresente",
+      en: "Mar 2024\nPresent",
+    },
+    title: {
+      es: "Full Stack Developer",
+      en: "Full Stack Developer",
+    },
+    company: "QRetail · Producto propio",
+    description: {
+      es: "Sistema de gestión para comercios con varias sucursales, que vendo como producto propio. Cada negocio opera con sus sucursales, usuarios y stock independientes: un único despliegue atiende a varios clientes sin duplicar infraestructura. Reemplacé el lector de código de barras por códigos QR escaneados con la cámara del teléfono, así el comercio arranca sin comprar hardware dedicado. El despliegue va automatizado, con las migraciones separadas por entorno y verificación de tipos antes de publicar.",
+      en: "Management system for multi-branch retailers, which I sell as my own product. Each business operates with its own branches, users and stock: a single deployment serves several clients without duplicating infrastructure. I replaced the barcode scanner with QR codes read through the phone's camera, so a shop can start without buying dedicated hardware. Deployment is automated, with per-environment migrations and type checking before each release.",
+    },
+    tags: ["Next.js", "React", "TypeScript", "Prisma", "PostgreSQL", "NextAuth", "Vercel"],
     type: "work",
   },
   {
@@ -93,8 +153,8 @@ export const experiences: Experience[] = [
       en: "Dec 2023\nAug 2025",
     },
     title: {
-      es: "Fullstack Developer",
-      en: "Fullstack Developer",
+      es: "Full Stack Developer",
+      en: "Full Stack Developer",
     },
     company: "Gestión Zapatillas · Freelance",
     description: {

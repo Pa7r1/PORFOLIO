@@ -9,48 +9,64 @@ export const es = {
   // Hero / mobile header
   "header.role": "FULLSTACK DEV",
   "skip.toContent": "Saltar al contenido",
-  "hero.headline":
-    "Convierto la operación de tu negocio en software a medida, eficiente y listo para usar.",
-  "hero.subline":
-    "Desarrollador Full Stack · 3+ años · proyectos reales de clientes en producción",
-  "hero.ctaPrimary": "Hablemos de tu proyecto",
+  // Los asteriscos marcan el tramo que va resaltado en el titular del
+  // hero: App.tsx parte la cadena por ellos y envuelve ese tramo en <em>.
+  // El resalte es peso + subrayado, no color (ver .hero-lead em).
+  // Cambiar el texto es libre; dejar los dos asteriscos, obligatorio.
+  "hero.headline": `*Desarrollo aplicaciones web de extremo a extremo:* desde el modelado de datos hasta despliegues sólidos, escalables y mantenibles. `,
+  // Firma del hero: rol + dónde. El stack completo ya está en Habilidades;
+  // repetirlo acá le robaba el primer golpe de vista a la frase.
+  "hero.eyebrow": "Full Stack Developer · Remoto desde Argentina",
+  "hero.ctaPrimary": "Descargar CV",
   "hero.ctaSecondary": "Ver proyectos",
 
   // About section paragraphs
   "about.p1":
-    "Soy desarrollador Full Stack, formado en la UTN La Rioja. Construyo software que resuelve problemas concretos de negocio y queda funcionando de verdad, no solo en una demo.",
+    "Soy desarrollador Full Stack egresado de la UTN La Rioja. Manejo el ciclo completo de desarrollo de software: desde el modelado de bases de datos y la creación de APIs REST, hasta el desarrollo de la interfaz y la configuración del despliegue final en la nube.",
   "about.p2":
-    "Gestiono el ciclo completo de tu software: desde entender la necesidad de tu negocio hasta entregar la aplicación lista para usar en internet. Al centralizar todo el desarrollo conmigo, evitás intermediarios, ahorrás tiempo y garantizás un resultado coherente.",
+    "Cuento con experiencia práctica trabajando en repositorios compartidos junto a equipos de desarrollo. Esta etapa me permitió afianzar las buenas prácticas del trabajo en equipo: lectura y auditoría de código ajeno, resolución de conflictos en Git sin bloquear a otros y priorizar la mejor solución técnica por sobre el ego.",
   "about.p3":
-    "He ayudado a negocios a dejar atrás el papel y las planillas de Excel, transformando su gestión diaria en plataformas digitales organizadas y automatizadas. Estoy disponible tanto para liderar proyectos independientes como para integrarme a equipos de desarrollo establecidos.",
+    "Potencio mi productividad con asistencia de IA, pero bajo un entorno controlado que diseñé yo mismo: un repositorio de configuración versionado con subagentes, hooks de validación y servidores MCP que imponen las convenciones del proyecto. Busco sumarme a un equipo donde pueda aportar autonomía en el backend e infraestructura, construyendo bases de datos sólidas, despliegues reproducibles y sistemas estables.",
   "about.downloadCV": "Descargar CV",
-  "about.stat.experience": "años de exp.",
-  "about.stat.projects": "proyectos",
-  "about.stat.clients": "clientes",
+  "about.stat.experience": "años programando",
+  "about.stat.production": "sistemas en producción",
+  "about.stat.team": "meses en equipo",
 
   // Timeline
-  "timeline.tab.work": "Trabajo",
-  "timeline.tab.education": "Educación",
+  "timeline.hint": "Tocá una fila para leer el detalle.",
+  "timeline.education": "Formación",
 
   // Skills group labels
   "skills.group.backend": "Backend",
   "skills.group.databases": "Bases de Datos",
   "skills.group.devops": "DevOps & Infraestructura",
-  "skills.group.tools": "Herramientas",
+  "skills.group.testing": "Calidad & Tooling",
   "skills.group.frontend": "Frontend",
+  "skills.group.ai": "Desarrollo asistido por IA",
 
   // Contact
   "contact.text":
-    "¿Tenés un proyecto o una idea entre manos? Ya sea una solución a medida para tu negocio o sumarme a tu equipo, contame qué necesitás y te respondo el mismo día.",
-  "contact.cta": "Escribime por WhatsApp",
-  "contact.ctaMicro": "Respuesta en el día · primera consulta sin compromiso",
-  "contact.location": "Pituil, La Rioja, Argentina · Disponible solo en remoto",
+    "Estoy buscando equipo. Si estás cubriendo una posición Full Stack o de backend y algo de lo que viste encaja, escribime!",
+  "contact.cta": "Escribirme por correo",
+  "contact.ctaMicro": "",
+  "contact.location": "Pituil, La Rioja, Argentina · Trabajo remoto",
+  "contact.emailAria": "Enviar un correo",
   "contact.whatsappMessage":
-    "¡Hola Patricio! Vi tu portafolio y me gustaría hablar sobre un proyecto.",
+    "¡Hola Patricio! Vi tu portafolio y me gustaría hablar sobre una posición.",
   "contact.whatsappAria": "Contactar por WhatsApp",
 
   // Footer
   "footer.credit": "Diseñado y construido por",
+
+  // Projects — agrupación por naturaleza del trabajo
+  "projects.group.client": "Para clientes",
+  "projects.group.product": "Productos propios",
+  "projects.group.lab": "Laboratorio",
+  "projects.carousel.label": "Proyectos, uno por vez",
+  "projects.carousel.prev": "Proyecto anterior",
+  "projects.carousel.next": "Proyecto siguiente",
+  "projects.carousel.goto": "Ir al proyecto",
+  "projects.carousel.position": "de",
 
   // Project detail page
   "project.back": "← Proyectos",

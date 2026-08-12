@@ -6,7 +6,7 @@ interface DocMeta {
 }
 
 const defaultTitle = "Patricio Carpio — Fullstack Developer";
-const defaultDesc  = "Fullstack developer con foco en backend y DevOps. APIs RESTful escalables, Docker, VPS, PostgreSQL, React.";
+const defaultDesc  = "Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas.";
 
 function setMeta(name: string, content: string) {
   let el = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);

@@ -2,17 +2,17 @@
 
 Portfolio personal bilingüe (ES/EN) con tema claro/oscuro y páginas individuales de proyectos.
 
-**Stack:** React 19 · Vite 7 · TypeScript 5.9 · Tailwind v4 · react-router-dom v7
+**Stack:** React 19 · Vite 7 · TypeScript 5.9 · CSS a mano · react-router-dom v7
 
 **Deploy:** GitHub Pages → `https://pa7r1.github.io/PORFOLIO/`
 
 ## Comandos
 
 ```bash
-npm run dev      # servidor de desarrollo
-npm run build    # typecheck + bundle de producción
-npm run lint     # ESLint
-npm run preview  # previsualizar build de producción
+pnpm dev      # servidor de desarrollo
+pnpm build    # typecheck + bundle de producción
+pnpm lint     # ESLint
+pnpm preview  # previsualizar build de producción
 ```
 
 ## Estructura relevante
@@ -22,7 +22,7 @@ src/
   i18n/           # LocaleContext, diccionarios ES/EN, pick helper
   pages/          # ProjectDetail, NotFound
   components/
-    common/       # ThemeContext, ThemeToggle, LangSwitch, ParticlesBackground
+    common/       # ThemeContext, ThemeToggle, LangSwitch
     sections/     # About, Timeline, Projects, Skills, Contact
   data/           # projects.ts, personalInfo.ts, experiences.ts, skills.ts
   utils/          # asset.ts, useDocumentMeta.ts
