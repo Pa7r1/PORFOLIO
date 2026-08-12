@@ -25,16 +25,22 @@ export default function About() {
 
   return (
     <section id="about">
-      <h2 className="section-label">{t("nav.about")}</h2>
+      <h2 className="section-label fade-in">{t("nav.about")}</h2>
 
-      <div className="about-grid fade-in">
+      <div className="about-grid fade-in cascada">
         {/* Photo */}
         <div className="about-photo-wrap">
           <img
             src={asset(personalInfo.profileImage)}
             alt={personalInfo.name}
             className="about-photo"
-            loading="lazy"
+            width={190}
+            height={240}
+            /* Está en la primera pantalla en escritorio: con `lazy` era el
+               propio marcado el que retrasaba el LCP. Va con prioridad, y
+               las medidas coinciden con las que fija el CSS. */
+            fetchPriority="high"
+            decoding="async"
             onError={(e) => {
               const target = e.currentTarget;
               target.style.display = "none";
@@ -53,7 +59,10 @@ export default function About() {
         <div className="about-text">
           <p>{t("about.p1")}</p>
           <p>{t("about.p2")}</p>
-          <p>{t("about.p3")}</p>
+          {/* El tercero es el doble de largo que los otros dos: se separa
+              como nota al margen (filete + un escalón menos de cuerpo) en
+              vez de ser un tercer muro del mismo peso. El texto no cambia. */}
+          <p className="about-note">{t("about.p3")}</p>
 
           <div className="about-actions">
             <a
@@ -65,21 +74,6 @@ export default function About() {
               <DownloadIcon />
               {t("about.downloadCV")}
             </a>
-          </div>
-
-          <div className="about-stats">
-            <div>
-              <div className="stat-num">{personalInfo.yearsExperience}+</div>
-              <div className="stat-label">{t("about.stat.experience")}</div>
-            </div>
-            <div>
-              <div className="stat-num">{personalInfo.githubProjects}+</div>
-              <div className="stat-label">{t("about.stat.projects")}</div>
-            </div>
-            <div>
-              <div className="stat-num">5+</div>
-              <div className="stat-label">{t("about.stat.clients")}</div>
-            </div>
           </div>
         </div>
       </div>

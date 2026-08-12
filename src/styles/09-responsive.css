@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   Ajustes por ancho, conmutador de tema y de idioma
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .top-nav {
+    display: none;
+  }
+  .page {
+    padding: calc(60px + 1.5rem) 1.1rem
+      calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 1.5rem);
+  }
+  .hero {
+    padding: 2rem 0 2.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-lead {
+    max-width: none;
+  }
+  .hero-name {
+    font-size: 1.4rem;
+  }
+  .hero-sign {
+    margin-top: 1.1rem;
+  }
+  .hero-eyebrow {
+    padding-left: 0;
+    border-left: none;
+    flex-basis: 100%;
+  }
+  .hero-stats {
+    gap: 1.1rem 2rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+  }
+  section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 4.5rem;
+  }
+  .section-label {
+    margin-bottom: 1.5rem;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .about-photo-wrap {
+    width: 120px;
+  }
+  .about-photo,
+  .about-photo-placeholder {
+    width: 120px;
+    height: 150px;
+  }
+  /* El periodo pasa a una línea propia arriba: a 390px la columna de
+     8.5rem se comía la mitad del ancho del título. */
+  .log-row > summary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.3rem 0.75rem;
+    padding: 0.9rem 0.3rem;
+  }
+  .log-when {
+    grid-column: 1 / -1;
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+    white-space: normal;
+  }
+  .log-body {
+    padding: 0 0.3rem 1.1rem;
+  }
+  .pcar {
+    padding-inline: 1.1rem;
+  }
+  .pcar-frame {
+    max-width: 100%;
+  }
+  .pcar-nav {
+    margin-top: 1.1rem;
+  }
+  .mobile-header,
+  .mobile-nav {
+    display: flex;
+  }
+  .detail-wrapper {
+    padding: calc(60px + 1rem) 1.1rem
+      calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 1.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 1.3rem;
+  }
+  .mobile-nav a {
+    font-size: 0.62rem;
+    letter-spacing: 0.01em;
+    padding: 0.4rem 0.1rem;
+  }
+  .mobile-header {
+    padding: 0 0.6rem 0 1rem;
+  }
+  /* Diez puntos a 26px no entran en 390px junto a las dos flechas. */
+  .pcar-dot {
+    width: 20px;
+  }
+}
+
+/* ─── THEME TOGGLE ───────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius);
+  transition:
+    color var(--transition),
+    background var(--transition);
+}
+.theme-toggle:hover {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+
+/* ─── LANG SWITCH ────────────────────────────────────────── */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  min-height: 44px;
+}
+.lang-switch button {
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color var(--transition),
+    background var(--transition);
+  line-height: 1;
+  padding: 0.6rem 0.5rem;
+  min-width: 32px;
+  min-height: 44px;
+  border-radius: var(--radius);
+}
+.lang-switch button:hover,
+.lang-switch button.active {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+.lang-switch span {
+  color: var(--text-dim);
+  opacity: 0.5;
+  padding: 0 0.1rem;
+}
+.lang-switch span {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  opacity: 0.5;
+}

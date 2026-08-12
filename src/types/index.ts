@@ -44,6 +44,17 @@ export interface Project {
   repoPrivate?: boolean;
   /** Card status badge: deployed online / runs but not hosted / coming soon. */
   availability?: "live" | "working" | "soon";
+  /**
+   * Naturaleza del trabajo — define los filtros de la galería.
+   * "client": trabajo pago para un tercero · "product": producto propio que vende ·
+   * "lab": proyecto propio de exploración técnica.
+   */
+  kind: "client" | "product" | "lab";
+  /**
+   * Color de acento de la tarjeta, en hex. El CSS deriva los tonos con `color-mix()`,
+   * así que basta uno por proyecto. Mantener la familia apagada de la paleta.
+   */
+  accent: string;
   hasDetail: boolean;
   detail?: ProjectDetail;
 }
@@ -60,14 +71,24 @@ export interface Experience {
   description?: Bilingual;
   tags?: string[];
   type: "education" | "work";
+  /**
+   * Las que sostienen la credibilidad del perfil: se muestran abiertas y con
+   * más peso, el resto queda compacto. Con las nueve al mismo tamaño, un
+   * freelance de un mes gritaba igual que dieciséis meses en equipo.
+   * Reservar para dos o tres — si se destaca todo, no se destaca nada.
+   */
+  featured?: boolean;
 }
 
 export interface PersonalInfo {
   name: string;
   title: string;
   description: Bilingual;
-  githubProjects: number;
   yearsExperience: number;
+  /** Sistemas con dominio propio, HTTPS y usuarios reales funcionando hoy. */
+  productionSystems: number;
+  /** Meses de desarrollo sobre un repositorio compartido con otros devs. */
+  teamMonths: number;
   profileImage: string;
   email: string;
   linkedin: string;

@@ -1,0 +1,128 @@
+/* ═══════════════════════════════════════════════════════════════
+   HERO
+   Hero: titular, firma, acciones y cifras
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── HERO ──────────────────────────────────────────────────
+   La frase diferencial manda (es el h1, escala 3xl); debajo la firma
+   —nombre + rol y ubicación en mono apagado— y cierran las tres cifras,
+   dentro de la primera pantalla. Es lo único que se lee a 3xl del sitio. */
+.hero {
+  padding: clamp(2.5rem, 1.5rem + 5vw, 5rem) 0 calc(var(--section) * 0.7);
+  /* La misma medida que separa dos bloques de lectura: el hero no necesita
+     un hueco propio, y con 0.85 quedaba a 88px contra los 104 del resto. */
+  margin-bottom: var(--section);
+  border-bottom: 1px solid var(--border);
+}
+.hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 46rem;
+}
+.hero-lead {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl);
+  font-weight: 560;
+  color: var(--text);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  word-spacing: 0.09em;
+  max-width: 19ch;
+  margin: 0;
+}
+/* El énfasis del titular. Clash Display va de 200 a 700, así que 700
+   contra el 560 del resto es un salto que se lee de lejos; el subrayado
+   a 3px lo confirma sin gastar color. No es <em> semántico de "otra voz"
+   sino resalte visual, por eso se le quita la itálica. */
+.hero-lead em {
+  font-style: normal;
+  font-weight: 700;
+}
+/* El subrayado vive en la máscara interior, no en el <em>: un subrayado no
+   se dibuja a través de una caja `inline-block`, y las palabras del titular
+   son cajas `inline-block` para poder revelarse. Como cada máscara se lleva
+   su espacio siguiente, el trazo sale continuo igual que antes. */
+.hero-lead em .mascara-i {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.14em;
+}
+/* La firma: nombre y rol en una sola línea de lectura, separados por un
+   filete vertical. */
+.hero-sign {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.85rem;
+  margin: 1.35rem 0 0;
+  line-height: 1.35;
+}
+.hero-name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 560;
+  color: var(--text);
+  letter-spacing: -0.015em;
+  word-spacing: 0.09em;
+}
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding-left: 0.85rem;
+  border-left: 1px solid var(--border);
+}
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.75rem;
+}
+/* La prueba, en la primera pantalla. Es una <dl>: cada cifra es el
+   término y la etiqueta su definición, que es exactamente lo que son. */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2.75rem;
+  margin: 2.25rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 34rem;
+}
+.hero-stat dd {
+  margin: 0;
+}
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  min-height: 44px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition);
+}
+.btn-ghost:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+  color: var(--accent);
+}

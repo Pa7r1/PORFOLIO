@@ -1,0 +1,188 @@
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS
+   Tipografías autohospedadas, sistema de tokens, tema oscuro y transición de tema
+
+   Tramo de la hoja global, que se partió por legibilidad. EL ORDEN
+   IMPORTA: estos archivos son cortes consecutivos de un mismo CSS y
+   varias reglas dependen de caer antes o después de otra. Se importan
+   en orden desde src/index.css — no reordenar ni mover reglas de un
+   archivo a otro sin comprobar la cascada.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── TIPOGRAFÍAS AUTOHOSPEDADAS ──────────────────────── */
+/* Los ficheros viven en public/fonts/. El preload está en index.html.
+   Se sirven desde el propio dominio: sin petición a Google Fonts. */
+@font-face {
+  font-family: "Clash Display";
+  src: url("/PORFOLIO/fonts/clash-display.woff2") format("woff2");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/PORFOLIO/fonts/switzer.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── SISTEMA DE TOKENS ───────────────────────────────────────
+   "Papel de estudio", en dos tintas: sin acento cromático. La
+   tipografía hace lo que antes hacía el color:
+     · énfasis  → más peso + subrayado grueso (ver .hero-lead em)
+     · enlaces  → subrayado con --accent-line, tinta al pasar
+     · estado   → el badge "en producción" se INVIERTE (fondo tinta,
+                  texto --on-accent) en vez de teñirse
+     · jerarquía→ tinta (--text) contra secundario (--text-muted)
+
+   --accent y --signal valen lo mismo que --text: se conservan como
+   nombres porque marcan intención ("esto es énfasis", "esto es
+   estado") en los ~60 sitios que los usan, no color. El único color
+   cromático de la página es --a, el acento por proyecto que declara
+   projects.ts (ver más abajo): identifica, no decora.
+
+   :root ES EL TEMA CLARO (primario, arranca por defecto — ver el
+   script de boot de index.html). [data-theme="dark"] solo pisa color
+   y sombra; un token de color nuevo va en LOS DOS bloques.
+   ─────────────────────────────────────────────────────────── */
+:root {
+  /* Superficies */
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface-sunk: #eeece6;
+  --border: #dedbd3;
+
+  /* Tinta — dos niveles y nada más. #646d6b sostiene 3:1 contra --text
+     (la separación que reemplaza al color en la jerarquía) sin romper
+     AA contra --surface-sunk, el fondo más exigente de la página. */
+  --text: #1b1f1e;
+  --text-muted: #646d6b;
+  --text-dim: #646d6b;
+
+  /* Énfasis — la MISMA tinta. Ver la cabecera del bloque. */
+  --accent: #1b1f1e;
+  --accent-strong: #000000;
+  /* Fondo del estado activo: gris sólido, no un tinte de color. El
+     estado nunca depende solo de él, siempre viaja con tinta plena. */
+  --accent-wash: #e1ddd3;
+  /* Filete: gris sólido, no alpha del acento (mantiene ≥3:1 de WCAG
+     1.4.11 contra los cuatro fondos donde aparece). */
+  --accent-line: #7f7d74;
+  /* Tinta sobre tinta: el texto de los sólidos (botón primario, chip
+     activo, badge invertido). */
+  --on-accent: #f7f6f3;
+
+  /* Señal — "esto corre en producción". El badge se invierte (fondo
+     tinta) en vez de teñirse. */
+  --signal: #1b1f1e;
+  --signal-line: #7f7d74;
+
+  /* Acento por proyecto → tinta legible. Cada proyecto trae un hex en
+     --a (projects.ts); estos tokens lo convierten en un color de texto
+     que contraste: se oscurece hacia la tinta en claro, se aclara hacia
+     el blanco en oscuro. */
+  --a-ink: 86%;
+  --a-ink-with: var(--text);
+
+  /* Familias */
+  --font-display: "Clash Display", "Avenir Next", system-ui, sans-serif;
+  --font-text: "Switzer", system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Escala tipográfica fluida */
+  --fs-micro: 0.72rem;
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-base: clamp(1rem, 0.97rem + 0.16vw, 1.0625rem);
+  --fs-lg: clamp(1.1rem, 1.04rem + 0.3vw, 1.25rem);
+  --fs-xl: clamp(1.3rem, 1.16rem + 0.66vw, 1.62rem);
+  --fs-2xl: clamp(1.6rem, 1.32rem + 1.35vw, 2.3rem);
+  /* El mínimo baja a 2rem: en un teléfono de 390px el titular ocupaba ocho
+     líneas y empujaba los dos botones por debajo del pliegue, así que la
+     primera pantalla no tenía ni una acción. */
+  --fs-3xl: clamp(2rem, 1.62rem + 3.3vw, 3.9rem);
+  --leading-tight: 1.15;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Ritmo y forma. Dos medidas: la normal separa bloques de lectura, la
+     mayor marca dónde empieza un capítulo nuevo (ver la regla de section). */
+  --section: clamp(3.5rem, 2.2rem + 5.5vw, 6.5rem);
+  --section-mayor: clamp(5rem, 3rem + 8.5vw, 10.5rem);
+  --width: 62rem;
+  --measure: 38rem;
+  --radius: 10px;
+  --radius-sm: 6px;
+  /* Alto real de la barra inferior de móvil (52px de destino táctil +
+     0,5rem×2 de relleno + el filete). Vive en un token porque lo tienen
+     que compensar .page y .detail-wrapper: cuando esto y el
+     padding-bottom se desincronizan, la barra tapa el último párrafo. */
+  --bottom-nav-h: 72px;
+  --shadow:
+    0 1px 2px rgba(27, 31, 30, 0.05),
+    0 10px 30px -14px rgba(27, 31, 30, 0.22);
+  --shadow-lift:
+    0 2px 4px rgba(27, 31, 30, 0.06),
+    0 18px 44px -18px rgba(27, 31, 30, 0.3);
+  /* Tinta de la sombra que el escenario del carrusel pinta bajo la tarjeta
+     centrada. Es un color y no una sombra hecha, porque se usa dentro de un
+     degradado radial (ver .pcar-frame::before). */
+  --sombra-escenario: rgba(27, 31, 30, 0.26);
+  --transition: 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ─── TEMA OSCURO (derivado) ─────────────────────────────────── */
+[data-theme="dark"] {
+  --bg: #121514;
+  --surface: #1a1e1d;
+  --surface-sunk: #232827;
+  --border: rgba(236, 235, 230, 0.14);
+
+  /* En oscuro la ventana es más estrecha que en claro: --surface-sunk es
+     MÁS claro que --bg, así que el secundario tiene que aguantar AA sobre
+     él y eso le pone un piso de brillo. #868d8a llega a 2,84:1 contra la
+     tinta (4,96:1 sobre --surface); #8c9390 se reserva para el micro-texto
+     que se apoya en --surface-sunk, donde da 4,76:1. Bajar más el
+     secundario para llegar a 3:1 rompería AA en esas pastillas. */
+  --text: #ecebe6;
+  --text-muted: #868d8a;
+  --text-dim: #8c9390;
+
+  --accent: #ecebe6;
+  --accent-strong: #ffffff;
+  --accent-wash: #2b3130;
+  --accent-line: #85837a;
+  --on-accent: #121514;
+
+  --signal: #ecebe6;
+  --signal-line: #85837a;
+
+  --a-ink: 45%;
+  --a-ink-with: #ffffff;
+
+  --shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 12px 34px -16px rgba(0, 0, 0, 0.7);
+  --shadow-lift:
+    0 2px 6px rgba(0, 0, 0, 0.45),
+    0 22px 50px -20px rgba(0, 0, 0, 0.8);
+  --sombra-escenario: rgba(0, 0, 0, 0.6);
+}
+
+/* ─── THEME TRANSITIONS ─────────────────────────────────── */
+body,
+.top-nav,
+.hero,
+.project-card,
+.log-row,
+.skill-tag,
+.tag,
+.btn-primary,
+.mobile-header,
+.mobile-nav {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
