@@ -87,9 +87,16 @@
 .pcar-frame {
   position: relative;
   /* La captura del producto es el mejor argumento de cada tarjeta y a
-     31rem ocupaba un tercio del ancho en un portátil. A 41rem la central
-     manda de verdad y las laterales siguen asomando lo justo. */
-  max-width: min(41rem, 88vw);
+     31rem ocupaba un tercio del ancho en un portátil. Subió a 41rem para
+     que la central mandara de verdad, y de ahí bajó a 34: a 41rem el
+     bloque no entraba en una pantalla de portátil y había que desplazarse
+     para ver el final de la tarjeta y los puntos, o sea que el carrusel
+     se leía cortado. La captura acompaña sola porque es 16/10 del ancho.
+
+     El número lo fija un criterio, no el gusto: del techo del <h2> al pie
+     de .pcar-nav tiene que caber en el viewport a 1366×768, que es el
+     caso apretado. Si se vuelve a tocar, se vuelve a medir. */
+  max-width: min(34rem, 88vw);
   margin-inline: auto;
 }
 /* Sombra bajo la tarjeta centrada. Va FIJA en el escenario, no en cada
@@ -192,6 +199,101 @@
 .pcar--enhanced .pcar-cell[data-d="0"] {
   cursor: default;
 }
+
+/* ─── INCLINACIÓN DIRECCIONAL ──────────────────────────────
+   El paso era simétrico: ir a la izquierda se veía exactamente igual que
+   ir a la derecha. Ahora la tira se inclina hacia el sentido del viaje y
+   se endereza al llegar, como algo que arranca y frena.
+
+   Va como propiedad `rotate` INDEPENDIENTE, no dentro del `transform` de
+   arriba. Dos razones: se compone en la misma matriz del mismo elemento
+   —sin capa nueva, que es lo que costó 43fps la otra vez— y no hay que
+   reescribir el `translateX` en cada fotograma clave, que es lo que
+   obligaría a meterlo en el `transform`.
+
+   Es una ANIMACIÓN y no una transición porque tiene que volver a cero
+   exactamente al final del recorrido: una transición solo sabe ir de A a
+   B, y enderezar pediría un segundo tramo de otros 0,72s, con la tarjeta
+   torcida después de haber llegado.
+
+   El reinicio va por PARIDAD: `data-paso` alterna entre "a" y "b" con dos
+   fotogramas clave idénticos. Quitar y volver a poner la misma clase en el
+   mismo fotograma NO reinicia una animación —el navegador no ve un
+   cambio—, pero alternar el NOMBRE sí, y sin temporizadores ni reflow
+   forzado. Mientras no hubo ningún cambio, `data-paso` no existe y nada se
+   anima: si no, las diez tarjetas se inclinarían al cargar la página.
+
+   `--dir` lo escribe Projects.tsx: +1 si vamos al siguiente, -1 al
+   anterior. `transform-origin` por debajo de la tarjeta para que se lea
+   como algo empujado desde su base y no como algo que gira suspendido. */
+.pcar--enhanced .pcar-cell {
+  transform-origin: 50% 130%;
+}
+/* Solo se inclinan las tres celdas que se ven: la centrada y sus dos
+   vecinas. De la segunda vecina en adelante la tarjeta ya está fuera del
+   corredor y detrás del velo —es el mismo razonamiento que fija
+   `--adc: min(var(--ad), 2)` más arriba—, así que animarlas es pagar por
+   algo que nadie mira. Baja de diez elementos animados a tres. */
+/* Cuatro combinaciones —paridad × sentido— y NINGUNA usa var() dentro de
+   los fotogramas clave. Eso último no es estilo: una propiedad animada cuyo
+   valor sale de una variable CSS no se puede componer fuera del hilo
+   principal, así que el navegador recalcula la animación en cada fotograma.
+   Medido acá mismo, a 900px y con la CPU frenada ×4, tres rondas alternadas:
+   con var() el p99 pasaba de 33ms a 50-67ms; con valores literales vuelve a
+   la línea base. La mediana no se movía en ningún caso, o sea que el coste
+   estaba entero en la cola y no se veía en el promedio. */
+.pcar--enhanced .pcar-stage[data-paso="a"][data-dir="der"]
+  .pcar-cell:where([data-d="0"], [data-d="1"], [data-d="-1"]) {
+  animation: pcar-inclinar-a-der 0.72s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+.pcar--enhanced .pcar-stage[data-paso="b"][data-dir="der"]
+  .pcar-cell:where([data-d="0"], [data-d="1"], [data-d="-1"]) {
+  animation: pcar-inclinar-b-der 0.72s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+.pcar--enhanced .pcar-stage[data-paso="a"][data-dir="izq"]
+  .pcar-cell:where([data-d="0"], [data-d="1"], [data-d="-1"]) {
+  animation: pcar-inclinar-a-izq 0.72s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+.pcar--enhanced .pcar-stage[data-paso="b"][data-dir="izq"]
+  .pcar-cell:where([data-d="0"], [data-d="1"], [data-d="-1"]) {
+  animation: pcar-inclinar-b-izq 0.72s cubic-bezier(0.16, 0.84, 0.24, 1);
+}
+@keyframes pcar-inclinar-a-der {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  38% {
+    rotate: 1.15deg;
+  }
+}
+@keyframes pcar-inclinar-b-der {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  38% {
+    rotate: 1.15deg;
+  }
+}
+@keyframes pcar-inclinar-a-izq {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  38% {
+    rotate: -1.15deg;
+  }
+}
+@keyframes pcar-inclinar-b-izq {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  38% {
+    rotate: -1.15deg;
+  }
+}
 /* Refuerzo del atributo `inert` que pone React, para navegadores que no
    lo soporten: clickear una tarjeta lateral la centra, no navega. */
 .pcar--enhanced .pcar-cell:not([data-d="0"]) a {
@@ -250,12 +352,21 @@
   }
 }
 
+/* El titular de Proyectos lleva menos aire debajo que el del resto de las
+   secciones, y es a propósito: es la única cuyo contenido mide 640px de
+   alto, así que los 2,25rem de .section-label son justo lo que la empuja
+   fuera de una pantalla de portátil. El resto de las secciones conserva el
+   ritmo original. */
+#projects .section-label {
+  margin-bottom: 1.35rem;
+}
+
 .pcar-nav {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 .pcar-dots {
   display: flex;
@@ -299,8 +410,20 @@
 @media (max-width: 719px) {
   .pcar--enhanced .pcar-cell {
     --adc: min(var(--ad), 1);
-    transform: translateX(calc(var(--d) * 100%)) scale(calc(1 - var(--adc) * 0.22));
-    opacity: calc(1 - var(--adc));
+    /* La vecina estaba en `opacity: calc(1 - var(--adc))`, o sea CERO, con
+       una escala de 0,78. Medido en el teléfono: 0px visibles a 360 y 1px a
+       720. En esas condiciones el carrusel no es una tira deslizante, es un
+       pase de diapositivas — no hay nada que se vea llegar, y por lo tanto
+       tampoco se ve la inclinación direccional. El "56% visible" que
+       documenta CLAUDE.md solo se cumplía a 1440.
+
+       Ahora la vecina se desplaza una tarjeta entera más un hueco (igual
+       que en escritorio, en vez de un 100% pelado que la dejaba pegada), se
+       queda al 92% de escala y conserva un tercio de opacidad. Sigue siendo
+       transform y opacity: no cuesta un fotograma más que antes. */
+    transform: translateX(calc(var(--d) * (100% + 0.5rem)))
+      scale(calc(1 - var(--adc) * 0.08));
+    opacity: calc(1 - var(--adc) * 0.66);
   }
 }
 
@@ -311,9 +434,21 @@
     transform: none;
     opacity: 0;
     transition: opacity 0.2s linear;
+    /* Ni inclinación ni salto para quien pidió no ver movimiento. Se anula
+       la animación entera y no solo su duración: el bloque general de
+       05-movimiento.css acorta duraciones, pero acá hay que asegurar que
+       `rotate` no quede aplicado a medio camino. */
+    animation: none;
+    rotate: none;
   }
   .pcar--enhanced .pcar-cell[data-d="0"] {
     opacity: 1;
+  }
+  /* El salto es afordancia, no decoración: se queda el cambio de borde y
+     de sombra, se va el desplazamiento. */
+  .project-card:active,
+  .pcar--enhanced .pcar-cell:not([data-d="0"]):active .project-card {
+    transform: none;
   }
 }
 
@@ -358,6 +493,26 @@
   box-shadow: var(--shadow-lift);
   transform: translateY(-3px);
 }
+/* ─── SALTO AL APRETAR ─────────────────────────────────────
+   El hover ya levanta la tarjeta 3px; al apretar salta a 10 con una curva
+   que sobrepasa y vuelve, así el clic se SIENTE y no solo se ve. Transform
+   puro sobre un elemento quieto: cuesta cero fotogramas.
+
+   Dura 150ms, muy por debajo de los 0,72s del paso del carrusel, y es a
+   propósito: al apretar una lateral el salto tiene que haber terminado
+   antes de que la celda empiece a recolocarse, o los dos transforms se
+   pisan a mitad de camino.
+
+   Hacen falta DOS selectores porque el enlace de las celdas no centradas
+   lleva `pointer-events: none` (más abajo, y es lo que deja pasar el clic
+   hasta la celda para centrarla): sin puntero no hay `:active`, así que en
+   las vecinas el estado se toma de la celda, que sí recibe el evento. */
+.project-card:active,
+.pcar--enhanced .pcar-cell:not([data-d="0"]):active .project-card {
+  transform: translateY(-10px) scale(1.012);
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 .project-card:hover .project-title,
 .project-card:focus-visible .project-title {
   color: color-mix(in oklab, var(--a) var(--a-ink), var(--a-ink-with));
@@ -369,10 +524,14 @@
 }
 .project-shot {
   position: relative;
-  /* 16:10. Con la rejilla de diez tarjetas había que apretarla a 2:1
-     porque cada píxel de alto se multiplicaba por cinco filas; con una
-     sola tarjeta a la vista la captura puede respirar y verse. */
-  aspect-ratio: 16 / 10;
+  /* 16:9. Con la rejilla de diez tarjetas había que apretarla a 2:1 porque
+     cada píxel de alto se multiplicaba por cinco filas; con una sola
+     tarjeta a la vista subió a 16:10 para que la captura respirara, y de
+     ahí a 16:9 para que el bloque entero entre en una pantalla de 768px de
+     alto sin recortar ni una línea de texto. A 544px de ancho son 34px
+     menos de alto, que es el recorte más grande disponible sin tocar
+     contenido. */
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background: color-mix(in oklab, var(--a) 10%, var(--surface-sunk));
@@ -440,7 +599,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 1.1rem 1.25rem 1.25rem;
+  padding: 0.95rem 1.15rem 1.05rem;
 }
 /* Fila de metadatos: tipo de trabajo a la izquierda, año a la derecha.
    El chip de tipo vuelve a la tarjeta ahora que no hay encabezados de

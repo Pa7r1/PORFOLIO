@@ -190,6 +190,13 @@ function ProjectCard({ project, eager, off }: { project: Project; eager: boolean
 function ProjectCarousel({ items }: { items: Project[] }) {
   const { t, locale } = useLocale();
   const [current, setCurrent] = useState(0);
+  /* Sentido del último cambio (+1 al siguiente, -1 al anterior) y contador
+     de pasos. El CSS los necesita para la inclinación direccional: `--dir`
+     da el lado hacia el que se ladea la tira, y la PARIDAD de `paso`
+     alterna el nombre de la animación, que es lo único que la reinicia
+     cuando se pasa de tarjeta dos veces seguidas. */
+  const [dir, setDir] = useState(0);
+  const [paso, setPaso] = useState(0);
   const stageRef = useRef<HTMLDivElement>(null);
   const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
   const N = items.length;
@@ -204,10 +211,27 @@ function ProjectCarousel({ items }: { items: Project[] }) {
     [current, N],
   );
 
-  const go = useCallback(
-    (delta: number) => setCurrent((c) => ((c + delta) % N + N) % N),
-    [N],
+  /* Un solo camino para cambiar de tarjeta, venga de las flechas, de los
+     puntos o de un clic en una lateral. Todos necesitan, además del
+     destino, el SENTIDO del viaje —que `--d` no puede dar: `--d` es el lado
+     donde está cada celda, no hacia dónde se mueve la tira—. Se calcula por
+     el camino circular más corto, así que saltar de la primera a la última
+     con los puntos se inclina hacia atrás y no hacia adelante. */
+  const irA = useCallback(
+    (destino: number) => {
+      const objetivo = ((destino % N) + N) % N;
+      if (objetivo === current) return;
+      let delta = objetivo - current;
+      if (delta > N / 2) delta -= N;
+      if (delta < -N / 2) delta += N;
+      setDir(Math.sign(delta));
+      setPaso((p) => p + 1);
+      setCurrent(objetivo);
+    },
+    [current, N],
   );
+
+  const go = useCallback((delta: number) => irA(current + delta), [irA, current]);
 
   /* Mide el alto de TODAS las tarjetas y le aplica el mayor al escenario.
      Antes medía solo la centrada y animaba `height` en cada paso: eso
@@ -252,7 +276,7 @@ function ProjectCarousel({ items }: { items: Project[] }) {
     const index = cellRefs.current.indexOf(cell as HTMLDivElement);
     if (index === -1 || index === current) return;
     e.preventDefault();
-    setCurrent(index);
+    irA(index);
   };
 
   /* Si el foco estaba en la tarjeta que se va, hay que llevarlo a la que
@@ -290,7 +314,16 @@ function ProjectCarousel({ items }: { items: Project[] }) {
       </p>
 
       <div className="pcar-frame">
-        <div className="pcar-stage" ref={stageRef} onClick={onStageClick}>
+        <div
+          className="pcar-stage"
+          ref={stageRef}
+          onClick={onStageClick}
+          /* Mientras no hubo ningún cambio no hay `data-paso`, y sin él
+             ninguna animación arranca: si no, las diez tarjetas se
+             inclinarían solas al cargar la página. */
+          data-paso={paso === 0 ? undefined : paso % 2 === 0 ? "a" : "b"}
+          data-dir={dir > 0 ? "der" : "izq"}
+        >
           {items.map((p, i) => {
             const d = distance(i);
             const off = d !== 0;
@@ -344,7 +377,7 @@ function ProjectCarousel({ items }: { items: Project[] }) {
               className="pcar-dot"
               aria-current={i === current ? "true" : "false"}
               aria-label={`${t("projects.carousel.goto")}: ${p.title}`}
-              onClick={() => setCurrent(i)}
+              onClick={() => irA(i)}
             >
               <span className="pcar-dot-mark" aria-hidden="true" />
             </button>
