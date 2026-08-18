@@ -25,12 +25,10 @@ const ChevronIcon = () => (
 export default function Timeline() {
   const { t, locale } = useLocale();
 
-  /* Arranca con las destacadas abiertas. A partir del primer clic se comporta
-     como acordeón de una sola fila: es un estado de bienvenida, no el modo
-     normal de la lista. */
-  const [abiertas, setAbiertas] = useState<ReadonlySet<number>>(
-    () => new Set(experiences.map((e, i) => (e.featured ? i : -1)).filter((i) => i >= 0)),
-  );
+  /* Todas cerradas al cargar: la lista se lee entera de un vistazo y el detalle
+     se pide. Se comporta como acordeón de una sola fila —abrir una cierra las
+     demás— desde el primer clic. */
+  const [abiertas, setAbiertas] = useState<ReadonlySet<number>>(() => new Set());
   /* Las que están animando su cierre: siguen con `open` puesto hasta que la
      transición termina, o el contenido desaparecería de golpe. */
   const [cerrando, setCerrando] = useState<ReadonlySet<number>>(() => new Set());
@@ -62,10 +60,10 @@ export default function Timeline() {
 
       <div className="log fade-in cascada">
         {experiences.map((exp, i) => (
-          /* Dos niveles, no nueve iguales: las destacadas arrancan abiertas
-             y con más peso; el resto queda compacto y se abre si interesa.
-             La formación va en un tercer nivel, más callado — es contexto,
-             no es lo que se evalúa. */
+          /* Dos niveles, no nueve iguales: las destacadas llevan más peso
+             visual; el resto queda compacto. Todas parten cerradas y se abren
+             si interesan. La formación va en un tercer nivel, más callado —
+             es contexto, no es lo que se evalúa. */
           <details
             key={`${exp.company}-${i}`}
             className={[
