@@ -55,10 +55,22 @@ export default function About() {
           />
         </div>
 
-        {/* Text */}
-        <div className="about-text">
+        {/* Text — cascada propia: p1, la lista y la nota entran de a uno,
+            no como un solo bloque (mismo mecanismo que .about-grid, un
+            nivel más adentro; el observer de App.tsx observa cualquier
+            .fade-in del DOM, así que anidarlo no pisa el de afuera). */}
+        <div className="about-text fade-in cascada">
           <p>{t("about.p1")}</p>
-          <p>{t("about.p2")}</p>
+          {/* Antes era un párrafo de 50 palabras con tres cláusulas unidas
+              por "y". Misma info, expuesta como la lista que ya era. */}
+          <div className="about-practice">
+            <p className="about-practice-intro">{t("about.teamwork.intro")}</p>
+            <ul className="about-practice-list">
+              <li>{t("about.teamwork.item1")}</li>
+              <li>{t("about.teamwork.item2")}</li>
+              <li>{t("about.teamwork.item3")}</li>
+            </ul>
+          </div>
           {/* El tercero es el doble de largo que los otros dos: se separa
               como nota al margen (filete + un escalón menos de cuerpo) en
               vez de ser un tercer muro del mismo peso. El texto no cambia. */}

@@ -1,5 +1,6 @@
 import {
   useCallback,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -175,30 +176,30 @@ function ProjectCard({ project, eager, off }: { project: Project; eager: boolean
 }
 
 /**
- * Carrusel "coverflow" 3D, sin dependencias.
+ * Carrusel de tira deslizante, sin dependencias.
  *
  * Todas las celdas viven en la misma celda de rejilla (`grid-area: 1/1`) y
  * se transforman según `--d`: la distancia circular con signo hasta el
  * centro, que este componente escribe como variable CSS. El CSS hace el
- * resto —desplazamiento, giro, escala, opacidad y desenfoque— así que no
- * hay ni un `requestAnimationFrame` ni un track que se traslade: por
- * construcción nunca se ve una "vuelta al comienzo".
+ * resto —desplazamiento, escala y opacidad— así que no hay ni un
+ * `requestAnimationFrame` ni un track que se traslade: por construcción
+ * nunca se ve una "vuelta al comienzo".
  *
- * El alto del escenario se MIDE del contenido de la tarjeta centrada y se
- * anima con `transition: height`, nunca se adivina con un `clamp()`.
+ * Lo único que anima JavaScript es la inclinación direccional, y con
+ * WAAPI: ver `inclinar()` más abajo y el bloque largo de 07-proyectos.css.
+ *
+ * El alto del escenario se MIDE de la tarjeta más alta y se fija; nunca se
+ * anima (animar `height` rehace el layout de las diez celdas apiladas en
+ * cada fotograma) ni se adivina con un `clamp()`.
  */
 function ProjectCarousel({ items }: { items: Project[] }) {
   const { t, locale } = useLocale();
   const [current, setCurrent] = useState(0);
-  /* Sentido del último cambio (+1 al siguiente, -1 al anterior) y contador
-     de pasos. El CSS los necesita para la inclinación direccional: `--dir`
-     da el lado hacia el que se ladea la tira, y la PARIDAD de `paso`
-     alterna el nombre de la animación, que es lo único que la reinicia
-     cuando se pasa de tarjeta dos veces seguidas. */
-  const [dir, setDir] = useState(0);
-  const [paso, setPaso] = useState(0);
   const stageRef = useRef<HTMLDivElement>(null);
   const cellRefs = useRef<(HTMLDivElement | null)[]>([]);
+  /* Las inclinaciones en curso, para poder cortarlas si se pasa de tarjeta
+     otra vez antes de que terminen. */
+  const inclinaciones = useRef<Animation[]>([]);
   const N = items.length;
 
   const distance = useCallback(
@@ -217,6 +218,93 @@ function ProjectCarousel({ items }: { items: Project[] }) {
      donde está cada celda, no hacia dónde se mueve la tira—. Se calcula por
      el camino circular más corto, así que saltar de la primera a la última
      con los puntos se inclina hacia atrás y no hacia adelante. */
+  /* Inclinación direccional: la tira se ladea hacia donde viaja y se
+     endereza al llegar. Se dispara desde acá con WAAPI en vez de con
+     `@keyframes` en CSS, y las razones están largas en 07-proyectos.css.
+     En corto: la amplitud es UNA variable CSS (`--pcar-inclinacion`), y
+     una variable dentro de unos fotogramas clave saca la animación del
+     compositor —el valor que se le pasa a `animate()` en cambio ya es
+     literal—. De paso desaparece la paridad "a"/"b" que existía solo para
+     reiniciar la animación: cada `animate()` es una animación nueva.
+
+     Solo se inclinan las tres celdas que se ven: la que llega y sus dos
+     vecinas. De la segunda vecina en adelante la tarjeta está fuera del
+     corredor y detrás del velo.
+
+     La amplitud se LEE del CSS y no se escribe acá a propósito: es lo que
+     deja que `prefers-reduced-motion` la ponga en 0deg y que esto no anime
+     nada, sin duplicar la consulta de medios en JS. */
+  const inclinar = useCallback(
+    (destino: number, sentido: number) => {
+      const stage = stageRef.current;
+      if (!stage || sentido === 0) return;
+      const amplitud = parseFloat(
+        getComputedStyle(stage).getPropertyValue("--pcar-inclinacion"),
+      );
+
+      /* Se LEE la inclinación de cada celda que venía animando ANTES de
+         cortar nada —todas las lecturas juntas, después todas las
+         escrituras— porque `cancel()` devuelve `rotate` a 0 de golpe. Si la
+         animación nueva volviera a arrancar en `0deg`, encadenar dos pasos
+         daría un salto de la amplitud entera en un fotograma (a 4,5deg son
+         31px, el recorrido completo del efecto de una vez), más 1-2
+         fotogramas de tarjeta recta mientras WAAPI fija el `startTime`.
+         Arrancando del ángulo real no hay corte ni con la amplitud subida
+         ni al invertir el sentido a media transición. */
+      const rotacionDe = (cell: Element) => {
+        const valor = getComputedStyle(cell).rotate;
+        /* El exponente es obligatorio en el patrón: a punto de terminar, el
+           valor calculado llega como `2.37227e-05deg`, y un patrón sin `e`
+           se queda con el "-05" del exponente y lee -5deg. */
+        const grado = /(-?[\d.]+(?:e[-+]?\d+)?)deg/i.exec(valor);
+        return grado ? parseFloat(grado[1]) : 0;
+      };
+      const previas = new Map<HTMLDivElement, number>();
+      for (const a of inclinaciones.current) {
+        const cell = (a.effect as KeyframeEffect | null)?.target as HTMLDivElement | null;
+        if (cell) previas.set(cell, rotacionDe(cell));
+      }
+      inclinaciones.current.forEach((a) => a.cancel());
+      inclinaciones.current = [];
+      if (!Number.isFinite(amplitud) || amplitud === 0) return;
+
+      const grados = amplitud * sentido;
+      const curva = "cubic-bezier(0.16, 0.84, 0.24, 1)";
+      const trio = [destino, (destino + 1) % N, (destino - 1 + N) % N]
+        .map((i) => cellRefs.current[i])
+        .filter((cell): cell is HTMLDivElement => Boolean(cell));
+
+      inclinaciones.current = trio.map((cell) => {
+        const inicio = previas.get(cell) ?? 0;
+        previas.delete(cell);
+        return cell.animate(
+          [
+            { rotate: `${inicio}deg`, easing: curva },
+            { rotate: `${grados}deg`, offset: 0.38, easing: curva },
+            { rotate: "0deg" },
+          ],
+          { duration: 720 },
+        );
+      });
+
+      /* Las que venían ladeadas y ya no entran en el trío tampoco pueden
+         volver a cero de un tirón: se enderezan solas, corto, desde donde
+         estaban. */
+      for (const [cell, inicio] of previas) {
+        if (Math.abs(inicio) < 0.05) continue;
+        inclinaciones.current.push(
+          cell.animate(
+            [{ rotate: `${inicio}deg` }, { rotate: "0deg" }],
+            { duration: 260, easing: curva },
+          ),
+        );
+      }
+    },
+    [N],
+  );
+
+  useEffect(() => () => inclinaciones.current.forEach((a) => a.cancel()), []);
+
   const irA = useCallback(
     (destino: number) => {
       const objetivo = ((destino % N) + N) % N;
@@ -224,11 +312,10 @@ function ProjectCarousel({ items }: { items: Project[] }) {
       let delta = objetivo - current;
       if (delta > N / 2) delta -= N;
       if (delta < -N / 2) delta += N;
-      setDir(Math.sign(delta));
-      setPaso((p) => p + 1);
+      inclinar(objetivo, Math.sign(delta));
       setCurrent(objetivo);
     },
-    [current, N],
+    [current, N, inclinar],
   );
 
   const go = useCallback((delta: number) => irA(current + delta), [irA, current]);
@@ -318,11 +405,6 @@ function ProjectCarousel({ items }: { items: Project[] }) {
           className="pcar-stage"
           ref={stageRef}
           onClick={onStageClick}
-          /* Mientras no hubo ningún cambio no hay `data-paso`, y sin él
-             ninguna animación arranca: si no, las diez tarjetas se
-             inclinarían solas al cargar la página. */
-          data-paso={paso === 0 ? undefined : paso % 2 === 0 ? "a" : "b"}
-          data-dir={dir > 0 ? "der" : "izq"}
         >
           {items.map((p, i) => {
             const d = distance(i);
