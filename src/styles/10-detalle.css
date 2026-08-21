@@ -674,7 +674,11 @@
 /* ─── DETAIL RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 600px) {
   .detail-wrapper {
-    padding: calc(60px + 1rem) 1.1rem calc(80px + env(safe-area-inset-bottom));
+    /* Ni cabecera ni barra inferior en esta ruta: ver la nota de
+       09-responsive.css. El 80px de antes además estaba suelto del token
+       --bottom-nav-h (72px), así que cambiarlo movía .page y el detalle de
+       escritorio pero dejaba el de teléfono clavado. */
+    padding: 1.5rem 1.1rem calc(1.5rem + env(safe-area-inset-bottom));
   }
   .detail-title {
     font-size: var(--fs-2xl);

@@ -94,10 +94,17 @@ function TitularRevelado({ texto }: { texto: string }) {
  * capricho: el subrayado del énfasis no se dibuja a través de una caja
  * `inline-block`, así que si el espacio quedara fuera el subrayado saldría
  * cortado entre palabra y palabra.
+ *
+ * El `\s*` inicial es lo que salva el espacio que separa un tramo del
+ * siguiente. `split` por los asteriscos deja el separador al PRINCIPIO del
+ * tramo que sigue al énfasis (" desde el modelado…"), y una expresión que
+ * solo mirara el espacio posterior lo tiraba: el titular se leía
+ * "extremo:desde". Entre palabras no duplica nada, porque el `\s*` final ya
+ * consumió ese espacio y acá no queda nada que capturar.
  */
 function enmascarar(tramo: string) {
   return (
-    tramo.match(/\S+\s*/g)?.map((palabra, i) => (
+    tramo.match(/\s*\S+\s*/g)?.map((palabra, i) => (
       <span className="mascara" key={i}>
         <span className="mascara-i">{palabra}</span>
       </span>

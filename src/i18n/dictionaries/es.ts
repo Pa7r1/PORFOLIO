@@ -23,8 +23,14 @@ export const es = {
   // About section paragraphs
   "about.p1":
     "Soy desarrollador Full Stack egresado de la UTN La Rioja. Manejo el ciclo completo de desarrollo de software: desde el modelado de bases de datos y la creación de APIs REST, hasta el desarrollo de la interfaz y la configuración del despliegue final en la nube.",
-  "about.p2":
-    "Cuento con experiencia práctica trabajando en repositorios compartidos junto a equipos de desarrollo. Esta etapa me permitió afianzar las buenas prácticas del trabajo en equipo: lectura y auditoría de código ajeno, resolución de conflictos en Git sin bloquear a otros y priorizar la mejor solución técnica por sobre el ego.",
+  // p2 era un párrafo de 50 palabras con tres cláusulas unidas por "y":
+  // se expone esa lista como tal en vez de seguir corriendo como prosa.
+  // Mismos hechos, sin agregar ni quitar ninguno.
+  "about.teamwork.intro":
+    "Trabajar en repositorios compartidos con otros equipos me dejó tres hábitos:",
+  "about.teamwork.item1": "Leer y auditar código ajeno antes de tocarlo.",
+  "about.teamwork.item2": "Resolver conflictos en Git sin bloquear a nadie.",
+  "about.teamwork.item3": "Priorizar la mejor solución técnica por sobre el ego.",
   "about.p3":
     "Potencio mi productividad con asistencia de IA, pero bajo un entorno controlado que diseñé yo mismo: un repositorio de configuración versionado con subagentes, hooks de validación y servidores MCP que imponen las convenciones del proyecto. Busco sumarme a un equipo donde pueda aportar autonomía en el backend e infraestructura, construyendo bases de datos sólidas, despliegues reproducibles y sistemas estables.",
   "about.downloadCV": "Descargar CV",

@@ -9,8 +9,22 @@
    archivo a otro sin comprobar la cascada.
    ═══════════════════════════════════════════════════════════════ */
 
-/* ─── RESPONSIVE ─────────────────────────────────────────── */
-@media (max-width: 800px) {
+/* ─── RESPONSIVE ───────────────────────────────────────────
+   El corte del patrón móvil está en 999px, no en 800. Medido: entre 801 y
+   1199 el nav de escritorio NO cabe en una fila. En inglés se partía en dos
+   filas (125px de alto) de 850 a 1040 y en tres a 801; en español, que
+   tiene las etiquetas más largas, iba a dos filas hasta 1199 y a tres
+   hasta 850.
+
+   Y no era solo estético: `section` lleva `scroll-margin-top: 6rem` (96px)
+   calculado para el nav de una fila, así que con el nav de 125px el ancla
+   del menú dejaba el <h2> cortado por debajo. Al no existir más el nav de
+   dos filas, ese fallo desaparece sin tocar el scroll-margin. */
+@media (max-width: 999px) {
+  /* SOLO el patrón de navegación. Todo lo demás —tamaños de teléfono— vive
+     en el bloque de 800px de abajo: subirlo hasta acá metía el hero
+     compacto, la foto de 120px y la línea de tiempo apilada en pantallas de
+     900px, donde hay sitio de sobra. */
   .top-nav {
     display: none;
   }
@@ -18,6 +32,26 @@
     padding: calc(60px + 1.5rem) 1.1rem
       calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 1.5rem);
   }
+  section {
+    scroll-margin-top: 4.5rem;
+  }
+  .mobile-header,
+  .mobile-nav {
+    display: flex;
+  }
+  /* El detalle NO monta el header ni la barra inferior: `Header` solo se
+     renderiza en App.tsx, y ProjectDetail trae su propio enlace "volver".
+     Reservarles sitio dejaba 76px de banda vacía antes del enlace y 80px
+     muertos al pie, medidos en /projects/:slug a 390px. */
+  .detail-wrapper {
+    padding: 1.5rem 1.1rem calc(1.5rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Tamaños de teléfono y tableta angosta. Este es el corte que existía antes
+   de que el nav se mudara a 999px, y se queda donde estaba: son decisiones
+   de espacio, no de navegación. */
+@media (max-width: 800px) {
   .hero {
     padding: 2rem 0 2.5rem;
     margin-bottom: 2.5rem;
@@ -43,7 +77,6 @@
   }
   section {
     margin-bottom: 4rem;
-    scroll-margin-top: 4.5rem;
   }
   .section-label {
     margin-bottom: 1.5rem;
@@ -80,19 +113,43 @@
   .pcar {
     padding-inline: 1.1rem;
   }
-  .pcar-frame {
-    max-width: 100%;
-  }
   .pcar-nav {
     margin-top: 1.1rem;
   }
-  .mobile-header,
-  .mobile-nav {
-    display: flex;
+}
+
+/* En el teléfono la tarjeta baja al 80% del ancho para dejarle sitio a la
+   vecina. Con el `max-width: 100%` que había acá la vecina se desplazaba
+   331px en una pantalla de 360 y entraba CERO píxeles: el paso no se veía
+   como movimiento, por mucho que su opacidad fuera la correcta.
+
+   Va en este archivo y no en 07-proyectos.css porque este carga después:
+   una regla de `.pcar-frame` allá la pisaba esta de acá. */
+@media (max-width: 719px) {
+  .pcar-frame {
+    /* 75vw y no 80: a 360px de pantalla la diferencia es de 16 a 37px de
+       vecina visible, y por debajo de ~20px el asomo no se lee como que
+       algo está llegando, se lee como un borde. */
+    max-width: 75vw;
   }
-  .detail-wrapper {
-    padding: calc(60px + 1rem) 1.1rem
-      calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 1.5rem);
+}
+
+/* Tramo justo: el nav de escritorio ya está, pero en español las cinco
+   etiquetas no caben con el espaciado de holgura. Se aprieta lo mínimo
+   —menos aire lateral en la barra y menos letter-spacing en los enlaces—
+   y con eso entra en una fila en los dos idiomas desde 1000px. Por encima
+   de 1200 sobra sitio y vuelve el espaciado pleno de 03-nav.css.
+
+   Los números salen de medir, no de estimar: con letter-spacing 0.11em y
+   padding 0.9rem el español pedía dos filas hasta 1199px. */
+@media (min-width: 1000px) and (max-width: 1199px) {
+  .top-nav {
+    padding-inline: 1.25rem;
+    gap: 1rem;
+  }
+  .top-nav-links a {
+    letter-spacing: 0.06em;
+    padding-inline: 0.55rem;
   }
 }
 

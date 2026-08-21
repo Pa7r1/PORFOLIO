@@ -87,9 +87,16 @@
 .pcar-frame {
   position: relative;
   /* La captura del producto es el mejor argumento de cada tarjeta y a
-     31rem ocupaba un tercio del ancho en un portátil. A 41rem la central
-     manda de verdad y las laterales siguen asomando lo justo. */
-  max-width: min(41rem, 88vw);
+     31rem ocupaba un tercio del ancho en un portátil. Subió a 41rem para
+     que la central mandara de verdad, y de ahí bajó a 34: a 41rem el
+     bloque no entraba en una pantalla de portátil y había que desplazarse
+     para ver el final de la tarjeta y los puntos, o sea que el carrusel
+     se leía cortado. La captura acompaña sola porque es 16/10 del ancho.
+
+     El número lo fija un criterio, no el gusto: del techo del <h2> al pie
+     de .pcar-nav tiene que caber en el viewport a 1366×768, que es el
+     caso apretado. Si se vuelve a tocar, se vuelve a medir. */
+  max-width: min(34rem, 88vw);
   margin-inline: auto;
 }
 /* Sombra bajo la tarjeta centrada. Va FIJA en el escenario, no en cada
@@ -170,7 +177,15 @@
      tan chica, tan tenue y tan tapada por el velo que del recorrido solo se
      veía un 5%: el paso se leía como un cambio instantáneo aunque durase
      0,62s. Aquí no hay nada que "aparezca", hay algo que llega. */
-  transform: translateX(calc(var(--d) * (100% + 1.5rem)));
+  /* La escala es la profundidad: la vecina queda al 95% (27px más angosta)
+     y la central manda sin necesidad de teñir ni tapar nada. Es transform
+     puro, va en la misma matriz y no cuesta un fotograma —medido: mediana
+     16,7ms y p90 16,7ms, igual que sin ella—. NO bajar del 94%: el
+     coverflow viejo dejaba la vecina al 82% con giro y velo encima, y de
+     su recorrido solo se veía un 5%. El móvil usa 0.92 (más abajo) porque
+     allí no hay corredor y la vecina apenas asoma. */
+  transform: translateX(calc(var(--d) * (100% + 1.5rem)))
+    scale(calc(1 - var(--adc) * 0.05));
   /* Nada de desenfoque, y no por falta de ganas: un `blur()` sobre las celdas
      dejaba el carrusel en ~22fps, y dejarlo estático fuera de la transición
      tampoco servía (43ms por fotograma con la CPU frenada, 36ms sin frenarla)
@@ -191,6 +206,55 @@
 }
 .pcar--enhanced .pcar-cell[data-d="0"] {
   cursor: default;
+}
+
+/* ─── INCLINACIÓN DIRECCIONAL ──────────────────────────────
+   El paso era simétrico: ir a la izquierda se veía exactamente igual que
+   ir a la derecha. Ahora la tira se inclina hacia el sentido del viaje y
+   se endereza al llegar, como algo que arranca y frena.
+
+   Va como propiedad `rotate` INDEPENDIENTE, nunca dentro del `transform`
+   de arriba: se compone en la misma matriz del mismo elemento —sin capa
+   nueva, que es lo que costó 43fps la otra vez— y así el `translateX` de
+   la tira no hay que reescribirlo en cada fotograma clave.
+
+   AMPLITUD — es la ÚNICA línea que hay que tocar para cambiar la
+   intensidad, y va en grados porque es lo que entiende `rotate`. Lo que
+   hay que mirar para elegirla es la otra columna: cuánto se corre en el
+   fotograma del pico el punto que el ojo sigue, medido sobre la tarjeta de
+   544x586 a 1440px de ancho.
+                 esquina de la central   esquina de la vecina   su título
+       3deg            20,4px                  23,2px            38,8px
+       4.5deg          30,1px                  35,2px            58,2px
+       6.5deg          42,7px                  51,7px            84,1px
+   El valor anterior era 1.15deg: 7,9px de esquina. Existía, corría a
+   60fps, pasaba diecinueve comprobaciones automáticas y el dueño no lo
+   veía. La vecina se corre más que la central porque las celdas se
+   desplazan DESPUÉS de girar: la tira se ladea entera, como un cuerpo
+   rígido, y el brazo de palanca de la vecina es una tarjeta más largo.
+
+   La animación la dispara Projects.tsx con `element.animate()` (WAAPI) y
+   NO con `@keyframes`, por dos motivos medidos:
+   · Un `var()` dentro de unos fotogramas clave saca la animación del
+     compositor (crbug 40890539): el p99 subía de 33ms a 50-67ms. Para
+     mantener literales había que duplicar cuatro bloques casi idénticos
+     —paridad × sentido— y la amplitud quedaba escrita en ocho sitios.
+     Con WAAPI el valor literal se calcula al crear la animación: mismo
+     compositor, una sola fuente.
+   · La paridad `data-paso` "a"/"b" existía solo para reiniciar la
+     animación al pasar dos veces seguidas. `animate()` arranca siempre
+     desde cero, así que el mecanismo entero sobra.
+
+   `transform-origin` en el centro y no bajo la base (estuvo en 50% 130%):
+   la escala de las vecinas de arriba se aplica alrededor del mismo origen,
+   y con el origen fuera de la tarjeta encogerla la hundía 23px. Como las
+   celdas están apiladas y sus desplazamientos se aplican DESPUÉS del giro,
+   el resultado sigue siendo el de una tira rígida que se ladea entera. */
+.pcar--enhanced {
+  --pcar-inclinacion: 4.5deg;
+}
+.pcar--enhanced .pcar-cell {
+  transform-origin: 50% 50%;
 }
 /* Refuerzo del atributo `inert` que pone React, para navegadores que no
    lo soporten: clickear una tarjeta lateral la centra, no navega. */
@@ -250,12 +314,21 @@
   }
 }
 
+/* El titular de Proyectos lleva menos aire debajo que el del resto de las
+   secciones, y es a propósito: es la única cuyo contenido mide 640px de
+   alto, así que los 2,25rem de .section-label son justo lo que la empuja
+   fuera de una pantalla de portátil. El resto de las secciones conserva el
+   ritmo original. */
+#projects .section-label {
+  margin-bottom: 1.35rem;
+}
+
 .pcar-nav {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 .pcar-dots {
   display: flex;
@@ -299,21 +372,56 @@
 @media (max-width: 719px) {
   .pcar--enhanced .pcar-cell {
     --adc: min(var(--ad), 1);
-    transform: translateX(calc(var(--d) * 100%)) scale(calc(1 - var(--adc) * 0.22));
-    opacity: calc(1 - var(--adc));
+    /* La vecina estaba en `opacity: calc(1 - var(--adc))`, o sea CERO, con
+       una escala de 0,78. Medido en el teléfono: 0px visibles a 360 y 1px a
+       720. En esas condiciones el carrusel no es una tira deslizante, es un
+       pase de diapositivas — no hay nada que se vea llegar, y por lo tanto
+       tampoco se ve la inclinación direccional. El "56% visible" que
+       documenta CLAUDE.md solo se cumplía a 1440.
+
+       Ahora la vecina se desplaza una tarjeta entera más un hueco (igual
+       que en escritorio, en vez de un 100% pelado que la dejaba pegada), se
+       queda al 92% de escala y conserva un tercio de opacidad. Sigue siendo
+       transform y opacity: no cuesta un fotograma más que antes. */
+    transform: translateX(calc(var(--d) * (100% + 0.5rem)))
+      scale(calc(1 - var(--adc) * 0.08));
+    opacity: calc(1 - var(--adc) * 0.66);
   }
 }
 
 /* Con reduced-motion no hay ni desplazamiento ni desenfoque animado:
    solo el cambio de opacidad, y la tarjeta aparece en su sitio. */
 @media (prefers-reduced-motion: reduce) {
+  /* Ni inclinación ni salto para quien pidió no ver movimiento.
+     La amplitud a 0 va en el CONTENEDOR y no en la celda: Projects.tsx la
+     lee del escenario, que es el PADRE de las celdas, y las variables
+     heredan hacia abajo, no hacia arriba. Declarada en la celda se seguía
+     leyendo 4.5deg y la inclinación corría igual con reduced-motion
+     activo — comprobado con `emulateMedia`, no deducido. A 0deg el
+     componente ni llega a crear la animación.
+     La opacidad sigue viva y la tarjeta centrada nunca queda invisible:
+     esa es la regla de justo abajo, y no se toca. */
+  .pcar--enhanced {
+    --pcar-inclinacion: 0deg;
+  }
   .pcar--enhanced .pcar-cell {
     transform: none;
     opacity: 0;
     transition: opacity 0.2s linear;
+    /* Se anula la animación entera y no solo su duración: el bloque
+       general de 05-movimiento.css acorta duraciones, pero acá hay que
+       asegurar que no quede un `rotate` aplicado a medio camino. */
+    animation: none;
+    rotate: none;
   }
   .pcar--enhanced .pcar-cell[data-d="0"] {
     opacity: 1;
+  }
+  /* El salto es afordancia, no decoración: se queda el cambio de borde y
+     de sombra, se va el desplazamiento. */
+  .project-card:active,
+  .pcar--enhanced .pcar-cell:not([data-d="0"]):active .project-card {
+    transform: none;
   }
 }
 
@@ -358,6 +466,62 @@
   box-shadow: var(--shadow-lift);
   transform: translateY(-3px);
 }
+/* ─── SALTO AL APRETAR ─────────────────────────────────────
+   Antes era un salto HACIA ARRIBA de 8px (de -3 del hover a -10.9) en
+   150ms con una curva que sobrepasa. El problema no era el tamaño: en la
+   tarjeta centrada el clic NAVEGA al caso de estudio, así que la página se
+   va a los ~100ms de apretar y de esos 150ms se veía el arranque, que con
+   una curva de rebote es justo la parte lenta. Un efecto de respuesta que
+   no llega a verse donde más se usa no existe.
+
+   Reformulado: la tarjeta se HUNDE —baja 6px POR DEBAJO de donde estaba en
+   reposo, no sube— y la amplitud ya no está en un eje sino en el contorno:
+   al 97,5% sobre 544x586 los cuatro bordes entran a la vez y la esquina
+   recorre 15px, contra 12,1 de antes. Y la curva es un ease-out fuerte de
+   90ms en lugar de un rebote de 150ms. Medido en tres tandas alternadas
+   contra la regla vieja: a los 50ms del `pointerdown` lleva 9,6px de 15
+   (antes 4,9-8,3 de 12,1) y termina a los ~95ms; la vieja seguía subiendo
+   a los 112ms y después RETROCEDÍA, porque el rebote sobrepasa. Cabe
+   entero en el hueco que hay antes del `pointerup`.
+
+   No se retrasa la navegación esperando a la animación: hacer esperar un
+   clic por un efecto es de las cosas que más molestan, y el costo de
+   equivocarse es una página que tarda en irse. Se hace caber el efecto en
+   el hueco que ya existe.
+
+   Sigue siendo transform puro sobre un elemento quieto: cuesta cero. Y
+   sigue por debajo de los 0,72s del paso del carrusel, para que al apretar
+   una lateral el hundimiento haya terminado antes de que la celda empiece
+   a recolocarse.
+
+   Hacen falta DOS selectores porque el enlace de las celdas no centradas
+   lleva `pointer-events: none` (más abajo, y es lo que deja pasar el clic
+   hasta la celda para centrarla): sin puntero no hay `:active`, así que en
+   las vecinas el estado se toma de la celda, que sí recibe el evento. */
+/* La ÚNICA capa promovida de todo el carrusel, y está medida en las dos
+   direcciones. Sin ella el hundimiento del `:active` tarda 72-92ms en
+   ARRANCAR —cuatro o cinco fotogramas clavados en el valor inicial— porque
+   encoger una tarjeta con una captura dentro obliga a rasterizarla otra vez
+   y la animación espera a que ese raster esté listo. Justo el retraso que
+   la navegación se lleva por delante. Con la capa ya promovida arranca a
+   los 24-41ms y llega a los 15px antes de los 100ms.
+
+   Y no cuesta nada: paso del carrusel con la CPU frenada ×4, tres tandas
+   alternadas, mediana 16,7ms y p90 16,7ms con y sin ella.
+
+   Va en la centrada y no en `:hover` —que sería lo temporal y quirúrgico de
+   manual— porque con el dedo no hay hover y el retraso volvería entero en
+   el teléfono. Es UNA tarjeta: la promoción se muda sola de celda cuando
+   cambia `data-d`. */
+.pcar--enhanced .pcar-cell[data-d="0"] .project-card {
+  will-change: transform;
+}
+.project-card:active,
+.pcar--enhanced .pcar-cell:not([data-d="0"]):active .project-card {
+  transform: translateY(3px) scale(0.975);
+  transition-duration: 90ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
 .project-card:hover .project-title,
 .project-card:focus-visible .project-title {
   color: color-mix(in oklab, var(--a) var(--a-ink), var(--a-ink-with));
@@ -369,10 +533,14 @@
 }
 .project-shot {
   position: relative;
-  /* 16:10. Con la rejilla de diez tarjetas había que apretarla a 2:1
-     porque cada píxel de alto se multiplicaba por cinco filas; con una
-     sola tarjeta a la vista la captura puede respirar y verse. */
-  aspect-ratio: 16 / 10;
+  /* 16:9. Con la rejilla de diez tarjetas había que apretarla a 2:1 porque
+     cada píxel de alto se multiplicaba por cinco filas; con una sola
+     tarjeta a la vista subió a 16:10 para que la captura respirara, y de
+     ahí a 16:9 para que el bloque entero entre en una pantalla de 768px de
+     alto sin recortar ni una línea de texto. A 544px de ancho son 34px
+     menos de alto, que es el recorte más grande disponible sin tocar
+     contenido. */
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background: color-mix(in oklab, var(--a) 10%, var(--surface-sunk));
@@ -440,7 +608,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 1.1rem 1.25rem 1.25rem;
+  padding: 0.95rem 1.15rem 1.05rem;
 }
 /* Fila de metadatos: tipo de trabajo a la izquierda, año a la derecha.
    El chip de tipo vuelve a la tarjeta ahora que no hay encabezados de
