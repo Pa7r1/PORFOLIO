@@ -20,8 +20,14 @@ export const en: Record<DictionaryKey, string> = {
   // About section paragraphs
   "about.p1":
     "I am a Full Stack Developer (UTN La Rioja) specializing in end-to-end software development: from database modeling and REST API architecture to UI development and final cloud deployment configuration.",
-  "about.p2":
-    "I have hands-on experience collaborating on shared repositories with dev teams and integrating live payment gateways. This experience solidified my adherence to collaborative best practices: auditing legacy code, resolving Git conflicts cleanly, and prioritizing technical merit over ego.",
+  // Mirrors es.ts: p2's three "and"-joined clauses exposed as an actual
+  // list. Also drops the EN-only "payment gateways" claim that es.ts never
+  // made — an untracked asymmetry from an earlier translation pass.
+  "about.teamwork.intro":
+    "Working in shared repositories with other teams left me with three habits:",
+  "about.teamwork.item1": "Reading and auditing someone else's code before touching it.",
+  "about.teamwork.item2": "Resolving Git conflicts without blocking anyone.",
+  "about.teamwork.item3": "Prioritizing the best technical solution over ego.",
   "about.p3":
     "I boost my productivity using AI assistance within a controlled ecosystem I architected myself: a versioned configuration repository with domain-specific subagents, validation hooks, and MCP servers that strictly enforce project conventions. I am looking to join a team where I can bring end-to-end backend and infrastructure autonomy—building well-modeled databases, reproducible deployments, and rock-solid systems.",
   "about.downloadCV": "Download CV",
