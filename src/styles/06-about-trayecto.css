@@ -69,6 +69,44 @@
      principio del renglón siguiente sin buscarlo. */
   max-width: 54ch;
 }
+/* Bloque de la ex-p2: intro corta + lista de tres prácticas, en vez de
+   una oración con tres cláusulas unidas por "y". Mismo cuerpo que los
+   párrafos (54ch, --fs-base) — es texto principal, no una nota al margen
+   como el tercer párrafo. */
+.about-practice-intro {
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+  line-height: 1.75;
+  max-width: 54ch;
+}
+.about-practice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0 0 1.1rem;
+  padding: 0;
+  max-width: 54ch;
+  list-style: none;
+}
+.about-practice-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+/* Marcador en tinta (currentColor), no un color de marca nuevo — el
+   sistema solo tiene --accent, que ya vale lo mismo que --text. */
+.about-practice-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
 /* El tercer párrafo es el doble de largo que los otros dos y venía como
    ocho líneas seguidas del mismo peso. Se separa como nota al margen
    —filete, un escalón menos de cuerpo— en vez de tocarle el texto. */

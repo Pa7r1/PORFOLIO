@@ -323,13 +323,23 @@ section {
 }
 
 /* Los desplazamientos al hover son afordancia, no decoración: con
-   reduced-motion se quedan solo el color y el borde. */
+   reduced-motion se quedan solo el color y el borde.
+
+   OJO CON LA ESPECIFICIDAD, y no es un detalle: este bloque estaba escrito
+   con `.project-card:hover` a secas (0-2-0) y NO APLICABA NINGUNA de sus
+   reglas. Pierde contra `.project-card:hover` de 07-proyectos.css y contra
+   `.shot-frame:hover` de 10-detalle.css, que empatan en especificidad y
+   ganan por caer en un archivo posterior. Medido: con reduced-motion activo
+   la tarjeta seguía haciendo `translateY(-3px)` al pasar el ratón.
+
+   Se sube la especificidad en vez de mover el bloque al final, porque
+   reordenar los archivos es justamente lo que este CSS no admite.
+
+   El tercer selector que había, `.project-row:hover`, se eliminó: esa clase
+   no existe en ningún sitio del repo. */
 @media (prefers-reduced-motion: reduce) {
-  .project-card:hover,
-  .shot-frame:hover {
+  .pcar-cell .project-card:hover,
+  .detail-shots .shot-frame:hover {
     transform: none;
-  }
-  .project-row:hover {
-    padding-left: 0.6rem;
   }
 }
