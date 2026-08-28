@@ -2,55 +2,96 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/PORFOLIO/portafolio.ico" />
+    <link rel="icon" type="image/png" href="portafolio.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patricio Carpio — Fullstack Developer</title>
-    <meta name="description" content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas." />
+    <meta
+      name="description"
+      content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas."
+    />
 
     <!-- Open Graph -->
-    <meta property="og:type"        content="website" />
-    <meta property="og:url"         content="https://pa7r1.github.io/PORFOLIO/" />
-    <meta property="og:title"       content="Patricio Carpio — Fullstack Developer" />
-    <meta property="og:description" content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas." />
-    <meta property="og:image"       content="https://pa7r1.github.io/PORFOLIO/og-image.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pa7r1.github.io/PORFOLIO/" />
+    <meta property="og:title" content="Patricio Carpio — Fullstack Developer" />
+    <meta
+      property="og:description"
+      content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas."
+    />
+    <meta
+      property="og:image"
+      content="https://pa7r1.github.io/PORFOLIO/og-image.png"
+    />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card"        content="summary_large_image" />
-    <meta name="twitter:title"       content="Patricio Carpio — Fullstack Developer" />
-    <meta name="twitter:description" content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas." />
-    <meta name="twitter:image"       content="https://pa7r1.github.io/PORFOLIO/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Patricio Carpio — Fullstack Developer"
+    />
+    <meta
+      name="twitter:description"
+      content="Full Stack Developer — TypeScript, React, Node.js y PostgreSQL. Sistemas en producción con usuarios reales. Disponible para posiciones remotas."
+    />
+    <meta
+      name="twitter:image"
+      content="https://pa7r1.github.io/PORFOLIO/og-image.png"
+    />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://pa7r1.github.io/PORFOLIO/" />
 
     <!-- Tipografías autohospedadas: sin petición a terceros y sin bloquear el render.
          Las declara @font-face en src/index.css. -->
-    <link rel="preload" href="/PORFOLIO/fonts/switzer.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/PORFOLIO/fonts/clash-display.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/PORFOLIO/fonts/switzer.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/PORFOLIO/fonts/clash-display.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <!-- JSON-LD Person -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Patricio Valentín Carpio",
-      "url": "https://pa7r1.github.io/PORFOLIO/",
-      "email": "valentincarpio32@gmail.com",
-      "jobTitle": "Fullstack Developer",
-      "sameAs": [
-        "https://github.com/Pa7r1",
-        "https://www.linkedin.com/in/patricio-carpio-6a602327b/"
-      ],
-      "knowsAbout": [
-        "Node.js", "FastAPI", "Python", "TypeScript", "React", "PostgreSQL",
-        "MySQL", "Docker", "Nginx", "Linux", "VPS", "REST APIs", "DevOps"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Patricio Valentín Carpio",
+        "url": "https://pa7r1.github.io/PORFOLIO/",
+        "email": "valentincarpio32@gmail.com",
+        "jobTitle": "Fullstack Developer",
+        "sameAs": [
+          "https://github.com/Pa7r1",
+          "https://www.linkedin.com/in/patricio-carpio-6a602327b/"
+        ],
+        "knowsAbout": [
+          "Node.js",
+          "FastAPI",
+          "Python",
+          "TypeScript",
+          "React",
+          "PostgreSQL",
+          "MySQL",
+          "Docker",
+          "Nginx",
+          "Linux",
+          "VPS",
+          "REST APIs",
+          "DevOps"
+        ]
+      }
     </script>
 
     <!-- Theme + locale boot — runs before paint to avoid FOUC -->
     <script>
-      (function() {
+      (function () {
         try {
           var t = localStorage.getItem("theme");
           if (t !== "dark" && t !== "light") t = "light";
@@ -68,16 +109,22 @@
 
     <!-- spa-github-pages recovery: restore original path from ?/ query param -->
     <script>
-      (function(l) {
-        if (l.search[1] === '/') {
-          var decoded = l.search.slice(1).split('&').map(function(s) {
-            return s.replace(/~and~/g, '&');
-          }).join('?');
-          window.history.replaceState(null, null,
-            l.pathname.slice(0, -1) + decoded + l.hash
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(
+            null,
+            null,
+            l.pathname.slice(0, -1) + decoded + l.hash,
           );
         }
-      }(window.location));
+      })(window.location);
     </script>
   </head>
   <body>
