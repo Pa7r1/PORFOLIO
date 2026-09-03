@@ -1,4 +1,5 @@
 import { useTheme } from "@/components/common/ThemeContext";
+import { useLocale } from "@/i18n/LocaleContext";
 
 const SunIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -22,11 +23,12 @@ const MoonIcon = () => (
 
 export default function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLocale();
   return (
     <button
       onClick={toggleTheme}
       className="theme-toggle"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      aria-label={theme === "dark" ? t("theme.toLight") : t("theme.toDark")}
     >
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>

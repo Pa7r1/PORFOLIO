@@ -11,6 +11,8 @@ export const en: Record<DictionaryKey, string> = {
   // Hero / mobile header
   "header.role": "FULLSTACK DEV",
   "skip.toContent": "Skip to content",
+  "theme.toLight": "Switch to light mode",
+  "theme.toDark": "Switch to dark mode",
   // Los asteriscos marcan el tramo resaltado — ver la nota en es.ts.
   "hero.headline": `*I develop end-to-end web applications:* from data modeling to robust, scalable, and maintainable deployments.`,
   "hero.eyebrow": "Full Stack Developer · Remote from Argentina",
@@ -29,7 +31,7 @@ export const en: Record<DictionaryKey, string> = {
   "about.teamwork.item2": "Resolving Git conflicts without blocking anyone.",
   "about.teamwork.item3": "Prioritizing the best technical solution over ego.",
   "about.p3":
-    "I boost my productivity using AI assistance within a controlled ecosystem I architected myself: a versioned configuration repository with domain-specific subagents, validation hooks, and MCP servers that strictly enforce project conventions. I am looking to join a team where I can bring end-to-end backend and infrastructure autonomy—building well-modeled databases, reproducible deployments, and rock-solid systems.",
+    "I use AI to reach the best solution, not the first one that compiles. I specify before writing, implement and verify in separate phases, and independent agents review the change before it reaches the main branch. Each project's conventions live versioned in its repo, not in my head.",
   "about.downloadCV": "Download CV",
   "about.stat.experience": "years coding",
   "about.stat.production": "systems in production",
@@ -51,7 +53,6 @@ export const en: Record<DictionaryKey, string> = {
   "contact.text":
     "I'm looking for a team. If you're filling a Full Stack or backend position and something here fits, drop me a line!",
   "contact.cta": "Send me an email",
-  "contact.ctaMicro": "",
   "contact.location": "Pituil, La Rioja, Argentina · Remote work",
   "contact.emailAria": "Send an email",
   "contact.whatsappMessage":
@@ -95,6 +96,7 @@ export const en: Record<DictionaryKey, string> = {
   "project.section.learnings": "Key Learnings",
   "project.testimonial": "What the client says",
   "project.video": "Video demo",
+  "project.fallbackTitle": "Project",
   "project.screenshots": "Screenshots",
   "project.noScreenshots": "Screenshots in progress",
   "project.notFound": "Project not found",

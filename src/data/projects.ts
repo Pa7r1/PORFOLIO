@@ -15,7 +15,7 @@ export const projects: Project[] = [
       en: "16 months on a shared repository with other developers",
     },
     description: {
-      es: "Tienda online de hardware construida entre ocho desarrolladores. Mi parte fue la capa de datos: normalizar el esquema, la carga masiva del catálogo y las consultas del servidor.",
+      es: "Tienda online de hardware construida varios desarrolladores. Mi parte fue la capa de datos: normalizar el esquema, la carga masiva del catálogo y las consultas del servidor.",
       en: "Online hardware store built by eight developers. My part was the data layer: normalizing the schema, bulk catalog loading and the server's queries.",
     },
     image: asset("captures/modex-ecommerce/card.webp"),
@@ -34,7 +34,7 @@ export const projects: Project[] = [
       year: 2025,
       status: "production",
       summary: {
-        es: "Modex vende accesorios y componentes de hardware. Su tienda online la construimos entre ocho desarrolladores sobre un mismo repositorio, entre julio de 2024 y noviembre de 2025. Es lo más parecido a trabajar en una empresa que hice hasta ahora: código que no escribí yo, decisiones que se discuten y un repositorio donde tu commit le puede arruinar la tarde a otro. De los 465 commits del repositorio, 53 son míos.",
+        es: "Modex vende accesorios y componentes de hardware. Su tienda online la construimos varios desarrolladores sobre un mismo repositorio, entre julio de 2024 y noviembre de 2025. Es lo más parecido a trabajar en una empresa que hice hasta ahora: código que no escribí yo, decisiones que se discuten y un repositorio donde tu commit le puede arruinar la tarde a otro. De los 465 commits del repositorio, 53 son míos.",
         en: "Modex sells computer hardware and accessories. Eight of us built their online store on one shared repository, between July 2024 and November 2025. It's the closest thing to working at a company I've done so far: code I didn't write, decisions that get argued over, and a repository where your commit can ruin someone else's afternoon. Of the repository's 465 commits, 53 are mine.",
       },
       problem: {
@@ -81,21 +81,7 @@ export const projects: Project[] = [
         es: "Cuando lo que escribís lo va a leer y modificar otro, dejás de optimizar para terminar rápido y empezás a optimizar para que se entienda. Revisar código ajeno resultó ser una habilidad aparte, y todavía me lleva más tiempo del que calculo. Lo más útil que me quedé es chico y concreto: antes de tocar un módulo, miro el historial de ese archivo para saber quién lo escribió y preguntarle a esa persona.",
         en: "When what you write is going to be read and modified by someone else, you stop optimizing for finishing fast and start optimizing for being understood. Reviewing other people's code turned out to be a separate skill, and it still takes me longer than I budget for. The most useful thing I kept is small and concrete: before touching a module, I check that file's history to find out who wrote it and go ask them.",
       },
-      screenshots: [
-        {
-          src: asset("captures/modex-ecommerce/inicio.webp"),
-          orientation: "desktop",
-          caption: { es: "Portada de la tienda", en: "Storefront home" },
-        },
-        {
-          src: asset("captures/modex-ecommerce/inicio-mobile.webp"),
-          orientation: "mobile",
-          caption: {
-            es: "La misma portada en el celular",
-            en: "The same storefront on mobile",
-          },
-        },
-      ],
+      videoUrl: "https://youtu.be/B5yph-6UgQM",
     },
   },
 
@@ -925,7 +911,7 @@ export const projects: Project[] = [
       year: 2026,
       status: "production",
       summary: {
-        es: "Walter y Diego ofrecen asistencia mecánica en la TransVelasco, una de las carreras de enduro más importantes de Argentina. Necesitaban estar en línea antes de la carrera, con una fecha que no se movía. Armé una landing liviana que abre al instante en el celular, explica el servicio, el cronograma y los precios, y deja al piloto a un toque de escribirles por WhatsApp. Ocho commits en cuatro días, de la primera línea a estar publicada.",
+        es: "Walter y Diego ofrecen asistencia mecánica en la TransVelasco, una de las carreras de enduro más importantes de Argentina. Necesitaban estar en línea antes de la carrera, con una fecha que no se movía. Armé una landing liviana que abre al instante en el celular, explica el servicio, el cronograma y los precios, y deja al piloto a un toque de escribirles por WhatsApp.",
         en: "Walter and Diego provide mechanical assistance at the TransVelasco, one of Argentina's biggest enduro races. They needed to be online before the race, against a date that wasn't moving. I built a lightweight landing page that opens instantly on a phone, lays out the service, the schedule and the pricing, and leaves the rider one tap from messaging them on WhatsApp. Eight commits in four days, from the first line to published.",
       },
       problem: {
