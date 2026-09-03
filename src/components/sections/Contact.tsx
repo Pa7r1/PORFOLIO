@@ -47,7 +47,6 @@ export default function Contact() {
             <MailIcon />
             {t("contact.cta")}
           </a>
-          <span className="contact-cta-micro">{t("contact.ctaMicro")}</span>
         </div>
 
         <div className="contact-links">

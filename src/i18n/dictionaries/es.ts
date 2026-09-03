@@ -9,6 +9,8 @@ export const es = {
   // Hero / mobile header
   "header.role": "FULLSTACK DEV",
   "skip.toContent": "Saltar al contenido",
+  "theme.toLight": "Cambiar a tema claro",
+  "theme.toDark": "Cambiar a tema oscuro",
   // Los asteriscos marcan el tramo que va resaltado en el titular del
   // hero: App.tsx parte la cadena por ellos y envuelve ese tramo en <em>.
   // El resalte es peso + subrayado, no color (ver .hero-lead em).
@@ -32,7 +34,7 @@ export const es = {
   "about.teamwork.item2": "Resolver conflictos en Git sin bloquear a nadie.",
   "about.teamwork.item3": "Priorizar la mejor solución técnica por sobre el ego.",
   "about.p3":
-    "Potencio mi productividad con asistencia de IA, pero bajo un entorno controlado que diseñé yo mismo: un repositorio de configuración versionado con subagentes, hooks de validación y servidores MCP que imponen las convenciones del proyecto. Busco sumarme a un equipo donde pueda aportar autonomía en el backend e infraestructura, construyendo bases de datos sólidas, despliegues reproducibles y sistemas estables.",
+    "Uso IA para llegar a la mejor solución, no a la primera que compila. Especifico antes de escribir, implemento y verifico en fases separadas, y agentes independientes revisan el cambio antes de que llegue a la rama principal. Las convenciones de cada proyecto viven versionadas en el repo, no en mi memoria.",
   "about.downloadCV": "Descargar CV",
   "about.stat.experience": "años programando",
   "about.stat.production": "sistemas en producción",
@@ -54,7 +56,6 @@ export const es = {
   "contact.text":
     "Estoy buscando equipo. Si estás cubriendo una posición Full Stack o de backend y algo de lo que viste encaja, escribime!",
   "contact.cta": "Escribirme por correo",
-  "contact.ctaMicro": "",
   "contact.location": "Pituil, La Rioja, Argentina · Trabajo remoto",
   "contact.emailAria": "Enviar un correo",
   "contact.whatsappMessage":
@@ -98,6 +99,7 @@ export const es = {
   "project.section.learnings": "Aprendizajes",
   "project.testimonial": "Lo que dice el cliente",
   "project.video": "Demo en video",
+  "project.fallbackTitle": "Proyecto",
   "project.screenshots": "Screenshots",
   "project.noScreenshots": "Screenshots en proceso",
   "project.notFound": "Proyecto no encontrado",

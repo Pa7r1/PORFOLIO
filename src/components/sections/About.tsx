@@ -71,9 +71,10 @@ export default function About() {
               <li>{t("about.teamwork.item3")}</li>
             </ul>
           </div>
-          {/* El tercero es el doble de largo que los otros dos: se separa
-              como nota al margen (filete + un escalón menos de cuerpo) en
-              vez de ser un tercer muro del mismo peso. El texto no cambia. */}
+          {/* Nota al margen (filete + un escalón menos de cuerpo): no es un
+              tercer muro del mismo peso, sino el remate de la sección. Dice
+              cómo trabajo con IA en términos de método, no de herramientas
+              — las herramientas cambian de nombre cada seis meses. */}
           <p className="about-note">{t("about.p3")}</p>
 
           <div className="about-actions">
