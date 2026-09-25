@@ -4,6 +4,8 @@ export type ProjectStatus = "production" | "wip" | "mvp" | "archived";
 export interface Screenshot {
   src: string;
   orientation: "desktop" | "mobile";
+  /** The source already includes its physical device; do not draw or crop another frame. */
+  presentation?: "already-framed";
   caption?: Bilingual;
 }
 

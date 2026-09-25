@@ -26,3 +26,11 @@ dist-ssr
 CLAUDE.md
 memory.md
 .atl
+
+# Capturas: solo se versionan los .webp optimizados. Los PNG de origen
+# viven fuera del repo (ver docs/CAPTURAS.md) y nunca deben publicarse en
+# el sitio, porque todo lo que entra a public/ se copia tal cual a dist/.
+public/captures/**/*.png
+
+# Notas de trabajo locales del agente.
+/odd/

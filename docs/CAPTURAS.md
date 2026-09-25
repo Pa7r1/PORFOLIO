@@ -15,25 +15,33 @@ y en GitHub Pages (base `/PORFOLIO/`).
 
 | Archivo | Para qué |
 |---|---|
-| `scripts/captures.config.mjs` | **Único archivo a editar** para el set de capturas. Lista qué PNG se optimizan y a qué nombre. |
-| `scripts/optimize-captures.mjs` | Convierte los PNG a WebP. No hace falta tocarlo. |
+| `scripts/captures.config.mjs` | Fuente de verdad del set: origen, selección, recorte, encuadre y nombre de salida. |
+| `scripts/optimize-captures.mjs` | Ejecuta con Sharp las operaciones declaradas en la configuración y convierte a WebP. |
 | `src/data/projects.ts` | Asocia las capturas a cada proyecto (`image` + `detail.screenshots` con orientación y caption bilingüe). |
 | `public/captures/<slug>/` | Salida WebP (lo que se commitea y se sirve). |
 
-`SRC_ROOT` (en `captures.config.mjs`) apunta a la carpeta con los PNG originales
-(hoy `/home/pa7r1/Descargas/capturas-apps`). Esa carpeta puede borrarse después:
-los `.webp` ya quedan guardados en `public/`.
+Cada item elige su origen con `source`. `"external"` (default) resuelve desde
+`SRC_ROOT` —hoy `/home/pa7r1/Descargas/capturas-apps`— y `"repo"` resuelve desde
+la raíz del repositorio. Las capturas nuevas conservadas en `public/captures/` usan
+`source: "repo"`, por lo que un PNG externo antiguo no puede sobrescribirlas.
+Los PNG originales no se eliminan al optimizar.
 
 ### Tipos (`kind`) y tamaños
 
 | kind | uso | ancho de salida |
 |---|---|---|
-| `card` | thumbnail de la tarjeta del proyecto | 420 px |
-| `desktop` | captura de escritorio en el carrusel (marco navegador) | 1440 px |
-| `mobile` | captura de teléfono en el carrusel (marco celular) | 820 px |
+| `card` | thumbnail de la tarjeta del proyecto | 420 px por defecto; las nuevas usan 720 px |
+| `desktop` | captura de escritorio en el carrusel (marco navegador) | hasta 1440 px |
+| `mobile` | captura de teléfono en el carrusel (marco celular) | hasta 820 px |
 
-La **orientación** (`desktop` / `mobile`) en `projects.ts` define el marco que se dibuja.
-Tiene que coincidir con el `kind` con el que generaste la imagen.
+Sharp usa `withoutEnlargement`: esos valores son máximos, no una promesa de resolución.
+`width` permite un máximo puntual. `crop` quita bordes conocidos, `trim` recorta padding
+uniforme y `frame` produce una relación exacta con `cover` o `contain`, siempre sin deformar.
+
+La **orientación** (`desktop` / `mobile`) en `projects.ts` define la ventana de la galería.
+Si el PNG ya trae la silueta completa del teléfono, agregá
+`presentation: "already-framed"`: la galería y el lightbox no dibujan un segundo teléfono
+ni fuerzan el contenido a 9:19.
 
 ---
 
@@ -41,10 +49,17 @@ Tiene que coincidir con el `kind` con el que generaste la imagen.
 
 ### Opción 1 — recomendada (optimizada desde un PNG)
 
-1. Conseguí el PNG (ej. dejalo en `SRC_ROOT`).
+1. Conservá el PNG original. Para una captura nueva del portfolio, dejalo en
+   `public/captures/<slug>/` y usá el origen `repo`.
 2. En `scripts/captures.config.mjs`, agregá un item al `slug` correspondiente:
    ```js
-   { from: "vj-barber/principal/clientes--escritorio.png", to: "clientes", kind: "desktop" },
+   {
+     from: "public/captures/barberia/clientes.png",
+     source: "repo",
+     to: "clientes",
+     kind: "mobile",
+     trim: { threshold: 8, padding: 8, background: "#282828" },
+   },
    ```
 3. Generá los WebP:
    ```bash
@@ -54,7 +69,8 @@ Tiene que coincidir con el `kind` con el que generaste la imagen.
    ```ts
    {
      src: asset("captures/barberia/clientes.webp"),
-     orientation: "desktop",
+     orientation: "mobile",
+     presentation: "already-framed",
      caption: { es: "Gestión de clientes", en: "Client management" },
    },
    ```
@@ -71,10 +87,11 @@ node scripts/optimize-captures.mjs ~/Descargas/clientes.png barberia/clientes de
 Esto crea `public/captures/barberia/clientes.webp`. Después agregás la misma entrada
 `{ src, orientation, caption }` en `projects.ts` (paso 4 de arriba).
 
-### Opción 3 — ya tengo un `.webp` o `.png` listo
+### Opción 3 — ya tengo un `.webp` listo
 
 Copialo a `public/captures/<slug>/` y referencialo con `asset("captures/<slug>/archivo.webp")`
-en `projects.ts`. (Para `.png` cambiá la extensión en el `src`.) Sin pasar por el script.
+en `projects.ts`. Si existe el PNG fuente, preferí declararlo con `source: "repo"` para que
+el resultado siga siendo reproducible.
 
 ---
 
@@ -108,7 +125,10 @@ Cambiá el orden de los objetos dentro del array `detail.screenshots` del proyec
 
 - **Captions bilingües obligatorias**: siempre `{ es, en }`. Si falta un idioma, el build (`tsc`) falla.
 - **`orientation` y `kind` deben coincidir** (mobile con mobile, desktop con desktop).
-- Después de cualquier cambio: `npm run lint` y `npm run build` para validar.
+- Usá `presentation: "already-framed"` solo cuando la imagen ya contiene el dispositivo completo.
+- No agrandes fuentes chicas ni recortes el centro de un teléfono para forzarlo a 16:9; para cards,
+  usá un `frame` 16:9 con `fit: "contain"` y un fondo coherente.
+- Después de cualquier cambio: `pnpm optimize:captures`, `pnpm lint` y `pnpm build`.
 - No se commitea automáticamente: revisá y commiteá vos.
 
 ## Proyectos sin capturas
@@ -122,5 +142,16 @@ por capturas reales o sacar el proyecto. Para sumarles capturas, seguí "Agregar
 creando la carpeta `public/captures/<slug>/`.
 
 `ytm-download` sí tiene capturas (4 `.webp`) pero **no tiene entrada en `captures.config.mjs`**:
-se hicieron con el modo imagen suelta, así que `npm run optimize:captures` no puede
+se hicieron con el modo imagen suelta, así que `pnpm optimize:captures` no puede
 regenerarlas. Si las tocás, agregale primero sus items al config.
+
+## Selección actual de capturas nuevas
+
+- **Aula Virtual:** panel del instructor, cursos y vista del curso del alumno; se quita la barra
+  del navegador capturada y no se usa el login como evidencia principal.
+- **VJ-Barber:** turnos, pagos y servicios; los tres PNG ya incluyen el teléfono completo.
+- **Venta Rápida:** escáner, venta rápida y productos/etiquetas QR; teléfono completo.
+- **Circuitos Argentinos:** mapa, selección, ficha y carga del recorrido, todas de escritorio.
+- **EnduroLog:** mantenimiento, suspensión, checklist y sesiones; teléfono completo.
+- **Makem:** inicio de la agencia y galería de proyectos.
+- **ON-WHEELS:** su captura móvil existente también se marca como ya enmarcada.

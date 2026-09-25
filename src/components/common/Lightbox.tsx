@@ -58,7 +58,12 @@ export default function Lightbox({ shots, index, onClose, onNavigate }: Lightbox
         </button>
       )}
 
-      <figure className={`lightbox-figure lightbox-figure--${shot.orientation}`} onClick={(e) => e.stopPropagation()}>
+      <figure
+        className={`lightbox-figure lightbox-figure--${shot.orientation}${
+          shot.presentation === "already-framed" ? " lightbox-figure--already-framed" : ""
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <img
           src={shot.src}
           alt={shot.caption ? pick(shot.caption, locale) : `screenshot ${index + 1}`}
