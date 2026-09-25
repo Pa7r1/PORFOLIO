@@ -169,26 +169,29 @@ export const projects: Project[] = [
       screenshots: [
         {
           src: asset("captures/barberia/turnos.webp"),
-          orientation: "desktop",
+          orientation: "mobile",
+          presentation: "already-framed",
           caption: {
-            es: "Gestión de turnos por estado",
-            en: "Booking management by status",
+            es: "Agenda de turnos con estado, empleado y precio",
+            en: "Booking schedule with status, employee and price",
           },
         },
         {
           src: asset("captures/barberia/pagos.webp"),
-          orientation: "desktop",
+          orientation: "mobile",
+          presentation: "already-framed",
           caption: {
-            es: "Registro de pagos y comisiones",
-            en: "Payments and commissions tracking",
+            es: "Resumen de pagos, comisiones y propinas",
+            en: "Payments, commissions and tips summary",
           },
         },
         {
           src: asset("captures/barberia/servicios.webp"),
-          orientation: "desktop",
+          orientation: "mobile",
+          presentation: "already-framed",
           caption: {
             es: "Catálogo de servicios y precios",
-            en: "Services & pricing catalog",
+            en: "Services and pricing catalog",
           },
         },
       ],
@@ -274,11 +277,27 @@ export const projects: Project[] = [
       },
       screenshots: [
         {
-          src: asset("captures/aula-virtual/login-mobile.webp"),
-          orientation: "mobile",
+          src: asset("captures/aula-virtual/panel.webp"),
+          orientation: "desktop",
           caption: {
-            es: "Acceso al aula: no hay registro abierto, las cuentas las da el instructor",
-            en: "Classroom sign-in: no open sign-up, the instructor grants the accounts",
+            es: "Panel del instructor con alumnos, cursos, módulos y progreso",
+            en: "Instructor dashboard with students, courses, modules and progress",
+          },
+        },
+        {
+          src: asset("captures/aula-virtual/cursos.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Gestión de cursos publicados",
+            en: "Published course management",
+          },
+        },
+        {
+          src: asset("captures/aula-virtual/curso-alumno.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Curso del alumno organizado por módulos y lecciones",
+            en: "Student course organized into modules and lessons",
           },
         },
       ],
@@ -288,11 +307,11 @@ export const projects: Project[] = [
   // ── 4. QRETAIL ───────────────────────────────────────────────────────────
   {
     id: "3",
-    slug: "qretail",
+    slug: "venta-rapida",
     availability: "live",
     kind: "product",
     accent: "#8a6a1f",
-    title: "QRetail",
+    title: "Venta Rápida",
     tagline: {
       es: "Un sistema de gestión de comercio donde el escaneo lo hace la cámara del teléfono",
       en: "A retail management system where the scanning is done by the phone's own camera",
@@ -301,7 +320,7 @@ export const projects: Project[] = [
       es: "Producto propio: ventas, stock, caja y roles para un comercio con varias sucursales. El escaneo lo hace la cámara del teléfono, así el negocio arranca sin comprar hardware.",
       en: "My own product: sales, stock, cash and roles for a multi-branch retailer. Scanning is done by the phone's camera, so a shop can start without buying hardware.",
     },
-    image: asset("captures/qretail/card.webp"),
+    image: asset("captures/venta-rapida/card.webp"),
     technologies: [
       "Next.js 16",
       "Prisma 7",
@@ -310,16 +329,16 @@ export const projects: Project[] = [
       "Tailwind v4",
       "Docker",
     ],
-    githubUrl: "https://github.com/Pa7r1/QRetail",
-    liveUrl: "https://q-retail.vercel.app/",
+    githubUrl: "https://github.com/Pa7r1/venta-rapida",
+    liveUrl: "https://ventarapida.makkem.com/",
     repoPrivate: true,
     hasDetail: true,
     detail: {
       year: 2025,
       status: "production",
       summary: {
-        es: "QRetail lo armé por mi cuenta para que un comercio chico pase del cuaderno a tener las ventas, el stock y la caja en un solo lugar, manejado desde el teléfono. Escanea productos con la cámara, genera un QR para los que no traen código, y separa lo que puede hacer cada usuario según su rol y según qué funciones tenga habilitadas ese comercio. Está desplegado y funcionando; todavía no lo puse a vender.",
-        en: "I built QRetail on my own so a small shop can move from a notebook to having sales, stock and cash in one place, run from a phone. It scans products with the camera, generates a QR code for the ones that don't have one, and separates what each user can do by role and by which features that particular shop has enabled. It's deployed and working; I haven't started selling it yet.",
+        es: "Venta Rápida lo armé por mi cuenta para que un comercio chico pase del cuaderno a tener las ventas, el stock y la caja en un solo lugar, manejado desde el teléfono. Escanea productos con la cámara, genera un QR para los que no traen código, y separa lo que puede hacer cada usuario según su rol y según qué funciones tenga habilitadas ese comercio. Está desplegado y funcionando; todavía no lo puse a vender.",
+        en: "I built Venta Rápida on my own so a small shop can move from a notebook to having sales, stock and cash in one place, run from a phone. It scans products with the camera, generates a QR code for the ones that don't have one, and separates what each user can do by role and by which features that particular shop has enabled. It's deployed and working; I haven't started selling it yet.",
       },
       problem: {
         es: "Un comercio necesita controlar productos, vendedores y caja desde una sola plataforma, y no todos necesitan lo mismo: al que no fía, el módulo de fiados le estorba. Habilitar y bloquear funciones por comercio es algo fácil de resolver mal, con condiciones desparramadas por toda la aplicación que después nadie sabe si están todas.",
@@ -363,27 +382,30 @@ export const projects: Project[] = [
       },
       screenshots: [
         {
-          src: asset("captures/qretail/escanear.webp"),
+          src: asset("captures/venta-rapida/escanear.webp"),
           orientation: "mobile",
+          presentation: "already-framed",
           caption: {
-            es: "Escaneo de QR y código de barras",
-            en: "QR and barcode scanning",
+            es: "Escaneo por cámara con ingreso manual como alternativa",
+            en: "Camera scanning with manual entry as a fallback",
           },
         },
         {
-          src: asset("captures/qretail/venta.webp"),
+          src: asset("captures/venta-rapida/venta.webp"),
           orientation: "mobile",
+          presentation: "already-framed",
           caption: {
             es: "Venta rápida con favoritos y categorías",
             en: "Quick sale with favorites and categories",
           },
         },
         {
-          src: asset("captures/qretail/productos-qr.webp"),
+          src: asset("captures/venta-rapida/productos.webp"),
           orientation: "mobile",
+          presentation: "already-framed",
           caption: {
-            es: "Generación de QR para productos sin código",
-            en: "QR generation for code-less products",
+            es: "Inventario con stock y acceso a etiquetas QR",
+            en: "Inventory with stock and access to QR labels",
           },
         },
       ],
@@ -474,27 +496,35 @@ export const projects: Project[] = [
       },
       screenshots: [
         {
-          src: asset("captures/circuitos-argentinos/ficha.webp"),
-          orientation: "desktop",
-          caption: {
-            es: "Ficha de circuito: el recorrido dibujado sobre la foto satelital",
-            en: "Circuit page: the route drawn over satellite imagery",
-          },
-        },
-        {
           src: asset("captures/circuitos-argentinos/mapa.webp"),
           orientation: "desktop",
           caption: {
-            es: "Mapa público con filtros por disciplina",
-            en: "Public map with filters by discipline",
+            es: "Mapa público de circuitos con filtros por disciplina",
+            en: "Public circuit map with discipline filters",
           },
         },
         {
-          src: asset("captures/circuitos-argentinos/ficha-mobile.webp"),
-          orientation: "mobile",
+          src: asset("captures/circuitos-argentinos/seleccion.webp"),
+          orientation: "desktop",
           caption: {
-            es: "La misma ficha en el celular, que es donde se usa",
-            en: "The same circuit page on mobile, where it actually gets used",
+            es: "Circuito seleccionado con distancia, dificultad y acceso",
+            en: "Selected circuit with distance, difficulty and access details",
+          },
+        },
+        {
+          src: asset("captures/circuitos-argentinos/detalle.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Ficha del circuito con recorrido, desnivel y velocidad",
+            en: "Circuit page with route, elevation gain and speed",
+          },
+        },
+        {
+          src: asset("captures/circuitos-argentinos/carga.webp"),
+          orientation: "desktop",
+          caption: {
+            es: "Carga guiada del recorrido por enlace, archivo GPX o trazado manual",
+            en: "Guided route submission by link, GPX file or manual drawing",
           },
         },
       ],
@@ -602,74 +632,7 @@ export const projects: Project[] = [
     },
   },
 
-  // ── 7. MUNDORIDER ────────────────────────────────────────────────────────
-  {
-    id: "16",
-    slug: "mundorider",
-    availability: "working",
-    kind: "lab",
-    accent: "#4a5c8a",
-    title: "MundoRider",
-    tagline: {
-      es: "El comparador de motos donde solo lleva JavaScript la parte que de verdad lo necesita",
-      en: "The motorcycle comparator where only the parts that truly need JavaScript get any",
-    },
-    description: {
-      es: "Plataforma para decidir qué moto comprar en Argentina, con los costos reales de mantenerla. El contenido va estático para que Google lo lea; el comparador es una isla de React.",
-      en: "A platform for choosing which motorcycle to buy in Argentina, with the real cost of keeping it running. Content ships static so Google reads it; the comparator is a React island.",
-    },
-    // Sin captura a propósito: no hay una que valga y no se fuerza.
-    // La cadena vacía activa la variante tipográfica de la tarjeta.
-    image: "",
-    technologies: [
-      "Astro",
-      "React",
-      "Fastify",
-      "Drizzle ORM",
-      "PostgreSQL",
-      "TypeScript",
-      "Zod",
-      "Vitest",
-    ],
-    repoPrivate: true,
-    hasDetail: true,
-    detail: {
-      year: 2026,
-      status: "wip",
-      summary: {
-        es: "Antes de gastar millones en una moto, la información que hace falta está desperdigada entre foros y videos: cuánto sale mantenerla, qué se le rompe, si se consiguen repuestos. Estoy construyendo el sitio que responde eso en un solo lugar. El dueño del proyecto es mecánico y piloto de enduro, así que el criterio editorial sale de alguien que las abre.",
-        en: "Before spending a fortune on a motorcycle, the information you need is scattered across forums and videos: what it costs to maintain, what breaks, whether parts are available. I'm building the site that answers all that in one place. The project owner is a mechanic and enduro rider, so the editorial judgment comes from someone who actually takes them apart.",
-      },
-      problem: {
-        es: "Es un sitio que vive de que lo encuentren en Google, así que el contenido tiene que llegar ya escrito en el HTML, no armarse en el navegador. Pero al mismo tiempo necesita partes de verdad interactivas: un comparador de dos motos y calculadoras de consumo y de costo mensual. Las dos cosas a la vez, sin que la interactividad arrastre a toda la página.",
-        en: "This is a site that lives on being found in Google, so the content has to arrive already written in the HTML, not assembled in the browser. But it also needs genuinely interactive parts: a two-bike comparator and fuel and monthly-cost calculators. Both at once, without the interactivity dragging the whole page down with it.",
-      },
-      architecture: {
-        es: "Astro con arquitectura de islas. Las diez páginas públicas se pre-renderizan enteras en el build y solo los componentes que necesitan interacción se hidratan en el navegador, uno por uno; el resto llega como HTML y no descarga JavaScript. Las tres páginas de administración son las únicas con el prerenderizado apagado, porque ahí lo que se muestra depende de quién entró. La API es Fastify con Drizzle sobre PostgreSQL, en un monorepo pnpm donde un paquete compartido tiene los tipos y los esquemas de Zod que validan las dos puntas. El panel de administración —donde se cargan las fichas, las fotos y los repuestos— es la parte con más interacción, y ahí sí entra React completo.",
-        en: "Astro with an islands architecture. The ten public pages are pre-rendered in full at build time and only the components that need interaction hydrate in the browser, one at a time; everything else arrives as HTML and downloads no JavaScript. The three admin pages are the only ones with prerendering switched off, because what they show depends on who signed in. The API is Fastify with Drizzle over PostgreSQL, in a pnpm monorepo where a shared package holds the types and Zod schemas that validate both ends. The admin panel — where bike profiles, photos and parts are loaded — is the most interactive part, and that's where full React comes in.",
-      },
-      stackRationale: {
-        es: "Elegí Astro porque me deja decidir el renderizado componente por componente, con la granularidad que este proyecto pedía. Con Next.js habría tenido que llevar el framework entero a páginas que son texto y fotos. La regla que me puse fue una sola y la sostuve hasta el final: si una parte no necesita JavaScript, no lo lleva.",
-        en: "I chose Astro because it lets me decide rendering component by component, at the granularity this project asked for. With Next.js I'd have had to ship the whole framework to pages that are text and photos. I set myself one rule and held it to the end: if a part doesn't need JavaScript, it doesn't get any.",
-      },
-      challenges: [
-        {
-          es: "Modelar la compatibilidad entre repuestos y modelos. Un mismo kit de transmisión sirve para varias motos y una moto usa decenas de repuestos, así que la relación va en las dos direcciones y hay que poder navegarla por sistema: motor, frenos, suspensión, transmisión.",
-          en: "Modeling compatibility between parts and models. The same chain kit fits several bikes and one bike uses dozens of parts, so the relationship runs both ways and has to be navigable by system: engine, brakes, suspension, transmission.",
-        },
-        {
-          es: "Decidir qué se hidrata y qué no. Es fácil marcar todo como interactivo por comodidad y perder la ventaja de haber elegido Astro; cada isla hay que justificarla.",
-          en: "Deciding what hydrates and what doesn't. It's easy to mark everything interactive out of convenience and lose the very advantage of having chosen Astro; every island has to be justified.",
-        },
-      ],
-      learnings: {
-        es: "Me obligó a tener una respuesta para «¿esto necesita JavaScript?» en cada componente, y resulta que la respuesta es que no muchas más veces de las que uno cree. La parte concreta que me quedó es el reparto: diez páginas públicas pre-renderizadas y tres de administración que se arman por pedido, con esa decisión tomada pantalla por pantalla y anotada en cada archivo.",
-        en: 'It forced me to have an answer to "does this need JavaScript?" for every component, and the answer turns out to be no far more often than you\'d expect. The concrete thing I kept is the split: ten public pages pre-rendered and three admin pages built on request, with that decision made screen by screen and written into each file.',
-      },
-    },
-  },
-
-  // ── 8. MOTOBITACORA ──────────────────────────────────────────────────────
+  // ── 7. MOTOBITACORA ──────────────────────────────────────────────────────
   {
     id: "4",
     slug: "motobitacora",
@@ -758,23 +721,35 @@ export const projects: Project[] = [
         {
           src: asset("captures/motobitacora/mantenimiento.webp"),
           orientation: "mobile",
+          presentation: "already-framed",
           caption: {
             es: "Mantenimiento y alertas por horas de uso",
-            en: "Maintenance & hour-based alerts",
+            en: "Maintenance and hour-based alerts",
           },
         },
         {
           src: asset("captures/motobitacora/suspension.webp"),
           orientation: "mobile",
+          presentation: "already-framed",
           caption: {
             es: "Setups de suspensión por terreno",
-            en: "Suspension setups per terrain",
+            en: "Suspension setups by terrain",
           },
         },
         {
-          src: asset("captures/motobitacora/checklists.webp"),
+          src: asset("captures/motobitacora/checklist.webp"),
           orientation: "mobile",
-          caption: { es: "Checklists pre-carrera", en: "Pre-race checklists" },
+          presentation: "already-framed",
+          caption: { es: "Checklist de carrera por categorías", en: "Race checklist by category" },
+        },
+        {
+          src: asset("captures/motobitacora/sesiones.webp"),
+          orientation: "mobile",
+          presentation: "already-framed",
+          caption: {
+            es: "Registro de sesiones de entrenamiento y carrera",
+            en: "Training and race session log",
+          },
         },
       ],
     },
@@ -853,27 +828,19 @@ export const projects: Project[] = [
       },
       screenshots: [
         {
-          src: asset("captures/makem/turismo.webp"),
+          src: asset("captures/makem/inicio.webp"),
           orientation: "desktop",
           caption: {
-            es: "Lodge de montaña: turismo.makkem.com",
-            en: "Mountain lodge: turismo.makkem.com",
+            es: "Inicio de la agencia con propuesta y acceso al cotizador",
+            en: "Agency homepage with its proposition and quote-builder access",
           },
         },
         {
-          src: asset("captures/makem/constructora.webp"),
+          src: asset("captures/makem/proyectos.webp"),
           orientation: "desktop",
           caption: {
-            es: "Constructora y estudio de arquitectura: constructora.makkem.com",
-            en: "Construction and architecture firm: constructora.makkem.com",
-          },
-        },
-        {
-          src: asset("captures/makem/abogados.webp"),
-          orientation: "desktop",
-          caption: {
-            es: "Estudio jurídico: abogados.makkem.com",
-            en: "Law office: abogados.makkem.com",
+            es: "Galería de proyectos y sitios publicados",
+            en: "Portfolio of projects and published sites",
           },
         },
       ],
@@ -972,6 +939,15 @@ export const projects: Project[] = [
           src: asset("captures/on-wheels/precios.webp"),
           orientation: "desktop",
           caption: { es: "Valores y condiciones", en: "Pricing and terms" },
+        },
+        {
+          src: asset("captures/on-wheels/inicio-mobile.webp"),
+          orientation: "mobile",
+          presentation: "already-framed",
+          caption: {
+            es: "Landing mobile con reserva directa por WhatsApp",
+            en: "Mobile landing page with direct WhatsApp booking",
+          },
         },
       ],
     },

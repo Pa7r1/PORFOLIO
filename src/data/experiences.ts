@@ -139,7 +139,7 @@ export const experiences: Experience[] = [
       es: "Full Stack Developer",
       en: "Full Stack Developer",
     },
-    company: "QRetail · Producto propio",
+    company: "Venta Rápida · Producto propio",
     description: {
       es: "Sistema de gestión para comercios con varias sucursales, construido como producto propio. Cada negocio opera con sus sucursales, usuarios y stock independientes: un único despliegue atiende a varios comercios sin duplicar infraestructura, y qué funciones tiene habilitadas cada uno se lee de una tabla de configuración en la base y no del código. El escaneo lo hace la cámara del teléfono, así el comercio arranca sin comprar hardware dedicado. El despliegue va automatizado, con las migraciones separadas por entorno y verificación de tipos antes de publicar.",
       en: "Management system for multi-branch retailers, built as my own product. Each business runs with its own branches, users and stock: a single deployment serves several shops without duplicating infrastructure, and which features each one has enabled is read from a configuration table in the database rather than from the code. Scanning is done by the phone's camera, so a shop can start without buying dedicated hardware. Deployment is automated, with per-environment migrations and type checking before each release.",

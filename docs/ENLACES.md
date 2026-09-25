@@ -47,10 +47,10 @@ Después: `npm run lint` y `npm run build` para validar (los textos están en
 - **En vivo** (los 7 verificados con HTTP 200 el 2026-08-07): `barberia` (vj-barber.com),
   `aula-virtual` (vj-barber.online), `circuitos-argentinos`
   (circuitos-argentinos.makkem.com), `makem` (turismo/constructora/abogados.makkem.com),
-  `on-wheels` (GitHub Pages), `qretail` y `motobitacora` (Vercel).
+  `on-wheels` (GitHub Pages), `venta-rapida` (ventarapida.makkem.com) y `motobitacora` (Vercel).
 - **Repo público**: `anistream-tv`, `on-wheels`, `taskflow`, `sistema-zapatillas`, `ytm-download`.
 - **Repo privado** (chip candado, nunca enlace): `barberia`, `aula-virtual`,
-  `circuitos-argentinos`, `modex-ecommerce`, `sistema-canchas`, `qretail`,
+  `circuitos-argentinos`, `modex-ecommerce`, `sistema-canchas`, `venta-rapida`,
   `granja-de-videos`, `motobitacora`, `upward`.
 - **Sin repo ni demo pública**: `makem` (solo `liveUrl`).
 
