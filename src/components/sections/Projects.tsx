@@ -54,6 +54,23 @@ const KIND_LABEL: Record<Project["kind"], DictionaryKey> = {
   lab: "projects.group.lab",
 };
 
+const FEATURED_PROJECT_SLUGS = [
+  "barberia",
+  "modex-ecommerce",
+  "venta-rapida",
+  "circuitos-argentinos",
+  "motobitacora",
+  "aula-virtual",
+  "makem",
+  "on-wheels",
+] as const;
+
+const featuredProjects = FEATURED_PROJECT_SLUGS.map((slug) => {
+  const project = projects.find((item) => item.slug === slug);
+  if (!project) throw new Error(`Featured project not found: ${slug}`);
+  return project;
+});
+
 /** Envuelve la tarjeta en el destino correcto: caso de estudio interno
  *  si lo hay, si no el enlace externo que exista. */
 function ProjectLink({ project, className, off, children }: { project: Project; className: string; off: boolean; children: ReactNode }) {
@@ -94,8 +111,8 @@ function ProjectBadges({ project }: { project: Project }) {
   return (
     <>
       {/* "En desarrollo" va primero y con el acento de la casa: un
-          reclutador tiene que saber antes de leer nada que Upward y
-          MundoRider todavía no están terminados. */}
+          reclutador tiene que saber antes de leer nada cuando un proyecto
+          todavía no está terminado. */}
       {wip && <span className="badge badge--wip">{t("project.status.wip")}</span>}
       {avail === "live" && (
         <span className="badge badge--live">
@@ -486,7 +503,7 @@ export default function Projects() {
     <section id="projects">
       <h2 className="section-label fade-in">{t("nav.projects")}</h2>
 
-      <ProjectCarousel items={projects} />
+      <ProjectCarousel items={featuredProjects} />
     </section>
   );
 }
