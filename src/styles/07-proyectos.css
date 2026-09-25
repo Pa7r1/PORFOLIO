@@ -575,13 +575,11 @@
   filter: none;
 }
 
-/* Variante sin captura. MundoRider es el único de los diez que no
-   tiene una y no se va a forzar: en vez de un hueco gris, un marco
-   tipográfico con la retícula del acento. Es una decisión, no una
-   ausencia — y sirve para cualquier proyecto futuro sin imagen.
-   Ya no lleva el rótulo "captura en proceso": eso es una nota de
-   gestión interna delante de quien viene a evaluar. El estado lo dice
-   la insignia "En desarrollo" del pie de la tarjeta. */
+/* Variante sin captura para cualquier proyecto futuro sin imagen.
+   En vez de un hueco gris, muestra un marco tipográfico con la retícula
+   del acento. Ya no lleva el rótulo "captura en proceso": eso es una
+   nota de gestión interna delante de quien viene a evaluar. El estado
+   lo dice la insignia "En desarrollo" del pie de la tarjeta. */
 .project-shot--type {
   display: grid;
   place-content: center;
