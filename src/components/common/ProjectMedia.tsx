@@ -79,14 +79,21 @@ export default function ProjectMedia({
               tabIndex={0}
             >
               {shots.map((shot, i) => (
-                <figure key={i} className={`shot shot--${shot.orientation}`}>
+                <figure
+                  key={i}
+                  className={`shot shot--${shot.orientation}${
+                    shot.presentation === "already-framed" ? " shot--already-framed" : ""
+                  }`}
+                >
                   <button
                     type="button"
                     className="shot-frame"
                     onClick={() => setLightboxIndex(i)}
                     aria-label={shot.caption ? pick(shot.caption, locale) : `${title} ${i + 1}`}
                   >
-                    <span className="shot-chrome" aria-hidden="true" />
+                    {shot.presentation !== "already-framed" && (
+                      <span className="shot-chrome" aria-hidden="true" />
+                    )}
                     <img
                       src={shot.src}
                       alt={shot.caption ? pick(shot.caption, locale) : `${title} screenshot ${i + 1}`}

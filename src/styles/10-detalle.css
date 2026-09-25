@@ -381,6 +381,23 @@
   border-radius: 14px;
 }
 
+/* Some captures already include a complete phone mockup. Keep its silhouette
+   intact instead of wrapping it in a second device or forcing the screen into
+   9:19, which would clip the browser controls and product UI. */
+.shot--already-framed .shot-frame {
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+.shot--already-framed .shot-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+
 .shot-caption {
   font-family: var(--font-mono);
   font-size: var(--fs-xs);
@@ -435,6 +452,12 @@
 }
 .lightbox-figure--mobile .lightbox-img {
   max-height: 82vh;
+}
+.lightbox-figure--already-framed .lightbox-img {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
 }
 .lightbox-caption {
   font-family: var(--font-mono);

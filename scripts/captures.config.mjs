@@ -7,11 +7,18 @@
  * Ver la guía completa en docs/CAPTURAS.md
  *
  * ── Campos de cada item ──────────────────────────────────────────────
- *   from  -> ruta relativa dentro de SRC_ROOT (la captura PNG original)
- *   to    -> nombre del archivo de salida (sin extensión) → <slug>/<to>.webp
- *   kind  -> "card"    : thumbnail de la tarjeta del proyecto (ancho 640)
- *            "desktop" : captura de escritorio para la galería (ancho 1440)
- *            "mobile"  : captura de teléfono para la galería  (ancho 820)
+ *   from   -> ruta relativa al origen elegido
+ *   source -> "external" (default, SRC_ROOT) o "repo" (raíz del repositorio)
+ *   to     -> nombre del archivo de salida (sin extensión) → <slug>/<to>.webp
+ *   kind   -> "card"    : thumbnail de la tarjeta del proyecto (ancho 420)
+ *             "desktop" : captura de escritorio para la galería (ancho 1440)
+ *             "mobile"  : captura de teléfono para la galería  (ancho 820)
+ *
+ * Operaciones opcionales, aplicadas en este orden:
+ *   crop  -> recorte por bordes { top, right, bottom, left }
+ *   trim  -> quita padding uniforme; `padding` devuelve un margen controlado
+ *   frame -> encuadra a una relación exacta sin deformar la captura
+ *   width -> reemplaza el ancho máximo de `kind` para ese item
  *
  * El `to: "card"` de cada proyecto es la imagen de la tarjeta (campo `image`
  * en src/data/projects.ts). El resto son las de la galería/carrusel: su orden
@@ -37,21 +44,57 @@ export const SELECTION = [
     ],
   },
   {
-    slug: "qretail",
+    slug: "venta-rapida",
     items: [
-      { from: "q-retail/administrador/productos--movil.png", to: "card", kind: "card" },
-      { from: "q-retail/administrador/escanear--movil.png", to: "escanear", kind: "mobile" },
-      { from: "q-retail/administrador/venta--movil.png", to: "venta", kind: "mobile" },
-      { from: "q-retail/administrador/productos-qr--movil.png", to: "productos-qr", kind: "mobile" },
+      { from: "venta-rapida/administrador/productos--movil.png", to: "card", kind: "card" },
+      {
+        from: "public/captures/venta-rapida/scanear.png",
+        source: "repo",
+        to: "escanear",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#292929" },
+      },
+      {
+        from: "public/captures/venta-rapida/ventarapida.png",
+        source: "repo",
+        to: "venta",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#292929" },
+      },
+      {
+        from: "public/captures/venta-rapida/productos.png",
+        source: "repo",
+        to: "productos",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#292929" },
+      },
     ],
   },
   {
     slug: "barberia",
     items: [
       { from: "vj-barber/principal/homeprivado--escritorio.png", to: "card", kind: "card" },
-      { from: "vj-barber/principal/turnos--escritorio.png", to: "turnos", kind: "desktop" },
-      { from: "vj-barber/principal/pagos--escritorio.png", to: "pagos", kind: "desktop" },
-      { from: "vj-barber/principal/servicios--escritorio.png", to: "servicios", kind: "desktop" },
+      {
+        from: "public/captures/barberia/turnos.png",
+        source: "repo",
+        to: "turnos",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
+      {
+        from: "public/captures/barberia/pagos.png",
+        source: "repo",
+        to: "pagos",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
+      {
+        from: "public/captures/barberia/servicios.png",
+        source: "repo",
+        to: "servicios",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
     ],
   },
   {
@@ -74,10 +117,43 @@ export const SELECTION = [
   {
     slug: "motobitacora",
     items: [
-      { from: "enduro-log/principal/moto--movil.png", to: "card", kind: "card" },
-      { from: "enduro-log/principal/suspension--movil.png", to: "suspension", kind: "mobile" },
-      { from: "enduro-log/principal/mantenimiento--movil.png", to: "mantenimiento", kind: "mobile" },
-      { from: "enduro-log/principal/checklists--movil.png", to: "checklists", kind: "mobile" },
+      {
+        from: "public/captures/motobitacora/inicio.png",
+        source: "repo",
+        to: "card",
+        kind: "card",
+        width: 720,
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+        frame: { ratio: [16, 9], fit: "contain", background: "#211c18" },
+      },
+      {
+        from: "public/captures/motobitacora/mantenimiento.png",
+        source: "repo",
+        to: "mantenimiento",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
+      {
+        from: "public/captures/motobitacora/suspension.png",
+        source: "repo",
+        to: "suspension",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
+      {
+        from: "public/captures/motobitacora/checklist.png",
+        source: "repo",
+        to: "checklist",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
+      {
+        from: "public/captures/motobitacora/sesiones.png",
+        source: "repo",
+        to: "sesiones",
+        kind: "mobile",
+        trim: { threshold: 8, padding: 8, background: "#282828" },
+      },
     ],
   },
   {
@@ -93,26 +169,107 @@ export const SELECTION = [
   {
     slug: "makem",
     items: [
-      { from: "makkem/publico/turismo--escritorio.png", to: "card", kind: "card" },
-      { from: "makkem/publico/turismo--escritorio.png", to: "turismo", kind: "desktop" },
-      { from: "makkem/publico/constructora--escritorio.png", to: "constructora", kind: "desktop" },
-      { from: "makkem/publico/abogados--escritorio.png", to: "abogados", kind: "desktop" },
+      {
+        from: "public/captures/makem/inicio.png",
+        source: "repo",
+        to: "card",
+        kind: "card",
+        width: 720,
+        frame: { ratio: [16, 9], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/makem/inicio.png",
+        source: "repo",
+        to: "inicio",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/makem/proyectos.png",
+        source: "repo",
+        to: "proyectos",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
     ],
   },
   {
     slug: "aula-virtual",
     items: [
-      { from: "aula-virtual/publico/login--escritorio.png", to: "card", kind: "card" },
-      { from: "aula-virtual/publico/login--movil.png", to: "login-mobile", kind: "mobile" },
+      {
+        from: "public/captures/aula-virtual/panel.png",
+        source: "repo",
+        to: "card",
+        kind: "card",
+        width: 720,
+        crop: { top: 31 },
+        frame: { ratio: [16, 9], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/aula-virtual/panel.png",
+        source: "repo",
+        to: "panel",
+        kind: "desktop",
+        crop: { top: 31 },
+        frame: { ratio: [16, 10], fit: "contain", background: "#f7f7f8" },
+      },
+      {
+        from: "public/captures/aula-virtual/cursos.png",
+        source: "repo",
+        to: "cursos",
+        kind: "desktop",
+        crop: { top: 31 },
+        frame: { ratio: [16, 10], fit: "contain", background: "#f7f7f8" },
+      },
+      {
+        from: "public/captures/aula-virtual/cursodesdealumno.png",
+        source: "repo",
+        to: "curso-alumno",
+        kind: "desktop",
+        crop: { top: 31 },
+        frame: { ratio: [16, 10], fit: "contain", background: "#f7f7f8" },
+      },
     ],
   },
   {
     slug: "circuitos-argentinos",
     items: [
-      { from: "circuitos-argentinos/publico/ficha--escritorio.png", to: "card", kind: "card" },
-      { from: "circuitos-argentinos/publico/ficha--escritorio.png", to: "ficha", kind: "desktop" },
-      { from: "circuitos-argentinos/publico/mapa--escritorio.png", to: "mapa", kind: "desktop" },
-      { from: "circuitos-argentinos/publico/ficha--movil.png", to: "ficha-mobile", kind: "mobile" },
+      {
+        from: "public/captures/circuitos-argentinos/circuitoseleccionado.png",
+        source: "repo",
+        to: "card",
+        kind: "card",
+        width: 720,
+        frame: { ratio: [16, 9], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/circuitos-argentinos/principal.png",
+        source: "repo",
+        to: "mapa",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/circuitos-argentinos/circuitoseleccionado.png",
+        source: "repo",
+        to: "seleccion",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/circuitos-argentinos/vistadentrodelcircuito.png",
+        source: "repo",
+        to: "detalle",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
+      {
+        from: "public/captures/circuitos-argentinos/sumatucircuito.png",
+        source: "repo",
+        to: "carga",
+        kind: "desktop",
+        frame: { ratio: [16, 10], fit: "cover", position: "top" },
+      },
     ],
   },
   {
